@@ -2,7 +2,7 @@ import { mountBlackHole, drawProjectArt } from './blackhole.js';
 
 const hole = mountBlackHole(document.querySelector('#black-hole'), { fps: 18 });
 document.querySelector('.black-hole-art').classList.add('art-ready');
-const kinds = { raycaster: 'network', tracker: 'terminal', bakery: 'constellation', job: 'server' };
+const kinds = { raycaster: 'network', tracker: 'terminal', job: 'server' };
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let paused = false;
@@ -22,49 +22,113 @@ reducedMotion.addEventListener('change', updateMotion);
 updateMotion();
 
 const projects = {
-  raycaster: {
-    number: '01', category: 'REAL-TIME GRAPHICS / PERSONAL PROJECT', title: 'C++ Raycaster Engine',
-    summary: 'A pseudo-3D first-person world, rendered from a 2D map with C++ and SFML.',
-    tags: ['C++', 'SFML', 'Raycasting', 'January to February 2025'],
-    metrics: [['3', 'core engine systems'], ['2D → 3D', 'raycasting projection'], ['W / S · A / D', 'movement & rotation']],
-    problem: 'How can a flat map become a scene you can walk through? This personal project explores the fundamentals of first-person rendering: detecting walls, measuring distance, and turning those measurements into a convincing view.',
-    approach: 'I separated the engine into wall detection, distance calculations, and frame rendering. Rays sample the map from the player’s position; their distances drive the projected wall view. Keyboard movement and rotation update that view in real time, while distance-based shading gives the scene depth.',
-    process: '[ 2D map + player position ]\n             |\n       Cast rays into map\n             |\n   Detect walls + measure distance\n             |\n   [ Project + shade each frame ]',
-    result: 'The result is an interactive first-person scene in an SFML window, with forward and backward movement, rotation, and walls shaded by distance. It gave me a practical way to connect graphics math, input handling, and rendering in C++.',
-    repo: 'https://github.com/Omar-Lyzkru/raycaster-sfml', source: 'PERSONAL PROJECT'
+  "job": {
+    "number": "01",
+    "category": "AUTOMATION & TOOLING / AI-ASSISTED PROJECT",
+    "title": "Job Application Automation Platform",
+    "summary": "A local application for job filtering, supported application-form automation, saved answers, and application history.",
+    "tags": [
+      "JavaScript",
+      "Node.js",
+      "Playwright",
+      "HTML & CSS",
+      "Vanilla JavaScript frontend",
+      "Node HTTP server/API",
+      "JSON file persistence"
+    ],
+    "metrics": [
+      [
+        "Local",
+        "dashboard & browser"
+      ],
+      [
+        "JSON",
+        "file persistence"
+      ],
+      [
+        "Tests",
+        "unit/API & synthetic browser"
+      ]
+    ],
+    "problem": "Repeated forms and scattered application records make a job search difficult to track. The goal is a local workflow for finding relevant roles, handling supported forms, and keeping saved answers and application outcomes together.",
+    "approach": "The application uses a vanilla JavaScript dashboard, a Node HTTP server/API, Playwright, and JSON files for persistence. I defined product requirements and workflow/safety behavior, directed iterative AI-assisted development, reviewed results, and requested fixes. Most implementation code was AI-generated under my direction.",
+    "process": "[ Job filters + saved answers ]\n              |\n     Inspect a supported form\n              |\n [ Block unknowns / review / apply ]\n              |\n  Record lifecycle + protect duplicates\n              |\n [ Recover interrupted work / explicit retry ]",
+    "result": "Application lifecycle records distinguish blocked, interrupted, unconfirmed, and submitted work. Unknown questions stop the workflow instead of being answered by guesswork. Duplicate protection, interrupted-work recovery, and user-controlled retries support a more reliable workflow. Unit/API and synthetic browser tests exercise supported behavior; live forms can still require manual completion.",
+    "learningTitle": "What I’m learning",
+    "learning": "I’m learning to translate requirements into testable behavior and evaluate workflow outcomes. My current focus is understanding the JavaScript/Node.js code and building more independent debugging skills.",
+    "repo": "https://github.com/Omar-Lyzkru/job-applier",
+    "source": "AI-ASSISTED · PRODUCT DIRECTION & REVIEW"
   },
-  tracker: {
-    number: '02', category: 'FRONTEND DEVELOPMENT / PERSONAL PROJECT', title: 'Persistent Task Tracker',
-    summary: 'A responsive task manager that remembers your tasks, their edits, and their completion state.',
-    tags: ['JavaScript', 'HTML & CSS', 'localStorage', 'August 2026'],
-    metrics: [['3', 'task filter views'], ['Enter / Esc', 'save & cancel edits'], ['JSON', 'persistent task state']],
-    problem: 'A task list should stay useful after a refresh. I wanted a small browser app that preserves tasks across sessions, makes updates easy, and remains usable with a keyboard.',
-    approach: 'I represented tasks as objects in an array, rendered them with the DOM API, and saved state to localStorage as JSON. I added All, Active, and Completed filters, a remaining-task counter, inline editing, and empty-input validation. Loading filters invalid records and handles malformed saved JSON. Accessible labels and live status announcements make task actions clearer.',
-    process: '[ Add / edit / complete ]\n             |\n      Update task objects\n        /           \\\n   Render DOM    Save JSON\n        |           |\n  [ Filter view ] [ localStorage ]',
-    result: 'Tasks and completion states restore across sessions. Editing supports Enter to save and Escape to cancel, with responsive layouts and accessible feedback. The project brought state management, persistence, validation, and everyday interaction design together in plain JavaScript.',
-    repo: 'https://github.com/Omar-Lyzkru/tiny-task-tracker', source: 'PERSONAL PROJECT'
+  "raycaster": {
+    "number": "02",
+    "category": "CONSOLE RENDERING / TUTORIAL-GUIDED PROJECT",
+    "title": "C++ Console Raycaster",
+    "summary": "A first-person C++ raycaster that renders a character-based scene using the Windows Console API.",
+    "tags": [
+      "C++",
+      "Windows Console API",
+      "Fixed-distance ray stepping",
+      "January to February 2025"
+    ],
+    "metrics": [
+      [
+        "16×16",
+        "map"
+      ],
+      [
+        "120×40",
+        "character console"
+      ],
+      [
+        "0.1",
+        "fixed ray-step distance"
+      ]
+    ],
+    "problem": "How can a two-dimensional map become a first-person view in a character console? This project was a way to work through rendering, movement, and collision handling in C++.",
+    "approach": "The implementation steps rays through a 16×16 map, translates wall distances into character columns, and uses elapsed time for movement and wall-collision checks. I implemented the project while following a YouTube programming tutorial and worked through how these pieces fit together.",
+    "process": "[ 16×16 map + player position ]\n               |\n      Step rays at fixed distances\n               |\n      Measure walls → choose shading\n               |\n [ 120×40 console scene + map overlay ]",
+    "result": "The checked-in implementation draws a 120×40 character scene with distance-based wall shading and a map overlay using the Windows Console API. Keyboard input controls forward/backward movement and rotation.",
+    "learningTitle": "What I learned",
+    "learning": "Working through the tutorial helped me connect C++ loops, trigonometry, elapsed-time movement, collision checks, and console output in a first-person scene.",
+    "note": "Repository note: the README still describes a different graphics library. This case study reflects the checked-in Windows console source; repository documentation cleanup is a separate follow-up.",
+    "repo": "https://github.com/Omar-Lyzkru/raycaster",
+    "source": "TUTORIAL-GUIDED · C++ PRACTICE"
   },
-  bakery: {
-    number: '03', category: 'APPLIED ALGORITHMS / COURSE PROJECT', title: 'Bakery Demand Predictor',
-    summary: 'A C++ K-nearest neighbors model that uses daily context to estimate bakery demand.',
-    tags: ['C++', 'K-Nearest Neighbors', 'Euclidean Distance', 'April 2026'],
-    metrics: [['20', 'days in the dataset'], ['k = 4', 'nearest neighbors'], ['≈70.5', 'loaves · sample output']],
-    problem: 'Bakery demand changes with weather, weekends, holidays, and game days. This course project asks how similar historical days can help estimate demand for a new day.',
-    approach: 'Using a 20-day dataset, I encoded weather, weekend or holiday status, and game-day status as input features. I calculated Euclidean distances, ranked the historical records, and used the four nearest neighbors to estimate daily demand.',
-    process: '[ Weather + calendar + game day ]\n                 |\n      Compare with 20 recorded days\n                 |\n       Rank Euclidean distances\n                 |\n    [ k = 4 neighbors → estimate ]',
-    result: 'The model produced a sample prediction of approximately 70.5 loaves. This is an example estimate from the course dataset, rather than an accuracy benchmark or a measured business outcome. The project helped me turn a familiar real-world question into a concrete algorithm.',
-    repo: null, source: 'COURSE PROJECT · RÉSUMÉ'
-  },
-  job: {
-    number: '04', category: 'AUTOMATION & TOOLING / PERSONAL PROJECT', title: 'Job Application Dashboard',
-    summary: 'A local dashboard for organizing LinkedIn job searches, supported application workflows, and application history.',
-    tags: ['Node.js', 'JavaScript', 'Playwright', 'Linux'],
-    metrics: [['Dry run', 'review before submission'], ['CSV', 'exportable history'], ['Local', 'dashboard & browser']],
-    problem: 'Job searches involve repetitive forms and scattered application history. I wanted one local workflow to manage explicit answers, review supported applications, and keep an honest record of what happened.',
-    approach: 'I combined a Node.js dashboard with a persistent Playwright browser session. Saved profile data and explicitly provided screening answers support repeatable form handling. The workflow includes dry runs, résumé upload verification, duplicate protection, configurable run limits, and durable attempt tracking.',
-    process: '[ Saved profile + explicit answers ]\n                  |\n      Find role → inspect supported form\n                  |\n       [ Dry run / review / apply ]\n                  |\n       Record outcome → export CSV',
-    result: 'The dashboard distinguishes confirmed submissions, uncertain attempts, missing answers, and skipped or failed applications. Local fixture tests are documented for form, upload, runner, and dashboard behavior. Support depends on the live form; the project does not assume every employer workflow works the same way.',
-    repo: 'https://github.com/Omar-Lyzkru/job-applier', source: 'PERSONAL PROJECT'
+  "tracker": {
+    "number": "03",
+    "category": "FRONTEND DEVELOPMENT / PERSONAL PROJECT",
+    "title": "Persistent Task Tracker",
+    "summary": "A small browser task manager with filtering, inline editing, keyboard interactions, and saved state.",
+    "tags": [
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "localStorage",
+      "JSON",
+      "August 2026"
+    ],
+    "metrics": [
+      [
+        "3",
+        "filter views"
+      ],
+      [
+        "Saved",
+        "browser state"
+      ],
+      [
+        "Inline",
+        "task editing"
+      ]
+    ],
+    "problem": "A useful task list should preserve work after a refresh and make everyday updates straightforward.",
+    "approach": "I wrote HTML and JavaScript for task creation, completion, deletion, All / Active / Completed filters, and a remaining-task counter. Tasks are saved as JSON in localStorage, with malformed-data handling, inline editing, and keyboard interactions.",
+    "process": "[ Create / edit / complete / delete ]\n                  |\n          Update task objects\n             /         \\\n       Render DOM     Save JSON\n             |         |\n        Filter view  localStorage",
+    "result": "Task state persists across visits. Inline edits support Enter to save and Escape to cancel, and invalid saved records are filtered during loading.",
+    "learningTitle": "What I practiced",
+    "learning": "This project helped me work with DOM updates, arrays and objects, event handling, and keeping browser state synchronized with persistent storage.",
+    "repo": "https://github.com/Omar-Lyzkru/tiny-task-tracker",
+    "source": "PERSONAL PROJECT · JAVASCRIPT PRACTICE"
   }
 };
 
@@ -76,7 +140,11 @@ function openProject(id, trigger) {
   if (!project) return;
   lastProjectButton = trigger;
   setText('dialog-number', `${project.number} / SELECTED WORK`);
-  for (const field of ['category', 'title', 'summary', 'problem', 'approach', 'process', 'result', 'source']) setText(`dialog-${field}`, project[field]);
+  for (const field of ['category', 'title', 'summary', 'problem', 'approach', 'process', 'result', 'learning', 'source']) setText(`dialog-${field}`, project[field]);
+  setText('dialog-learning-title', project.learningTitle);
+  const note = document.querySelector('#dialog-note');
+  note.hidden = !project.note;
+  note.textContent = project.note || '';
   const tags = document.querySelector('#dialog-tags');
   tags.replaceChildren(...project.tags.map(tag => { const span = document.createElement('span'); span.textContent = tag; return span; }));
   const metrics = document.querySelector('#dialog-metrics');
@@ -104,7 +172,7 @@ dialog.addEventListener('close', () => lastProjectButton?.focus({ preventScroll:
 document.querySelector('#copy-email').addEventListener('click', async () => {
   const status = document.querySelector('#copy-status');
   try {
-    await navigator.clipboard.writeText('omaraguilarwork97@gmail.com');
+    await navigator.clipboard.writeText('o9086498@gmail.com');
     status.textContent = 'Email copied. Say hello when you’re ready.';
   } catch {
     status.textContent = 'You can select the email above to copy it.';

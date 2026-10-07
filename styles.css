@@ -11,3 +11,8 @@
 .motion-toggle:disabled{cursor:default;color:var(--faint)}
 
 @media(min-width:781px) and (max-width:1100px){#black-hole{left:-30px;right:-30px;width:calc(100% + 60px)}}
+
+/* Resume-aligned skills and direct project links. */
+.skills-inner{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:28px;padding-block:22px}.band-label{margin-right:12px}.skill-group{min-width:0}.skill-group h2{font:12px var(--mono);letter-spacing:.05em;color:var(--muted);margin:0 0 8px}.skill-group p{display:flex;flex-wrap:wrap;gap:5px 14px;font-size:15px;line-height:1.65;color:#b9b7b1;margin:0}.project-links{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin-top:8px}.project-links>.mono{font-size:12px;letter-spacing:0}.project-links a{color:var(--copper)}.project-links a:hover{text-decoration:underline;text-underline-offset:5px}.case-note{border-left:2px solid #806a54;padding-left:15px;color:var(--muted);font-size:14px;line-height:1.7;margin-top:26px}
+@media(max-width:780px){.skills-inner{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.band-label{grid-column:1/-1;margin:0}.skill-group p{font-size:14px}}
+@media(max-width:520px){.skills-inner{grid-template-columns:1fr;gap:17px}.skills-inner .band-label{text-align:left}.skill-group{display:grid;grid-template-columns:95px minmax(0,1fr);gap:12px}.skill-group h2{margin:4px 0 0}.dialog-metrics{grid-template-columns:1fr;gap:18px}.metric{display:flex;align-items:center;gap:18px}.metric strong{flex:0 0 85px}.metric span{margin-top:0}}
