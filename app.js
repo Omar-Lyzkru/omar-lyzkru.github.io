@@ -22,8 +22,45 @@ reducedMotion.addEventListener('change', updateMotion);
 updateMotion();
 
 const projects = {
-  "job": {
+  "permit": {
     "number": "01",
+    "category": "ENVIRONMENTAL DATA / FOUR-PERSON TEAM PROJECT",
+    "title": "PermitWatch Houston",
+    "summary": "An English/Spanish environmental-permit discovery platform built for CodeRED Orion at the University of Houston. Our team won the Environmental Track.",
+    "tags": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "SQLite",
+      "MapLibre GL"
+    ],
+    "metrics": [
+      [
+        "807",
+        "validated permits · source snapshot"
+      ],
+      [
+        "1–10 mi",
+        "search radius"
+      ],
+      [
+        "4",
+        "permit categories"
+      ]
+    ],
+    "problem": "Houston-region permit records are spread across official sources. PermitWatch brings them into a searchable map so people can explore nearby authorizations and follow the source records for details.",
+    "approach": "On a four-person team, I expanded the validated dataset from 213 to 807 records by integrating 594 EPA wastewater and TCEQ solid-waste permits with normalization, deduplication, and source provenance. I led React/TypeScript frontend enhancements for URL-preserved radius search, category/status filters, persistent themes, and map interactions. I also fixed map-selection and responsive draft-state bugs with regression tests.",
+    "process": "[ TCEQ + EPA source records ]\n             |\n Normalize → validate → deduplicate\n             |\n       SQLite + Express API\n             |\n [ React search + MapLibre map ]",
+    "result": "Users can search an address or ZIP code, choose a 1–10 mile radius, filter four permit categories, and inspect source-linked details in English or Spanish. The project includes regression and browser tests. The 807-record dataset is a source-scoped snapshot, not a complete inventory of Houston permits.",
+    "learningTitle": "What I’m practicing",
+    "learning": "This project connects TypeScript and React UI state with geospatial data, database-backed APIs, and regression testing. Team collaboration also gave me practice reviewing changes and tracing frontend behavior across screen sizes.",
+    "repo": "https://github.com/Abbas9x/permitwatch-houston",
+    "demo": "https://permitwatch-houston.onrender.com/",
+    "source": "TEAM PROJECT · ENVIRONMENTAL TRACK WINNER"
+  },
+  "job": {
+    "number": "02",
     "category": "AUTOMATION & TOOLING / AI-ASSISTED PROJECT",
     "title": "Job Application Automation Platform",
     "summary": "A local application for job filtering, supported application-form automation, saved answers, and application history.",
@@ -55,20 +92,20 @@ const projects = {
     "process": "[ Job filters + saved answers ]\n              |\n     Inspect a supported form\n              |\n [ Block unknowns / review / apply ]\n              |\n  Record lifecycle + protect duplicates\n              |\n [ Recover interrupted work / explicit retry ]",
     "result": "Application lifecycle records distinguish blocked, interrupted, unconfirmed, and submitted work. Unknown questions stop the workflow instead of being answered by guesswork. Duplicate protection, interrupted-work recovery, and user-controlled retries support a more reliable workflow. Unit/API and synthetic browser tests exercise supported behavior; live forms can still require manual completion.",
     "learningTitle": "What I’m learning",
-    "learning": "I’m learning to translate requirements into testable behavior and evaluate workflow outcomes. My current focus is understanding the JavaScript/Node.js code and building more independent debugging skills.",
+    "learning": "I’m strengthening my understanding of JavaScript/Node.js workflows and independent debugging. I use unit/API and synthetic browser tests to investigate failures and verify changes in supported application workflows.",
     "repo": "https://github.com/Omar-Lyzkru/job-applier",
     "source": "AI-ASSISTED · PRODUCT DIRECTION & REVIEW"
   },
   "raycaster": {
-    "number": "02",
+    "number": "03",
     "category": "CONSOLE RENDERING / TUTORIAL-GUIDED PROJECT",
     "title": "C++ Console Raycaster",
     "summary": "A first-person C++ raycaster that renders a character-based scene using the Windows Console API.",
     "tags": [
       "C++",
       "Windows Console API",
-      "Fixed-distance ray stepping",
-      "January to February 2025"
+      "CMake",
+      "Fixed-distance ray stepping"
     ],
     "metrics": [
       [
@@ -87,16 +124,15 @@ const projects = {
     "problem": "How can a two-dimensional map become a first-person view in a character console? This project was a way to work through rendering, movement, and collision handling in C++.",
     "approach": "The implementation steps rays through a 16×16 map, translates wall distances into character columns, and uses elapsed time for movement and wall-collision checks. I implemented the project while following a YouTube programming tutorial and worked through how these pieces fit together.",
     "process": "[ 16×16 map + player position ]\n               |\n      Step rays at fixed distances\n               |\n      Measure walls → choose shading\n               |\n [ 120×40 console scene + map overlay ]",
-    "result": "The checked-in implementation draws a 120×40 character scene with distance-based wall shading and a map overlay using the Windows Console API. Keyboard input controls forward/backward movement and rotation.",
+    "result": "The checked-in implementation draws a 120×40 character scene with distance-based wall shading and a map overlay. The current repository includes CMake builds and portable movement/ray-calculation regression tests; the interactive renderer remains Windows-only.",
     "learningTitle": "What I learned",
-    "learning": "Working through the tutorial helped me connect C++ loops, trigonometry, elapsed-time movement, collision checks, and console output in a first-person scene.",
-    "note": "Repository note: the README still describes a different graphics library. This case study reflects the checked-in Windows console source; repository documentation cleanup is a separate follow-up.",
+    "learning": "Working through the tutorial helped me connect C++ loops, trigonometry, elapsed-time movement, collision checks, and console output. I’m also practicing CMake builds and regression testing around the renderer’s calculations.",
     "repo": "https://github.com/Omar-Lyzkru/raycaster",
     "source": "TUTORIAL-GUIDED · C++ PRACTICE"
   },
   "tracker": {
-    "number": "03",
-    "category": "FRONTEND DEVELOPMENT / PERSONAL PROJECT",
+    "number": "04",
+    "category": "FRONTEND DEVELOPMENT / SUPPORTING PROJECT",
     "title": "Persistent Task Tracker",
     "summary": "A small browser task manager with filtering, inline editing, keyboard interactions, and saved state.",
     "tags": [
@@ -157,6 +193,9 @@ function openProject(id, trigger) {
   const repo = document.querySelector('#dialog-repo');
   repo.hidden = !project.repo;
   if (project.repo) repo.href = project.repo; else repo.removeAttribute('href');
+  const demo = document.querySelector('#dialog-demo');
+  demo.hidden = !project.demo;
+  if (project.demo) demo.href = project.demo; else demo.removeAttribute('href');
   dialog.showModal();
   dialog.scrollTop = 0;
 }

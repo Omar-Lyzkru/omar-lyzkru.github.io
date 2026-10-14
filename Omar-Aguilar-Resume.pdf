@@ -6,116 +6,707 @@ endobj
 << /Type /Pages /Kids [3 0 R] /Count 1 >>
 endobj
 3 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R /Annots [8 0 R 9 0 R 10 0 R 11 0 R 12 0 R 13 0 R] >>
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R /Annots [8 0 R 9 0 R 10 0 R 11 0 R 12 0 R 13 0 R 14 0 R] >>
 endobj
 4 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
 endobj
 5 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
 endobj
 6 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique >>
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>
 endobj
 7 0 obj
-<< /Length 4444 >>
+<< /Length 30559 >>
 stream
-BT /F2 25 Tf 1 0 0 1 227.5125 748 Tm (Omar Aguilar) Tj ET
-BT /F1 10 Tf 1 0 0 1 178.075 725 Tm (346-593-6154 | o9086498@gmail.com | LinkedIn | GitHub) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 709 Tm (EDUCATION) Tj ET
-0.6 w 42 702 m 570 702 l S
-BT /F2 11 Tf 1 0 0 1 42 685 Tm (University of Houston) Tj ET
-BT /F1 10 Tf 1 0 0 1 479.05 685 Tm (Expected May 2028) Tj ET
-BT /F3 10 Tf 1 0 0 1 42 670 Tm (Bachelor of Science in Computer Science | Houston, TX) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 653 Tm (Lone Star College) Tj ET
-BT /F1 10 Tf 1 0 0 1 500.45 653 Tm (December 2025) Tj ET
-BT /F3 10 Tf 1 0 0 1 42 638 Tm (Associate of Arts, Computer Science Pathway | GPA: 3.67 | Houston, TX) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 617 Tm (TECHNICAL SKILLS) Tj ET
-0.6 w 42 610 m 570 610 l S
-BT /F1 10.5 Tf 1 0 0 1 42 593 Tm (Languages: C++, Python, JavaScript) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 579 Tm (Web: HTML, CSS, Node.js) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 565 Tm (Tools/Libraries: Git, Linux, Playwright) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 547 Tm (PROJECTS) Tj ET
-0.6 w 42 540 m 570 540 l S
-BT /F2 11 Tf 1 0 0 1 42 523 Tm (Job Application Automation Platform) Tj ET
-BT /F1 10 Tf 1 0 0 1 452.3 523 Tm (October 2026 - Present) Tj ET
-BT /F3 10 Tf 1 0 0 1 42 508 Tm (JavaScript, Node.js, Playwright) Tj ET
-BT /F1 9 Tf 1 0 0 1 528 508 Tm (GitHub) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 491 Tm (- Directed iterative AI-assisted development of a local application for job filtering, supported) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 478 Tm (  application forms, saved answers, and application history.) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 463 Tm (- Defined desired workflow behavior for unknown questions, duplicate prevention, interrupted) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 450 Tm (  applications, and user-controlled retries.) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 435 Tm (- Reviewed results, identified problems, and requested fixes; the application includes a) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 422 Tm (  dashboard, unit/API tests, and synthetic browser tests.) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 405 Tm (Persistent Task Tracker) Tj ET
-BT /F1 10 Tf 1 0 0 1 511.15 405 Tm (August 2026) Tj ET
-BT /F3 10 Tf 1 0 0 1 42 390 Tm (JavaScript, HTML, CSS) Tj ET
-BT /F1 9 Tf 1 0 0 1 528 390 Tm (GitHub) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 373 Tm (- Wrote HTML and JavaScript for a task manager with task creation, completion, deletion,) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 360 Tm (  filtering, and a remaining-task counter.) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 345 Tm (- Added localStorage persistence, malformed-data handling, inline editing, and keyboard) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 332 Tm (  interactions to maintain and update task state across sessions.) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 315 Tm (C++ Console Raycaster) Tj ET
-BT /F1 10 Tf 1 0 0 1 420.20000000000005 315 Tm (January 2025 - February 2025) Tj ET
-BT /F3 10 Tf 1 0 0 1 42 300 Tm (C++, Windows Console API) Tj ET
-BT /F1 9 Tf 1 0 0 1 528 300 Tm (GitHub) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 283 Tm (- Implemented a first-person C++ console raycaster using fixed-distance ray stepping over a 16 x) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 270 Tm (  16 map.) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 255 Tm (- Worked through elapsed-time-based movement, wall-collision checks, distance-based shading, and) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 242 Tm (  a map overlay in character-based console output.) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 221 Tm (WORK EXPERIENCE) Tj ET
-0.6 w 42 214 m 570 214 l S
-BT /F2 11 Tf 1 0 0 1 42 197 Tm (Digital Personal Shopper | Walmart) Tj ET
-BT /F1 10 Tf 1 0 0 1 430.9 197 Tm (January 2026 - August 2026) Tj ET
-BT /F3 10 Tf 1 0 0 1 42 182 Tm () Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 175 Tm (- Handled 100+ online orders individually during busy shifts using handheld order-management) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 162 Tm (  systems.) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 147 Tm (- Coordinated order fulfillment, substitutions, staging, and customer pickups.) Tj ET
-BT /F2 11 Tf 1 0 0 1 42 128 Tm (LEADERSHIP) Tj ET
-0.6 w 42 121 m 570 121 l S
-BT /F2 11 Tf 1 0 0 1 42 104 Tm (CodePathways Peer Mentor) Tj ET
-BT /F1 10 Tf 1 0 0 1 441.6 104 Tm (September 2026 - Present) Tj ET
-BT /F3 10 Tf 1 0 0 1 42 89 Tm (Code[Coogs] x Cougarrettes) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 72 Tm (- Selected for the Fall 2026 peer mentorship program, with weekly 30+ minute one-on-one meetings) Tj ET
-BT /F1 10.5 Tf 1 0 0 1 42 59 Tm (  focused on a UH student's academic, technical, and professional development.) Tj ET
+BT /F2 25 Tf 1 0 0 1 226.813 740.000 Tm (Omar) Tj ET
+BT /F2 25 Tf 1 0 0 1 292.121 740.000 Tm ( ) Tj ET
+BT /F2 25 Tf 1 0 0 1 299.066 740.000 Tm (Aguilar) Tj ET
+BT /F1 10 Tf 1 0 0 1 178.060 718.000 Tm (346-593-6154) Tj ET
+BT /F1 10 Tf 1 0 0 1 240.336 718.000 Tm ( ) Tj ET
+BT /F1 10 Tf 1 0 0 1 243.114 718.000 Tm (|) Tj ET
+BT /F1 10 Tf 1 0 0 1 245.712 718.000 Tm ( ) Tj ET
+BT /F1 10 Tf 1 0 0 1 248.490 718.000 Tm (o9086498@gmail.com) Tj ET
+BT /F1 10 Tf 1 0 0 1 348.701 718.000 Tm ( ) Tj ET
+BT /F1 10 Tf 1 0 0 1 351.479 718.000 Tm (|) Tj ET
+BT /F1 10 Tf 1 0 0 1 354.077 718.000 Tm ( ) Tj ET
+BT /F1 10 Tf 1 0 0 1 356.855 718.000 Tm (LinkedIn) Tj ET
+BT /F1 10 Tf 1 0 0 1 394.663 718.000 Tm ( ) Tj ET
+BT /F1 10 Tf 1 0 0 1 397.441 718.000 Tm (|) Tj ET
+BT /F1 10 Tf 1 0 0 1 400.039 718.000 Tm ( ) Tj ET
+BT /F1 10 Tf 1 0 0 1 402.817 718.000 Tm (GitHub) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 696.200 Tm (EDUCATION) Tj ET
+0.6 w 42 693.000 m 570 693.000 l S
+BT /F2 11 Tf 1 0 0 1 42.000 677.200 Tm (University of Houston) Tj ET
+BT /F1 10 Tf 1 0 0 1 481.611 677.200 Tm (Expected May 2028) Tj ET
+BT /F3 10 Tf 1 0 0 1 42.000 663.000 Tm (Bachelor) Tj ET
+BT /F3 10 Tf 1 0 0 1 81.468 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 84.246 663.000 Tm (of) Tj ET
+BT /F3 10 Tf 1 0 0 1 92.586 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 95.365 663.000 Tm (Science) Tj ET
+BT /F3 10 Tf 1 0 0 1 130.941 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 133.719 663.000 Tm (in) Tj ET
+BT /F3 10 Tf 1 0 0 1 141.502 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 144.281 663.000 Tm (Computer) Tj ET
+BT /F3 10 Tf 1 0 0 1 188.187 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 190.966 663.000 Tm (Science) Tj ET
+BT /F3 10 Tf 1 0 0 1 226.542 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 229.320 663.000 Tm (|) Tj ET
+BT /F3 10 Tf 1 0 0 1 231.918 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 234.696 663.000 Tm (Houston,) Tj ET
+BT /F3 10 Tf 1 0 0 1 274.721 663.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 277.499 663.000 Tm (TX) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 647.200 Tm (Lone Star College) Tj ET
+BT /F1 10 Tf 1 0 0 1 498.847 647.200 Tm (December 2025) Tj ET
+BT /F3 10 Tf 1 0 0 1 42.000 633.000 Tm (Associate) Tj ET
+BT /F3 10 Tf 1 0 0 1 85.355 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 88.133 633.000 Tm (of) Tj ET
+BT /F3 10 Tf 1 0 0 1 96.473 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 99.251 633.000 Tm (Arts,) Tj ET
+BT /F3 10 Tf 1 0 0 1 119.808 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 122.586 633.000 Tm (Computer) Tj ET
+BT /F3 10 Tf 1 0 0 1 166.493 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 169.271 633.000 Tm (Science) Tj ET
+BT /F3 10 Tf 1 0 0 1 204.847 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 207.626 633.000 Tm (Pathway) Tj ET
+BT /F3 10 Tf 1 0 0 1 245.980 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 248.759 633.000 Tm (|) Tj ET
+BT /F3 10 Tf 1 0 0 1 251.356 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 254.135 633.000 Tm (GPA:) Tj ET
+BT /F3 10 Tf 1 0 0 1 277.289 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 280.067 633.000 Tm (3.67) Tj ET
+BT /F3 10 Tf 1 0 0 1 299.530 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 302.308 633.000 Tm (|) Tj ET
+BT /F3 10 Tf 1 0 0 1 304.906 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 307.684 633.000 Tm (Houston,) Tj ET
+BT /F3 10 Tf 1 0 0 1 347.709 633.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 350.487 633.000 Tm (TX) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 613.200 Tm (TECHNICAL) Tj ET
+BT /F2 11 Tf 1 0 0 1 105.551 613.200 Tm ( ) Tj ET
+BT /F2 11 Tf 1 0 0 1 108.607 613.200 Tm (SKILLS) Tj ET
+0.6 w 42 610.000 m 570 610.000 l S
+BT /F1 10.5 Tf 1 0 0 1 42.000 594.600 Tm (Languages:) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 96.883 594.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 99.801 594.600 Tm (C++,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 122.564 594.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 125.482 594.600 Tm (Python,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 161.088 594.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 164.005 594.600 Tm (JavaScript,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 215.941 594.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 218.858 594.600 Tm (TypeScript) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 580.600 Tm (Web:) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 66.317 580.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 69.234 580.600 Tm (HTML,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 100.734 580.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 103.651 580.600 Tm (CSS,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 128.158 580.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 131.075 580.600 Tm (React,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 161.422 580.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 164.339 580.600 Tm (Node.js) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 566.600 Tm (Tools/Libraries:) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 112.613 566.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 115.530 566.600 Tm (Git,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 131.865 566.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 134.782 566.600 Tm (Linux,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 162.800 566.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 165.718 566.600 Tm (Playwright,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 217.069 566.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 219.986 566.600 Tm (CMake) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 545.200 Tm (PROJECTS) Tj ET
+0.6 w 42 542.000 m 570 542.000 l S
+BT /F2 11 Tf 1 0 0 1 42.000 526.200 Tm (Permit Watch) Tj ET
+BT /F1 10 Tf 1 0 0 1 509.404 526.200 Tm (October 2026) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 42.000 512.400 Tm (Environmental) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 102.725 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 105.364 512.400 Tm (Track) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 128.409 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 131.049 512.400 Tm (Winner) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 161.056 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 163.696 512.400 Tm (|) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 166.163 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 168.803 512.400 Tm (CodeRED) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 211.571 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 214.211 512.400 Tm (Orion) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 237.441 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 240.081 512.400 Tm (Hackathon,) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 288.137 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 290.777 512.400 Tm (University) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 332.478 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 335.118 512.400 Tm (of) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 343.040 512.400 Tm ( ) Tj ET
+BT /F3 9.5 Tf 1 0 0 1 345.680 512.400 Tm (Houston) Tj ET
+BT /F3 10 Tf 1 0 0 1 42.000 498.500 Tm (React, TypeScript, Node.js, Express, SQLite, MapLibre GL) Tj ET
+BT /F1 9 Tf 1 0 0 1 541.989 498.500 Tm (GitHub) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 483.100 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 483.100 Tm (Expanded) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 95.704 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 98.622 483.100 Tm (validated) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 140.652 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 143.569 483.100 Tm (Houston-region) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 215.361 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 218.279 483.100 Tm (permit) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 247.451 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 250.368 483.100 Tm (data) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 270.804 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 273.721 483.100 Tm (from) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 294.721 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 297.638 483.100 Tm (213) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 315.157 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 318.074 483.100 Tm (to) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 326.830 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 329.748 483.100 Tm (807) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 347.266 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 350.183 483.100 Tm (records) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 385.195 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 388.112 483.100 Tm (by) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 399.202 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 402.119 483.100 Tm (integrating) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 451.153 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 454.070 483.100 Tm (594) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 471.589 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 474.506 483.100 Tm (EPA) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 494.737 483.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 497.654 483.100 Tm (wastewater) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 470.600 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 65.519 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 68.436 470.600 Tm (TCEQ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 97.603 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 100.520 470.600 Tm (solid-waste) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 153.040 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 155.958 470.600 Tm (permits) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 190.380 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 193.297 470.600 Tm (with) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 211.969 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 214.887 470.600 Tm (normalization,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 280.250 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 283.167 470.600 Tm (deduplication,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 347.966 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 350.883 470.600 Tm (source) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 382.398 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 385.315 470.600 Tm (provenance,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 443.106 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 446.023 470.600 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 463.542 470.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 466.459 470.600 Tm (SQLite/Express) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 458.100 Tm (integration.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 442.600 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 442.600 Tm (Led) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 65.932 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 68.850 442.600 Tm (React/TypeScript) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 148.799 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 151.716 442.600 Tm (frontend) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 190.245 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 193.162 442.600 Tm (enhancements:) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 264.959 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 267.876 442.600 Tm (URL-preserved) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 339.069 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 341.986 442.600 Tm (1ñ10) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 365.344 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 368.261 442.600 Tm (mile) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 387.513 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 390.430 442.600 Tm (radius) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 419.028 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 421.945 442.600 Tm (search,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 456.378 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 459.295 442.600 Tm (category/status) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 530.497 442.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 533.414 442.600 Tm (filters,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 430.100 Tm (persistent) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 93.522 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 96.439 430.100 Tm (themes,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 133.789 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 136.706 430.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 154.224 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 157.142 430.100 Tm (MapLibre) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 200.915 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 203.832 430.100 Tm (improvements;) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 272.687 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 275.604 430.100 Tm (fixed) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 297.783 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 300.700 430.100 Tm (map-selection) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 366.063 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 368.981 430.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 386.499 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 389.416 430.100 Tm (responsive) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 440.193 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 443.111 430.100 Tm (draft-state) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 490.381 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 493.298 430.100 Tm (bugs) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 516.066 430.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 518.984 430.100 Tm (with) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 417.600 Tm (regression) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 97.024 417.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 99.941 417.600 Tm (tests.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 402.100 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 402.100 Tm (Collaborated) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 107.953 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 110.870 402.100 Tm (on) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 122.549 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 125.466 402.100 Tm (a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 131.306 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 134.223 402.100 Tm (four-person) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 187.917 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 190.834 402.100 Tm (team) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 214.177 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 217.094 402.100 Tm (that) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 234.608 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 237.525 402.100 Tm (won) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 256.787 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 259.704 402.100 Tm (the) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 274.300 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 277.217 402.100 Tm (Environmental) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 344.334 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 347.251 402.100 Tm (Track) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 373.111 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 376.028 402.100 Tm (at) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 384.785 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 387.702 402.100 Tm (UH's) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 410.123 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 413.040 402.100 Tm (CodeRED) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 460.310 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 463.227 402.100 Tm (Orion) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 488.903 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 491.820 402.100 Tm (Hackathon) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 542.018 402.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 544.935 402.100 Tm (with) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 389.600 Tm (a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 53.840 389.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 56.757 389.600 Tm (bilingual) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 95.286 389.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 98.203 389.600 Tm (environmental-permit) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 196.824 389.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 199.741 389.600 Tm (discovery) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 244.089 389.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 247.007 389.600 Tm (platform.) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 370.700 Tm (Job Application Automation Platform) Tj ET
+BT /F1 10 Tf 1 0 0 1 466.054 370.700 Tm (October 2026 - Present) Tj ET
+BT /F3 10 Tf 1 0 0 1 42.000 356.500 Tm (JavaScript, Node.js, Playwright) Tj ET
+BT /F1 9 Tf 1 0 0 1 541.989 356.500 Tm (GitHub) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 341.100 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 341.100 Tm (Built) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 68.840 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 71.757 341.100 Tm (an) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 83.436 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 86.353 341.100 Tm (AI-assisted) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 138.289 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 141.206 341.100 Tm (job) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 155.218 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 158.135 341.100 Tm (application) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 208.338 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 211.255 341.100 Tm (automation) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 263.206 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 266.123 341.100 Tm (platform) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 304.052 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 306.969 341.100 Tm (using) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 332.071 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 334.988 341.100 Tm (Node.js) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 370.589 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 373.506 341.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 391.025 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 393.942 341.100 Tm (Playwright) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 442.376 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 445.294 341.100 Tm (with) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 463.966 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 466.883 341.100 Tm (job) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 480.895 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 483.812 341.100 Tm (filtering,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 520.577 341.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 523.495 341.100 Tm (saved) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 328.600 Tm (answers,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 90.015 328.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 92.932 328.600 Tm (application) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 143.135 328.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 146.052 328.600 Tm (history,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 179.116 328.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 182.033 328.600 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 199.552 328.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 202.469 328.600 Tm (a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 208.308 328.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 211.226 328.600 Tm (local) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 232.820 328.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 235.738 328.600 Tm (dashboard.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 313.100 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 313.100 Tm (Specified) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 91.608 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 94.525 313.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 112.044 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 114.961 313.100 Tm (reviewed) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 156.981 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 159.899 313.100 Tm (safeguards) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 211.850 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 214.767 313.100 Tm (that) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 232.280 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 235.197 313.100 Tm (block) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 259.709 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 262.626 313.100 Tm (applications) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 318.079 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 320.996 313.100 Tm (missing) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 356.588 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 359.505 313.100 Tm (required) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 398.028 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 400.946 313.100 Tm (answers,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 442.961 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 445.878 313.100 Tm (protect) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 477.978 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 480.895 313.100 Tm (prior) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 501.900 313.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 504.817 313.100 Tm (submission) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 300.600 Tm (attempts,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 91.184 300.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 94.101 300.600 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 111.620 300.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 114.537 300.600 Tm (preserve) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 155.388 300.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 158.305 300.600 Tm (interrupted) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 208.503 300.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 211.420 300.600 Tm (work) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 233.589 300.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 236.506 300.600 Tm (for) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 248.759 300.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 251.677 300.600 Tm (explicit) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 283.771 300.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 286.688 300.600 Tm (retry.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 285.100 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 285.100 Tm (Used) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 72.926 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 75.843 285.100 Tm (unit/API) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 112.613 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 115.530 285.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 133.049 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 135.966 285.100 Tm (synthetic) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 177.402 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 180.319 285.100 Tm (browser) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 217.664 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 220.581 285.100 Tm (tests) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 242.755 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 245.672 285.100 Tm (to) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 254.429 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 257.346 285.100 Tm (investigate) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 307.543 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 310.461 285.100 Tm (failures) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 344.309 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 347.226 285.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 364.744 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 367.662 285.100 Tm (verify) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 392.748 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 395.665 285.100 Tm (fixes) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 417.254 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 420.172 285.100 Tm (in) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 428.344 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 431.261 285.100 Tm (supported) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 477.962 285.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 480.879 285.100 Tm (application) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 272.600 Tm (workflows.) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 253.700 Tm (C++ Console Raycaster) Tj ET
+BT /F1 10 Tf 1 0 0 1 435.473 253.700 Tm (January 2025 - February 2025) Tj ET
+BT /F3 10 Tf 1 0 0 1 42.000 239.500 Tm (C++, Windows Console API) Tj ET
+BT /F1 9 Tf 1 0 0 1 541.989 239.500 Tm (GitHub) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 224.100 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 224.100 Tm (Implemented) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 109.111 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 112.028 224.100 Tm (a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 117.868 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 120.785 224.100 Tm (first-person) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 173.300 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 176.217 224.100 Tm (C++) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 196.064 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 198.981 224.100 Tm (console) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 235.172 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 238.089 224.100 Tm (raycaster) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 281.268 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 284.185 224.100 Tm (using) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 309.287 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 312.204 224.100 Tm (fixed-distance) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 376.988 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 379.905 224.100 Tm (ray) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 394.491 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 397.408 224.100 Tm (stepping) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 437.106 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 440.023 224.100 Tm (over) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 460.449 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 463.366 224.100 Tm (a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 469.205 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 472.123 224.100 Tm (16) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 483.802 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 486.719 224.100 Tm (◊) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 492.851 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 495.768 224.100 Tm (16) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 507.447 224.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 510.364 224.100 Tm (map.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 208.600 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 208.600 Tm (Worked) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 84.400 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 87.317 208.600 Tm (through) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 122.928 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 125.845 208.600 Tm (elapsed-time-based) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 218.063 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 220.980 208.600 Tm (movement,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 272.916 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 275.833 208.600 Tm (wall-collision) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 334.768 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 337.685 208.600 Tm (checks,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 373.281 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 376.198 208.600 Tm (distance-based) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 447.411 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 450.328 208.600 Tm (shading,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 490.026 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 492.943 208.600 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 510.462 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 513.379 208.600 Tm (a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 519.218 208.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 522.136 208.600 Tm (map) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 196.100 Tm (overlay) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 81.848 196.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 84.765 196.100 Tm (in) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 92.938 196.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 95.855 196.100 Tm (character-based) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 171.728 196.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 174.645 196.100 Tm (console) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 210.836 196.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 213.753 196.100 Tm (output.) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 173.200 Tm (WORK) Tj ET
+BT /F2 11 Tf 1 0 0 1 76.826 173.200 Tm ( ) Tj ET
+BT /F2 11 Tf 1 0 0 1 79.882 173.200 Tm (EXPERIENCE) Tj ET
+0.6 w 42 170.000 m 570 170.000 l S
+BT /F2 11 Tf 1 0 0 1 42.000 154.200 Tm (Digital Personal Shopper | Walmart) Tj ET
+BT /F1 10 Tf 1 0 0 1 444.907 154.200 Tm (January 2026 - August 2026) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 139.600 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 139.600 Tm (Handled) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 87.527 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 90.444 139.600 Tm (100+) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 114.095 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 117.012 139.600 Tm (online) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 145.036 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 147.953 139.600 Tm (orders) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 177.715 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 180.632 139.600 Tm (individually) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 231.993 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 234.911 139.600 Tm (during) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 264.098 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 267.015 139.600 Tm (busy) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 289.194 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 292.112 139.600 Tm (shifts) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 316.618 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 319.535 139.600 Tm (using) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 344.637 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 347.554 139.600 Tm (handheld) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 390.764 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 393.681 139.600 Tm (order-management) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 482.976 139.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 485.893 139.600 Tm (systems.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 124.100 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 124.100 Tm (Coordinated) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 105.620 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 108.537 124.100 Tm (order) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 133.049 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 135.966 124.100 Tm (fulfillment,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 183.231 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 186.148 124.100 Tm (substitutions,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 247.430 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 250.348 124.100 Tm (staging,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 287.123 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 290.040 124.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 307.559 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 310.476 124.100 Tm (customer) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 353.655 124.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 356.572 124.100 Tm (pickups.) Tj ET
+BT /F2 11 Tf 1 0 0 1 42.000 101.200 Tm (LEADERSHIP) Tj ET
+0.6 w 42 98.000 m 570 98.000 l S
+BT /F2 11 Tf 1 0 0 1 42.000 82.200 Tm (CodePathways Peer Mentor) Tj ET
+BT /F1 10 Tf 1 0 0 1 452.709 82.200 Tm (September 2026 - Present) Tj ET
+BT /F3 10 Tf 1 0 0 1 42.000 68.000 Tm (Code[Coogs]) Tj ET
+BT /F3 10 Tf 1 0 0 1 100.369 68.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 103.148 68.000 Tm (x) Tj ET
+BT /F3 10 Tf 1 0 0 1 108.148 68.000 Tm ( ) Tj ET
+BT /F3 10 Tf 1 0 0 1 110.926 68.000 Tm (Cougarrettes) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 42.000 52.600 Tm (-) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 45.497 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.414 52.600 Tm (Selected) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 89.275 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 92.192 52.600 Tm (for) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 104.446 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 107.363 52.600 Tm (the) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 121.959 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 124.876 52.600 Tm (Fall) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 141.795 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 144.713 52.600 Tm (2026) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 168.071 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 170.988 52.600 Tm (peer) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 192.003 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 194.920 52.600 Tm (mentorship) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 246.861 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 249.778 52.600 Tm (program,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 291.793 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 294.710 52.600 Tm (with) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 313.383 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 316.300 52.600 Tm (weekly) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 348.395 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 351.312 52.600 Tm (30+) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 369.123 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 372.040 52.600 Tm (minute) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 403.555 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 406.472 52.600 Tm (one-on-one) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 460.182 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 463.099 52.600 Tm (meetings) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 505.703 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 508.621 52.600 Tm (focused) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 545.396 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 548.313 52.600 Tm (on) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 559.992 52.600 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 562.909 52.600 Tm (a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 48.000 40.100 Tm (UH) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 63.166 40.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 66.083 40.100 Tm (student's) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 107.780 40.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 110.697 40.100 Tm (academic,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 158.552 40.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 161.469 40.100 Tm (technical,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 205.827 40.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 208.744 40.100 Tm (and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 226.263 40.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 229.180 40.100 Tm (professional) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 285.797 40.100 Tm ( ) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 288.714 40.100 Tm (development.) Tj ET
 endstream
 endobj
 8 0 obj
-<< /Type /Annot /Subtype /Link /Rect [356.845 720 394.645 732] /Border [0 0 0] /A << /S /URI /URI (https://www.linkedin.com/in/omar-aguilar-b590b4277) >> >>
+<< /Type /Annot /Subtype /Link /Rect [178.060 716.000 240.336 728.000] /Border [0 0 0] /A << /S /URI /URI (tel:+13465936154) >> >>
 endobj
 9 0 obj
-<< /Type /Annot /Subtype /Link /Rect [402.805 720 433.925 732] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Omar-Lyzkru) >> >>
+<< /Type /Annot /Subtype /Link /Rect [248.490 716.000 348.701 728.000] /Border [0 0 0] /A << /S /URI /URI (mailto:o9086498@gmail.com) >> >>
 endobj
 10 0 obj
-<< /Type /Annot /Subtype /Link /Rect [528 506 565 518] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Omar-Lyzkru/job-applier) >> >>
+<< /Type /Annot /Subtype /Link /Rect [356.855 716.000 394.663 728.000] /Border [0 0 0] /A << /S /URI /URI (https://www.linkedin.com/in/omar-aguilar-b590b4277) >> >>
 endobj
 11 0 obj
-<< /Type /Annot /Subtype /Link /Rect [528 388 565 400] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Omar-Lyzkru/tiny-task-tracker) >> >>
+<< /Type /Annot /Subtype /Link /Rect [402.817 716.000 433.940 728.000] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Omar-Lyzkru) >> >>
 endobj
 12 0 obj
-<< /Type /Annot /Subtype /Link /Rect [528 298 565 310] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Omar-Lyzkru/raycaster-sfml) >> >>
+<< /Type /Annot /Subtype /Link /Rect [541.989 496.500 570.000 507.500] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Abbas9x/permitwatch-houston) >> >>
 endobj
 13 0 obj
-<< /Type /Annot /Subtype /Link /Rect [248.495 720 348.685 732] /Border [0 0 0] /A << /S /URI /URI (mailto:o9086498@gmail.com) >> >>
+<< /Type /Annot /Subtype /Link /Rect [541.989 354.500 570.000 365.500] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Omar-Lyzkru/job-applier) >> >>
+endobj
+14 0 obj
+<< /Type /Annot /Subtype /Link /Rect [541.989 237.500 570.000 248.500] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Omar-Lyzkru/raycaster) >> >>
 endobj
 xref
-0 14
+0 15
 0000000000 65535 f 
 0000000009 00000 n 
 0000000058 00000 n 
 0000000115 00000 n 
-0000000311 00000 n 
-0000000381 00000 n 
-0000000456 00000 n 
-0000000534 00000 n 
-0000005030 00000 n 
-0000005202 00000 n 
-0000005354 00000 n 
-0000005511 00000 n 
-0000005674 00000 n 
-0000005834 00000 n 
+0000000318 00000 n 
+0000000415 00000 n 
+0000000517 00000 n 
+0000000622 00000 n 
+0000031234 00000 n 
+0000031380 00000 n 
+0000031535 00000 n 
+0000031716 00000 n 
+0000031877 00000 n 
+0000032054 00000 n 
+0000032227 00000 n 
 trailer
-<< /Size 14 /Root 1 0 R >>
+<< /Size 15 /Root 1 0 R >>
 startxref
-5982
+32398
+%%EOF
+1 1 obj
+<< /Type /Catalog /Pages 2 0 R  /AF [16 0 R] /Names << /EmbeddedFiles << /Names [(Content Credentials) 16 0 R] >> >> >>
+endobj
+15 0 obj
+<< /Length 24294 /Type /EmbeddedFile /Subtype /application#2Fc2pa >>
+stream
+  ^Êjumb   jumdc2pa  Ä  ™ 8õqc2pa   ^¿jumb   Gjumdc2ma  Ä  ™ 8õqurn:c2pa:56fbb46e-2382-4e52-8575-7b75ace17a2f   ∞jumb   )jumdc2as  Ä  ™ 8õqc2pa.assertions   	πjumb   #jumd@À2ªäHùß*÷ÙCic2pa.icon    bfdb image/svg+xml   	wbidb<svg width="716" height="716" viewBox="0 0 716 716" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M508.749 317.399C516.777 287.314 508.991 253.884 485.389 230.282C461.788 206.681 428.36 198.895 398.273 206.923C376.231 184.928 343.39 174.956 311.148 183.596C278.906 192.234 255.45 217.292 247.36 247.361C217.291 255.451 192.233 278.91 183.595 311.149C174.957 343.391 184.927 376.232 206.924 398.274C198.896 428.359 206.683 461.789 230.284 485.391C253.885 508.992 287.313 516.779 317.401 508.75C339.442 530.745 372.286 540.717 404.525 532.079C436.767 523.441 460.223 498.384 468.313 468.315C498.383 460.224 523.44 436.766 532.078 404.526C540.716 372.285 530.747 339.443 508.749 317.402V317.399ZM470.899 244.776C486.892 260.77 493.488 282.601 490.687 303.412L415.577 260.046C412.411 258.218 408.509 258.218 405.345 260.046L317.401 310.82V277.526C317.401 275.191 318.652 273.005 320.676 271.837L387.644 233.174C414.178 218.353 448.346 222.223 470.901 244.776H470.899ZM357.837 311.144L398.275 334.491V381.185L357.837 404.532L317.398 381.185V334.491L357.837 311.144ZM264.776 269.693C265.207 239.305 285.644 211.649 316.453 203.393C338.3 197.54 360.505 202.744 377.127 215.573L302.014 258.937C298.848 260.764 296.898 264.144 296.898 267.798V369.346L268.065 352.699C266.043 351.531 264.776 349.353 264.776 347.017V269.691V269.693ZM203.391 316.454C209.244 294.608 224.854 277.978 244.276 269.999V356.73C244.276 360.384 246.226 363.763 249.392 365.591L337.337 416.365L308.503 433.013C306.481 434.181 303.961 434.188 301.939 433.02L234.971 394.357C208.868 378.789 195.138 347.261 203.391 316.454ZM244.775 470.9C228.781 454.906 222.186 433.075 224.986 412.264L300.096 455.63C303.263 457.457 307.164 457.457 310.328 455.63L398.273 404.856V438.149C398.273 440.485 397.022 442.671 394.997 443.839L328.029 482.502C301.495 497.322 267.327 493.452 244.772 470.9H244.775ZM450.897 445.982C450.466 476.371 430.029 504.027 399.22 512.283C377.373 518.136 355.168 512.932 338.547 500.102L413.659 456.738C416.826 454.911 418.775 451.532 418.775 447.877V346.329L447.609 362.977C449.631 364.145 450.897 366.323 450.897 368.659V445.985V445.982ZM512.282 399.221C506.429 421.068 490.819 437.697 471.397 445.676V358.946C471.397 355.292 469.448 351.912 466.281 350.085L378.336 299.311L407.17 282.663C409.192 281.495 411.712 281.487 413.734 282.655L480.702 321.318C506.805 336.887 520.536 368.415 512.282 399.221Z" fill="black"/>
+</svg>
+  "jumb   )jumdcbor  Ä  ™ 8õqc2pa.actions.v2    Òcbor¢gactionsÅ§factionlc2pa.createdqdigitalSourceTypexFhttp://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMediamsoftwareAgent¢dnamengpt-6.1-sol-wmgversionngpt-6.1-sol-wmdwhenx2026-10-12T19:01:13.869759ZrallActionsIncludedÙ   §jumb   (jumdcbor  Ä  ™ 8õqc2pa.hash.data    tcbor•jexclusionsÅ¢estartÄŸflength^Êdnamenjumbf manifestcalgfsha256dhashX !–dêææ≈ïwÃq¯˚ı°Ö:íﬁ)Hü˜j∂ˇÎ+qcpad@  âjumb   'jumdc2cl  Ä  ™ 8õqc2pa.claim.v2   Zcbor¶jinstanceIDx,xmp:iid:364aac89-9d73-470c-90ac-9ac8f5fe5390tclaim_generator_info£dnamegChatGPTdicon¢curlx$self#jumbf=c2pa.assertions/c2pa.icondhashX u>=W1í≥®NÎL˚¡åt∑'w÷–6«e6„ÒkspecVersione2.2.0isignaturexMself#jumbf=/c2pa/urn:c2pa:56fbb46e-2382-4e52-8575-7b75ace17a2f/c2pa.signaturercreated_assertionsÉ¢curlx$self#jumbf=c2pa.assertions/c2pa.icondhashX u>=W1í≥®NÎL˚¡åt∑'w÷–6«e6„Ò¢curlx*self#jumbf=c2pa.assertions/c2pa.actions.v2dhashX Øœ∏^f}ZnFRÆM¶ÀúV$…(<ë*RXîMGø^˛¢curlx)self#jumbf=c2pa.assertions/c2pa.hash.datadhashX ©,J2(…π&°ñÂ"U«¬Ò]ﬁºlﬂÖîôvb˛ex_¡}hdc:titleiimage.pdfcalgfsha256  P8jumb   (jumdc2cs  Ä  ™ 8õqc2pa.signature   Pcbor“ÑYË¢8$!ÇYà0ÇÑ0Çl†•¸ÈpåÚÄ1ÓDds0	*ÜHÜ˜ 0J1!0USSL.com C2PA ICA R1 202510U
+SSL Corporation10	UUS0260422155105Z270423155104Z0G10	UUS10U
+OpenAI OpCo, LLC10UOpenAI Media Service0Ç"0	*ÜHÜ˜ Ç 0Ç
+Ç ù∫jLMóÍÅâ∂—æ^XNr°ôﬂiq|Â!#”Å¢5úL£J<Ôn+øÊdÆ◊ÑKi$ZcœÍv
+ê≤e€|<ç·˛¡3wØ'ﬁ; :¥cáòÕMúø¥3D™T07F∏˝öyDsWU£c|›¨X/ÊzÆﬁ•ò√ìNHZ¯‡|§íK’l∫ ¬*»íæu‘îgµW™jöm00,◊Uaåj“S∂ x^ECûNí£ÄÒØ[—≤Î˛ãÔ∫◊7	ï´d-ô…áö¯ø.–ÁcÄñöy†7ì6£5…H…,òcÈDõ5¨πßSlúhs»
+9ÃIÛ £Çg0Çc0Uˇ0 0U#0Ä9=G‹óèØà{MsÕÂÓ§•*0o+c0a09+0Ü-http://crt-c2pa.ssl.com/SSL.com-C2PA-I-R1.cer0$+0Ühttp://ocsp-c2pa.ssl.com0U 00
++ÉË^0)U%"0 ++$
++ÉË^0UÛùM‘Àùr¯F
+vG•hOt0Uˇ¿0	+ÉË^
++ÉË^
+03	+ÉË^&$019bc403-5cd7-7669-afe6-fdb17177d4280	*ÜHÜ˜ Ç Ç8óle°7 Ò˘Ìt∫’¶[5ıglœ+fi@Õı¸“rVﬂ ï(Í¯fﬁBC=¯x†h(â≠µÓ¸ı2“å∏_ÁlÄnÎ[|ó[0Á.B∏∆pö˛˛ 	¨5F’†åIEÄ√∫íU«Zùo“Îÿyõñ:ºDê44}ÙA•3ó/.lQR
+m=I∞À«ÜXÃ‹Óû.È∆9∏3\ ⁄Ó W3T.p(J%)Oí|.“˙›g.zËPx9Q∫É:⁄à~ê#êíıbXöÂ¬®sÜû≈ÿqÈÔ\d{ëÓ7/vòxVdÁoB—}íºÖjomdÖÿˇ"ñÌπÔ≤–\Ñ}h]5[K±≈iHyÊhé†ƒaò:L¯¿$yÂ¶h‡Ô˝÷ê÷.-AduV_ìî∂°úä<∂¿ËmÛ≈CÁv,h§ÚÊÀãàïË{*r$Å=!∆cm/%Ä£ô[™)•˝GÍ·˜kÂ˚[P&m+°Ç]1ı›b®|2‹L«•,r0PÄWìÇ‚ËÆ≥ßØY4ÆrÔ*ùÆx¨‚3ÏSµ…ô“(®*7°N´¸Ã~Xõ'mE·¥*úΩ0W°1. .…‚»T€°íOæ$5ò˛/i‹∏M„ﬁ/Ëlı¡ä‚”˛rw”®+‘WóÆáÿ æì∂âYS0ÇO0Ç7†'+c»ÃM-õÑQrlÙú^2QÆﬁ0	*ÜHÜ˜ 0O1&0$USSL.com C2PA RSA Root CA 202510U
+SSL Corporation10	UUS0251222181730Z301221181730Z0J1!0USSL.com C2PA ICA R1 202510U
+SSL Corporation10	UUS0Ç"0	*ÜHÜ˜ Ç 0Ç
+Ç À:¥Õ∏úÀ)V∏yß¯kˆ˘ÿèr√¶ò≠*A⁄a.GRΩtQæ]ÏzÇ∂¿˚˙Ë'•ãË˛bÛ`Ò_H ssï‰NnÃNz5ﬁX·◊Ç‹“GCwõﬂHàyü£9§YN^‡NGóÚuB◊v=∂§"‹Ì∆o‘rFå÷Q«µ∑zÚì˘#'’ÄPuäp†hÈÁºÑ(|ú*Í)©¿/˛…vFU∞/cÍ}ûÙ∞D§@ﬁ@6\DäTkWHˇªo§’Íé¬◊|ÿºŒiø† MìE;ô.y“œûü)ªFŸxc0ñ3Qú^ìm˙Â4JXx≥)l]|∏uï<ôw!{ÿ¥JÎ⁄Õ«
+÷…¢ﬁÆó≥∂Qñ⁄íõ√≤ªPƒ˛∂§Lï]-íjObÂ‡*˜i†ú’πì ⁄—ª^O∆Ø˘)L–…ÏÎÛ≤qP{v'hë˘Pà∏w5ÿÕ°·◊”)ÁJ∆áTY$¬g≤m	5€∫Œ∏F•‡ã⁄·ßüjŒ`“ƒ˜¡ﬁsyU‡p¥ÔÍÃ«˛vâNf
+ià-Ì√F¢*‰å‘úWF-Xb’ ®˙~¯¬ŸajÀ5]†ì£≤e®/ÌÔòÁ¸~∫HÙ™°q¸ìØÍßNsài’B¿˘ÑíÖOÀT≥=:¯›)ey Cûñ∏áXñ!Ô—ë{ £Ç&0Ç"0Uˇ0ˇ 0Uˇ0)U%"0 ++$
++ÉË^0U9=G‹óèØà{MsÕÂÓ§•*0U 00
++ÉË^0U#0Ä¸*Ju:Ä˙ôcìsWÏæì∞}√{0x+l0j0$+0Ühttp://ocsp-c2pa.ssl.com0B+0Ü6http://crt-c2pa.ssl.com/SSL.com-C2PA-Root-2025-RSA.cer0	*ÜHÜ˜ Ç Œ6˙>Ôñ6-éØUfˇ{+ kVıÀ≠Ω*Å≠•¶–M£>ì‰ìi’‰å®nÊ7T‚%úÏef(<3=¢ö¢ªÕgdJÁæt!°n√´&ƒ;,⁄Uπ˝GN‡çxõ7Éƒt;≈GaÔmAr§€]CS…ñNÂ‡:ﬂ®›.—ØXó÷ÁÙ_r#<kœΩ9´åì®èßvY>·íı˜Ÿ˚Fb´nn‘àF†≥/*j_•N⁄¯‘¸ÃŸ£<©wE
+¡˘òπ9ÀÃ°q¿*Çq”‰ˆ%‚Q!m÷ﬂ‰SçoJ}é^¿∫’wy!ÅzŒÌ˜õé∂≤äBVùèkA*˛kúãÓ£(œ_ÛÈ–d÷Ó¬âKÎíœıØ¬'M∏ë°7%ôÊ˝Ä‹Ùº«7{æ¥-gX/Á√≥ãqÂDz0∂•≤u>[#~;”T¶:π«Ã3’j5zÅv/˛W⁄i¯>?ÔTèã{F√cû˙Ìƒ/pÑ+ˆVÇÙßÀ$◊l^${:Ω©X;i≥úè“ptˇãn&ª√´E«SñúGµ∆F´^ı¸àãh£5Â|jïeµ´Îπˇ∫∏‡õJG≤ŒÏ/â}ÓØúMƒ…Œı2=è˜&4˛"ãzÌ˘^^g_Q[€$V˚—Y°∑ﬁöf	∂—Ü.˙}~ïyõDf|6Öˆı£gsigTst2°itstTokensÅ°cvalYä0ÇÜ	*ÜHÜ˜†Çw0Çs10	`ÜHe 0ÅÜ*ÜHÜ˜	†wu0s
++Éø0010	`ÜHe  L\)≤«∆Cçí=%P˛X$DX;‹MrÏ€g8ﬁÆ}qÀ¥qÙ°20261012190114.409733Z0Äedê`«v†Çf0Çˆ0Ç^†a€F(2äåçJ∑ø˛`„l?q∑0	*ÜHÜ˜ 0{10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Issuing CA0260408174626Z370709174626Z0u10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Leaf0Ç¢0	*ÜHÜ˜ Çè 0ÇäÇÅ Í ≈≠î˝˝'ü«xßa ˇ)a*˚°àÕ_®¢óùâ/ãë»º∞ñê=UÇ¡ñé6j≠âiËê€,D2É®
+ÕwÂ5ËÓ®d[˛∏‡éùÁ °(√5›ß7È"˜	Móö¥Ñs¿.|©PG(†¥i∞á)zY˛5B˘ŸiRJ 7ÚhÃÒ-∑Çñ KF\=§Ü∏KEf8¢NM' ï∫uÃNájüt√ $_ƒ~\Æ˛ÛïÌ ëﬂ<ıÜõ*^÷–›…˙»M√…ÑZI,‰8s`R∏LÓ∆Û∑∂ÿ›j©Œ ∫]÷ƒ\5dÚ#S?bée]p+‘…k	ÅERËWÌZF]⁄]vú%yhÉQ§òÑuëròUˇÿ„Cb±Ìig'Aº≈èÚj+ÉIË·-4ª9ØgΩ¥ï»≤ΩEgÕràî_UK,≠ØÌ•Ù$Øw>ÉädQèëå9ñK∞=Æ˙ô°>å=æ6°.ıcµ £x0v0Uˇ0 0Uˇ¿0U%ˇ0
++0U§'TÇ¢äÄ{=≈ÜÕ?pŸ¬ÉôQx0U#0ÄÚ∞«T=#CÖ‹ s–rÄ=∏®0	*ÜHÜ˜ ÇÅ  ˚$OA¿¿ºò≤2 ç ôH5OƒFV~ß>?∂•#˘*H>‡QùE@x¡ªÉNìP…õ'ñhﬂMŒÚˆ“y´ÔÍ¡⁄?ıòYÊpÕâÙÓGã™ÀÏˇå~·FÿëÊú∏‰4Fˇa“x¯}89„RÌ_fËs¿ r;‰®´éÜ*£7!˘;ﬂ{\TÿL«j*KœCt`Äs£…—wØá©˝µ±Ñjnøà*Œö°ö´¢ûÇH7≈cQó€R|og…iB’œı˚≠^ãê‚‡y<.Éjû•Ë%AèÖÌ‰¡†:ç˛ùRPÔáﬁ·dÕU˘! ﬂ∂)Ôü'n—∫4F´J"OÁbw›E#›a-¬1)èƒπ~y´¥W‘¡Ïœ·\{eI∞ÎM´§«'@N¶¥µèœ|√¥Cßv”^0cÓ®Æ5(td´Z5„[/:>N
+a÷0MCõˇN.∆!π>:, W0ujédK¢–	—◊†g&Amg¯pv∏%&V˘ë&'√KI0Ç~0Çf†ç ∆≈≈⁄∞ºÒNï•Íº0	*ÜHÜ˜ 0x10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Root CA0 260408174626Z21260409174626Z0{10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Issuing CA0Ç¢0	*ÜHÜ˜ Çè 0ÇäÇÅ âº‘π‚»°æaªﬁ<df~ßæúm”©0&<Ù‡k 9ﬂï4Ì©¢eH€7Ü2ÉéÃ
+J†¿Û4l†¿òÕ+ü•ÙÀ|Ÿ&ﬁ~…M¢Ôc[ëÊˆY®“˙N˘Ÿ8+ZÕ`ZòÅò®◊S∆„÷.H¨CW	ÈîÚG˘lEä`∑˜Æ/^¢5NÖ8Öiü4ù–MÿC=Õ4m¸cì¸”pªJËvËjNfI†Ì¸¯æÔö∑®w¨Ô∑8Ãπ‘*3ƒv÷@wÀ˛«]-@”ﬁã<¿÷@AôÀî?,} kR¸û P∑	GE·#U˙±OoTòïÙ}∫¯h·"z‹äëCã∂.C±b†æ $é.Ôø§—MË∏?1œ&=≈ PÍÚŸ$ dÌ’sû.px™ﬁV<˘‘Ä¢Ë≠Øˆ˚®£\Àh´D€0wÚƒ4tkUm∆á˚Ú2<ûqE˜ÏP˚˛÷1&ª–ƒMa‚B€Ø√+n_+Ê‚∞Ôç\DÕ¿s}è¢ÈΩmÇº%eÑ0iÌ £{0y0Uˇ0ˇ 0Uˇ0U%0
++0UÚ∞«T=#CÖ‹ s–rÄ=∏®0U#0ÄX¬@†<Gv+®Ên®ëñéñ»∑Ÿ‰0	*ÜHÜ˜ Ç íÏ7\ﬁlÎd⁄Æ°	0rÆ‹rı;ºz=÷∆·/ˆÉ3}ËW@NLô™k‘ôŸã€k÷L¯ –Y3”°†8\#àD$˚á·ˆì'º°ÌL_g]ˇ5´1“Ï{‘@C7O¬Ñú∫d»∞¢~ö6¯·–Ç≥PC≤‡UΩÄî»YRNJtﬁ]«EXõ∑˙0™;‹Gº’.,π8c,yZ∑›U≠=BﬂàœÒh˛s ‘Z∑ﬁ$óë¿Ág˛‹¶
+Û•F≥QœçØ_„»∏@∆Ω„˘÷Kq–d]Âd¬K¿^w—=«[ûœ{˝îîÁKQ⁄˚dÙ´5îÒˆæ~+›≤ö=P›P√ñdém´sü(;w–óÌoEO±3._FÎÉ∂©aº◊ÇÆ¯Äo¬„i0Êm|:Dí+ò-Ø‹4¡æ•*HÁá»ﬁ8µ3 „ÑPpÒ≤KﬁçOˆë‹_Ö˙ÒÊ—◊ ßÓ¥üˆ!x)Å„pXwÜ§:KóÉFË⁄¬jv…©À!Eæe±†Ü.ÄºYKMõCm¥◊Ñ‡¸’»aêCéjù√Ò!<Ñ]˛;÷ÿ#9E_q˙2˝†ÄïDµO Â√t˝‚NárÜÙQáΩ‘µ+5lí§;kjù∫˝¿;úv¬’9I⁄„î>Pj◊L‚âaùÔÎœ≈√@npz80ÇÊ0ÇŒ†P;lâå$3,è˜Oé˚}ÇÏ0	*ÜHÜ˜ 0x10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Root CA0 260408174625Z21260409174625Z0x10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Root CA0Ç"0	*ÜHÜ˜ Ç 0Ç
+Ç ˆíÈ“∫≠û·¨u®Vÿ™±≥jí_ñyıí∑-$¯ø¿Ø`æ¡öÕyö‹lö˛6ö¡ò§?‰,ù∫••Ps≥
+¬˘ÛƒI/xΩ“ÏºÁ?Ùõ—Ú†a¢,â% Q˘%ú“∆/ÙâƒA˛&”m5ÕÏª5`@®ÖQæˆÓêòÒ*ÿùzkjŸ.ŸcÛÂ\)≈Ü"¡ähÕÎ8û©Pñ[#C˚8ˇB|;:°Q/%…H‹1ˇPrÓ|°wÕoÅaÛ?ønË“±¶6‰k2˚˛w®^õ\››1êLéeˇÅÀAŒ(1S CŒHn}÷d≥)‰¥.:∑TZrVWÛ®j}ÔÊa›e»H	Iô2t
+¢Ã›ì S¨#ΩÇÖ ±ÔæÌ°w Ó:F3¢ûÏØÈ1f¥fo≤âì†~ï!ŒA¯^éÈÕπ¿’3]x––'1œP0rs⁄j¬¿ìœ≠‹dáˆ˚Nàvı>Ôˇí,ôw.ˆ‹ò∂ù	:˝Ù	«è_ZÈ~H	+µäÉÚ[<,Øë¢ùA∑Rh—ø∞¿⁄O`ΩÓ)™Ìáçq\(åçà£%cEÿ¸{aèlFT;\…∞ÇØÉ»±#?ü[Ó¢◊Tµ*SÆªÖ€¶˙óûÏÑârÛz@…∂ÖXG[Ò$a9¢Lﬁÿ∆®"Úûø[L,À £f0d0Uˇ0ˇ0Uˇ0UX¬@†<Gv+®Ên®ëñéñ»∑Ÿ‰0U#0ÄX¬@†<Gv+®Ên®ëñéñ»∑Ÿ‰0	*ÜHÜ˜ Ç X¯ÅëòÚla˛»Ü÷[Ñ¶÷æ∏¶]]IÀ∏°)Õ-ù∏X˘Ñâ=<¯o’j¥*¢UígÅô^µT˚öFÄ„Q S¿¡àWﬁÔÇU~„Ù}Î&¸Éˇ!®¡¨ﬁ€ì´Õ–0v:ìùŒ™g9.Ätﬂm~v/ÈÍPAã8=lÂ‡>Ó/€dT6^æbE∂—!¥Ä<åÎ⁄ú÷J©’Te[k—X~¿IáÎÎK_í;î◊öÜˆ°YŒG8¨√∞td—¿R;°±{(k·ió¯(;'ˇÆ§û˜eÀ†ÙÍπΩîŒD‚ò±
+HhÓU©!•`è˛ ÷}—{Ü úÛ®x–∆⁄@.»Å\b®*¡˚VÁyéØÏÂ€”p˛FÃc®dÒ<ÈØ•dº^øÖ-∞Œ„π”§◊RªpãÜù˚.ø
+ˆ“U+#B+C\Ï°Ça?œqÌ∞˜óÈ‰À¬<¸¨w∑∂‹ ¡LÈâ≤≤/√~ídúµÑﬁÃñ˝â∞KµC}“È≠Ü˝Ÿ-üΩ Ó¿¥GV#|HëNgâ {b¡…^UÒˆ∆Q#WoÔáæ Fyæî±» (ùïäà&UfRÔŸK∫®ZÈ¬,≠ü√\BÛ°ı'dyqå
+Zû˝π˘Eyp·jµ7ñéX˝EøT%åÉ=Ÿ&3#–Xw¶∏1Çh0Çd0Åì0{10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Issuing CAa€F(2äåçJ∑ø˛`„l?q∑0	`ÜHe †Ç%0	*ÜHÜ˜	1*ÜHÜ˜	0/	*ÜHÜ˜	1" w˚ÚÍZB$ãI∏a‚ºæ/—Ò·ßÆ,‰Õh'`¡†P0Å’*ÜHÜ˜	/1Å≈0Å¬0Åø0Åº ΩOπ≤êLÅ6gànÔA·m˛Ÿ"ùø[íJ–¢ƒ`F"z0Åó0§}0{10	UUS10	UCA10USan Francisco10U
+OpenAI OpCo, LLC10
+UTSA10UOpenAI TSA Issuing CAa€F(2äåçJ∑ø˛`„l?q∑0	*ÜHÜ˜ ÇÄó:/’¢—l›§3*T…h6π(`≥ÿ¯ùô?˝>iÊà˛'r¯ï-ªAx ©VÛ˝”oèPuiç·9g:xπ;âí3ŒvVÒpit¥"ˆ∆ﬂXF]3˜j‡√∆qﬂÑ5+C6—πÏÅå\ß"%4mf“˛∏$ü˛πìÿ)_‚ú¨ãÚ|uJTS≤ˆÌ`Ò'÷ûÆ†≥ˆ¿M°õmW‘±IÄ©'68—dW¶Î^∏[Gåò¿§±˝’Ú"ò˛ÿCˇ >*¬ÍÒ»˜´8€eQ2_µ3”∫.Nû©Yzƒe≤,ò$¨1)Åàmsû]¯‡‰«§+*-—◊l0$J0ƒh⁄Ô¸∫Ô˘≈¿_ıy€Ô¨sd¥
+üÎƒFÌ;ûÈ√ó˜{∂®£◊NåoÚvúóH∏ﬁ¶∞qY[eoÑ˙Iπ+öΩ€Ï5p_1™ü‘˚”áok4∆wΩÊX‰π{(∞XI†Âa™¨o0îV¿&ZyÔ≈+8’≠2`‰YB|Ø5erVals°hocspValsÅY◊0Ç”
+ †ÇÃ0Ç»	+0Çπ0Çµ0ÅÈ¢˚W¢¿K∆∑ûãUuz=T~dC]20261011220742Z0Åò0Åï0I0	+ ﬂÇ7S^Sÿ3±‡=$5ÒuÊ·
+9=G‹óèØà{MsÕÂÓ§•*•¸ÈpåÚÄ1ÓDdsÄ 20261011220742Z†20261018220741Z°"0 0	+020161013220742Z°#0!0	+0©õç@9ŒOÖevyMÔ˛√0	*ÜHÜ˜ ÇÅ éHc|óåeDd·õ3:ûÆ~@≤ÈÏN•YçµI◊Ï§#¿e◊Û¬FEºbîìx.¿DDî>†√t{ﬁƒ u@Ùºò?≤r˝õo˜ÏÂ„ú£≥RV{#,öç3M"™
+¿}ÍπQˆpV5-ﬁH8Pö°ÕêX?ˆ±‚≠`(¡5(>û–t∞tàJ#AŸud9$åØ+RåÍ¢˝Õ'ºE>Ñ∂}|¬‚ˆZ√|AÍï„6ˆ£ãK5…p& øﬁﬁƒ!}E«˙";ùá'ßÓß'º\˘˘r¡÷dö˙™÷∫-›≠Pj°ÁE®FÛràYZ†W˙'eÌK}kx.v∂NgWfZ¨kÉ«≤äÉµk∂¥Hﬂ—,‹6l¡u	Í…{O˜Ÿ˘ûwÿÚâ1D^”¨påÏÂª_ ÛÒ9¡dnJ`i9[ú„c≤5XÌ;#ﬂ∂´GÛd‚ƒÖπéûãçmñRGOv≥ﬁ”äÚ⁄ô<RÉÀ|˘íêßÚRP†Ç10Ç-0Ç)0Ç†crÍ˜\M±'•_w›üv0	*ÜHÜ˜ 0J1!0USSL.com C2PA ICA R1 202510U
+SSL Corporation10	UUS0260102211155Z270102211154Z0M10	UUS10U
+SSl Corp1+0)U"SSL.com C2PA ICA R1 OCSP Responder0Ç¢0	*ÜHÜ˜ Çè 0ÇäÇÅ œÇoã#mŸ™èdMˆ^ˇ‡™q≤¨é≤‹••»xd*üö5¨W´(v√⁄\û&≤¬·hAtQ ëI‡»≈’€tÙ¡‘s~x=gË!;h:&'§‰Èàßû€YcGø'7Í>N!¸≤¬Ô≤"Ña˜˜*„≠È	 &WadÛjÄ¨~e:Æs›L›®i;≈wXÈ‘≠»ıü4íO›î~êMà†OOî˜‘v'¶¶ÿ”£*ÌÎ`„yV	Iî•`sÀ¬lAÛœzyî≠ÙˇëxÁ”≥[p€ÚéÅ‹äÃG‚¢Jº∫•RUeY=ßáÉız√R¸ŒuÙËyƒëZÙsîÀt˛}Éçü !ıG˛C[œ^-Æz˙]‘YÕ´Á©Kÿ’ó,—cΩÍ:€¯W_)Z“ÕÆdPû√ÙÄ"”ä≠¢ªãqù·∏%¥^RuÂ˙ú,'µ¬L\;PÕ¨≠†Bûxí›d;->∂Z:îápçö3+◊Ó
+P3,≈„n∞ê
+(kq]«÷y‡Ê' £Åá0ÅÑ0Uˇ0 0U#0Ä9=G‹óèØà{MsÕÂÓ§•*0	+0 0U%0
++	0U˚W¢¿K∆∑ûãUuz=T~dC]0UˇÄ0	*ÜHÜ˜ Ç 1Âµkv◊¬€*}ÈèÆ‹õ/ÔﬁÊÅxÁ5¶°R[nk\ãti* ÄÕñà·Ümπ◊V†ì©o"û‘VT)î⁄ø2,¬åÍ$T_4*◊Sf¬øGˆˇÏùáQû4AÀdAx~1¨6áLu∆ì∆¥MÌáÒÄ5˚Pè«OZ˚q	æöc˛Àá~Ü!ñ?
+ÅÃWáT&v›®•Ïq≠ó:7ôË—•“!¿ì£˚oﬁId˝ŸµZ∞,:ø?æR¢)‘Ì∞.ä,J#1˙ß∞Ü∂àï∞⁄ê<{“fA,ÆjK ˜S>òΩ|≤ƒµÈ4ø+ñI+©B1ﬂ¬…-ûïΩe∫˘{2{X¡Ò´V&)Px;7
+Ñ*Bá·nÛﬂ|ª R_É}Dùÿ≈≤JµÂ–Ä√ÒŸ«ò eöˇëGÚ≠ÀyO_IAe¬ºO´Wtç[«ÿâã¶‡æ9ífœ≥¯ú€rõ‹®‡|ˇ ÕÇE„KéÒAÿ˛©É“Çúíi}.Vpiã…∏ÙrÌ¯˝Î;Ã»ÍµRO©#ìe.Å[ﬁì≈ÿWè@«"P„9zá˙ƒ¡¸!KÜ¸~øí‹OÜcäΩ^CDÑW2‡Óàﬂ∏BSßz◊‰¯ŸZiïü/ƒÃ«qNÿè≠W]mõÏ|—Ô@ÆBË≥”…2ƒSi9«6ÓÚúD¸=¬Á˘Á⁄yd«cpadY&v                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ˆY *<Èfe≥›Ïî^”‘>oWﬁ¬H	—l0Ñ∫NfˇhH¢øó {0˜[ÑVò2…(Ø|ä)Ôö9x¿πÎxÒh"}o›˛!Ò6k~x‚ÎùWñq˚‹Îg∂hd‡JL`lR¢◊Ô∞m8&ÊÇgπ3
+˘(àe$a‰°QÃ$ntÖ
+h*¡j4Ê ıpÿmSœù≥4∏⁄Úaå NìÔL† b˜»àÊﬂÿ\ÒSe–Å¸´¸	ΩG‚≤éJd˚‚|ã´üÿ–v7. ´^¢rh¨´¬©˛‘ŒR∂–ôco∆°6Tå˝uD˜EEØªW∞6Füﬂ
+endstream
+endobj
+16 0 obj
+<< /AFRelationship /C2PA_Manifest /Desc (Content Credentials) /F (Content Credentials) /EF << /F 15 0 R >> /Subtype (application/c2pa) /Type /Filespec /UF (Content Credentials) >>
+endobj
+xref
+1 1
+0000032765 00001 n 
+15 2
+0000032900 00000 n 
+0000057297 00000 n 
+trailer
+<< /Size 17 /Root 1 1 R /Prev 32398 >>
+startxref
+57493
 %%EOF

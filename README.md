@@ -1,17 +1,16 @@
 # Omar Aguilar Portfolio
 
-Personal portfolio for a University of Houston Computer Science student graduating in May 2028, seeking Summer 2027 software engineering internships and student developer or technical research roles.
+[Live portfolio](https://omar-lyzkru.github.io/) for a University of Houston Computer Science student, graduating May 2028 and seeking Summer 2027 software engineering internships and technical campus roles.
 
-Website: [omar-lyzkru.github.io](https://omar-lyzkru.github.io/)
+## Selected projects
 
-## Featured work
+1. **PermitWatch Houston**: four-person CodeRED Orion team project and Environmental Track winner. The case study describes Omar’s data integration and React/TypeScript frontend work. [Team repository](https://github.com/Abbas9x/permitwatch-houston).
+2. **Job Application Automation Platform**: AI-assisted Node.js/Playwright application, with product requirements, workflow safeguards, and review contribution explained.
+3. **C++ Console Raycaster**: tutorial-guided Windows console project, with CMake and portable calculation tests.
+4. **Persistent Task Tracker**: supporting JavaScript, HTML, and CSS project.
 
-1. Job Application Automation Platform: local Node.js/Playwright application. The case study describes AI-assisted implementation and Omar’s requirements, direction, and review contribution.
-2. C++ Console Raycaster: tutorial-guided C++ project using fixed-distance ray stepping and the Windows Console API. The linked source repository’s README still needs correction.
-3. Persistent Task Tracker: JavaScript, HTML, and CSS task manager with localStorage persistence.
+The downloadable résumé is an exact copy of Resume 15. Project ownership and implementation context are included in the case studies.
 
-The résumé download is an exact copy of Resume 14.3. The site preserves its ASCII black hole, personal interests, and reduced-motion support.
+The dark card layout is independently implemented, with inspiration from [codewithsadee’s vCard portfolio](https://github.com/codewithsadee/vcard-personal-portfolio). ASCII artwork and motion controls are retained. The PermitWatch image is a screenshot of the actual public team demo, captured in dark mode on October 14, 2026.
 
-This repository serves its root files with GitHub Pages. The empty `.nojekyll` file enables direct static hosting.
-
-For local preview, run `python3 -m http.server 4173` from the repository root and open [localhost:4173](http://localhost:4173). No installation or build step is required.
+GitHub Pages serves the root files directly via `.nojekyll`. For local preview, run `python3 -m http.server 4173` from the repository root. No dependencies or build step are needed.
