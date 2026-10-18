@@ -6,8 +6,16 @@ const kinds = { raycaster: 'network', tracker: 'terminal', job: 'server' };
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let paused = false;
+// One effective motion policy: manual Pause OR system reduced motion. Task 03 reads this; it is not a second preference.
+const motion = {
+  listeners: new Set(),
+  get reduced() { return paused || reducedMotion.matches; },
+  subscribe(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
+};
 function updateMotion() {
-  const effectivePaused = paused || reducedMotion.matches;
+  const effectivePaused = motion.reduced;
+  document.documentElement.dataset.motion = effectivePaused ? 'reduced' : 'full';
+  motion.listeners.forEach(fn => fn(effectivePaused));
   hole.setPaused(effectivePaused);
   const button = document.querySelector('#motion-toggle');
   button.disabled = reducedMotion.matches;
@@ -248,7 +256,6 @@ const projects = {
 };
 
 const dialog = document.querySelector('#project-dialog');
-let lastProjectButton = null;
 const setText = (id, value) => { document.getElementById(id).textContent = value; };
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -356,10 +363,8 @@ function jumpToSection(id) {
   dialog.scrollTo({ top, behavior: 'auto' });
   target.querySelector('h3').focus({ preventScroll: true });
 }
-function openProject(id, trigger) {
+function renderProject(id) {
   const project = projects[id];
-  if (!project) return;
-  lastProjectButton = trigger;
   setText('dialog-number', `${project.number} / SELECTED WORK`);
   const isShowcase = Boolean(project.showcase);
   dialog.dataset.layout = isShowcase ? 'showcase' : 'standard';
@@ -368,8 +373,6 @@ function openProject(id, trigger) {
   standard.hidden = isShowcase;
   if (isShowcase) {
     renderShowcase(project);
-    dialog.showModal();
-    dialog.scrollTop = 0;
     return;
   }
   showcase.replaceChildren();
@@ -393,17 +396,124 @@ function openProject(id, trigger) {
   const demo = document.querySelector('#dialog-demo');
   demo.hidden = !project.demo;
   if (project.demo) demo.href = project.demo; else demo.removeAttribute('href');
-  dialog.showModal();
-  dialog.scrollTop = 0;
 }
-document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => openProject(button.dataset.project, button)));
-document.querySelector('#dialog-close').addEventListener('click', () => dialog.close());
-dialog.addEventListener('click', event => {
-  if (event.target !== dialog) return;
-  const bounds = dialog.getBoundingClientRect();
-  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
-});
-dialog.addEventListener('close', () => lastProjectButton?.focus({ preventScroll: true }));
+
+// Showcase coordinator: the single owner of dialog lifecycle, URL/history, scroll and focus.
+// Lifecycle: portfolio -> opening -> open -> closing -> portfolio. Task 02 transitions complete synchronously;
+// 'closing' only lasts while a card-origin close waits for history.back() to settle. Nothing depends on animation events.
+const routes = { permitwatch: 'permit' };
+const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
+const routeFromLocation = () => {
+  const slug = new URL(location.href).searchParams.get('project');
+  return slug && Object.hasOwn(routes, slug) ? routes[slug] : null;
+};
+const urlFor = slug => {
+  const url = new URL(location.href);
+  if (slug) url.searchParams.set('project', slug); else url.searchParams.delete('project');
+  return url.pathname + url.search + url.hash;
+};
+const coordinator = (() => {
+  let phase = 'portfolio', focusTarget = null, activeId = null, trigger = null, scrollPos = null, openedAt = 0, historyOrigin = null, settleTimer = 0;
+  const setPhase = value => { phase = value; dialog.dataset.phase = value; };
+  const restoreScroll = () => { if (scrollPos) window.scrollTo({ left: scrollPos.x, top: scrollPos.y, behavior: 'instant' }); };
+  const cardFor = id => document.querySelector(`[data-project="${id}"]`);
+
+  // source: 'card' pushes a history entry; 'history' (direct entry, refresh, Back/Forward) never touches history.
+  function open(id, source, from = null) {
+    if (phase !== 'portfolio' || !projects[id]) return false;
+    setPhase('opening');
+    activeId = id; trigger = from; scrollPos = { x: window.scrollX, y: window.scrollY };
+    renderProject(id);
+    const slug = slugFor(id);
+    historyOrigin = null;
+    if (slug && source === 'card') {
+      history.pushState({ showcase: slug, origin: 'card' }, '', urlFor(slug));
+      historyOrigin = 'card';
+    } else if (slug) {
+      historyOrigin = history.state?.origin === 'card' ? 'card' : 'direct';
+    }
+    if (!dialog.open) dialog.showModal();
+    dialog.scrollTop = 0;
+    // Deterministic initial focus: the Close control. Re-asserted after layout and load, because on direct entry the
+    // module runs before layout and the browser's fragment scrolling can move focus back to the page afterwards.
+    const closeButton = document.querySelector('#dialog-close');
+    const assertFocus = () => { if (phase === 'open' && !dialog.contains(document.activeElement)) closeButton.focus({ preventScroll: true }); };
+    closeButton.focus({ preventScroll: true });
+    requestAnimationFrame(assertFocus);
+    if (document.readyState !== 'complete') window.addEventListener('load', () => setTimeout(assertFocus, 0), { once: true });
+    openedAt = performance.now();
+    setPhase('open');
+    return true;
+  }
+
+  // Dismisses the dialog and restores scroll and focus. Never touches history.
+  function finish() {
+    if (dialog.open) dialog.close();
+    restoreScroll();
+    focusTarget = trigger?.isConnected ? trigger : cardFor(activeId);
+    focusTarget?.focus({ preventScroll: true });
+    restoreScroll();
+    activeId = null; trigger = null;
+    setPhase('portfolio');
+  }
+
+  function settle() {
+    clearTimeout(settleTimer);
+    if (phase === 'closing') setPhase('portfolio');
+    if (routeFromLocation() && phase === 'portfolio' && !dialog.open && historyOrigin === 'closed') history.replaceState(null, '', urlFor(null));
+    requestAnimationFrame(() => { restoreScroll(); scrollPos = null; });
+  }
+
+  function close() {
+    if (phase !== 'open') return;
+    const slug = slugFor(activeId);
+    // Back is only safe when this entry was pushed by a card click, so the entry below is the portfolio.
+    const viaBack = Boolean(slug) && historyOrigin === 'card' && history.state?.showcase === slug;
+    finish();
+    if (viaBack) {
+      setPhase('closing');
+      historyOrigin = 'closed';
+      settleTimer = setTimeout(settle, 600);
+      history.back();
+    } else if (slug) {
+      history.replaceState(null, '', urlFor(null));
+    }
+  }
+
+  // Reconciles the dialog with the URL after Back/Forward. Opens/closes without adding history entries.
+  function sync() {
+    const id = routeFromLocation();
+    if (phase === 'open' && id !== activeId) finish();
+    if (phase === 'portfolio' && id) open(id, 'history');
+  }
+
+  window.addEventListener('popstate', () => {
+    const wasClosing = phase === 'closing';
+    if (wasClosing) { clearTimeout(settleTimer); setPhase('portfolio'); }
+    sync();
+    if (wasClosing) settle();
+  });
+  // Escape: take over from the native close so there is one close path. Deferred so the browser's own
+  // cancel handling finishes before focus is restored (closing synchronously inside 'cancel' loses focus).
+  dialog.addEventListener('cancel', event => { event.preventDefault(); setTimeout(close, 0); });
+  // Safety net for any native dismissal that skips cancel.
+  dialog.addEventListener('close', () => {
+    close();
+    // Chrome can drop focus after a keyboard (Escape) dismissal; re-assert the same target once the native close settles.
+    if (phase !== 'open' && document.activeElement === document.body) focusTarget?.focus({ preventScroll: true });
+  });
+  document.querySelector('#dialog-close').addEventListener('click', close);
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog || performance.now() - openedAt < 350) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
+  });
+  document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => open(button.dataset.project, 'card', button)));
+
+  setPhase('portfolio');
+  return { open, close, sync, motion };
+})();
+coordinator.sync();
 
 document.querySelector('#copy-email').addEventListener('click', async () => {
   const status = document.querySelector('#copy-status');
