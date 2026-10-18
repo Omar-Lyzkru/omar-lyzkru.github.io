@@ -421,11 +421,11 @@ const coordinator = (() => {
   const live = () => phase === 'open' || phase === 'opening';
 
   // ---- Task 03 motion: FLIP-style card <-> dialog transitions on the Web Animations API ----
-  // The dialog is revealed with an animated clip-path (its text is never scaled). A decorative ghost of the card art
-  // is FLIP-transformed (translate + scale only) between the card rect and the dialog rect in the top layer.
+  // The dialog surface is the only animated shape: its clip-path moves between the card rect and the dialog rect, so
+  // text and screenshots are never scaled. Content is faded in and out separately.
   const OPEN_MS = 520, CLOSE_MS = 440, CLOSE_DELAY = 140, EASE = 'cubic-bezier(.2,.8,.2,1)';
   const shell = dialog.querySelector('.dialog-shell');
-  let motionRun = null; // the single in-flight run: { kind, animations, ghost, done, timer }
+  let motionRun = null; // the single in-flight run: { kind, animations, done, timer }
 
   // Ends the run (if any). complete=true also runs its completion step; stale callbacks find motionRun !== run and no-op.
   function endMotion(complete = true) {
@@ -434,7 +434,6 @@ const coordinator = (() => {
     motionRun = null;
     clearTimeout(run.timer);
     run.animations.forEach(animation => { try { animation.cancel(); } catch { /* already gone */ } });
-    run.ghost?.remove();
     if (complete) run.done();
   }
 
@@ -448,33 +447,17 @@ const coordinator = (() => {
     const visibleW = Math.min(rect.right, document.documentElement.clientWidth) - Math.max(rect.left, 0);
     const visibleH = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
     if (visibleW <= 0 || visibleH <= 0 || visibleW * visibleH < rect.width * rect.height * 0.5) return null;
-    return { node, rect };
+    return { rect };
   }
 
   const clipFor = (c, d, radius) => `inset(${c.top - d.top}px ${d.right - c.right}px ${d.bottom - c.bottom}px ${c.left - d.left}px round ${radius}px)`;
-
-  function makeGhost(origin) {
-    if (!('showPopover' in HTMLElement.prototype)) return null;
-    try {
-      const { rect, node } = origin;
-      const ghost = el('div', 'showcase-ghost');
-      ghost.setAttribute('popover', 'manual');
-      ghost.setAttribute('aria-hidden', 'true');
-      const art = node.querySelector('.project-art img');
-      if (art) { const copy = art.cloneNode(false); copy.alt = ''; copy.removeAttribute('loading'); ghost.append(copy); }
-      Object.assign(ghost.style, { left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px` });
-      document.body.append(ghost);
-      ghost.showPopover();
-      return ghost;
-    } catch { return null; }
-  }
 
   // Starts one run. Returns false (nothing started, caller finishes immediately) when motion is reduced or unavailable.
   function play(kind, origin, done) {
     if (activeId !== 'permit' || motion.reduced || typeof dialog.animate !== 'function') return false;
     const opening = kind === 'open';
     const animations = [];
-    let ghost = null, lead;
+    let lead;
     try {
       const d = dialog.getBoundingClientRect();
       const direction = opening ? 'normal' : 'reverse';
@@ -490,12 +473,6 @@ const coordinator = (() => {
         animations.push(shell.animate({ opacity: opening ? [0, 1] : [1, 0] }, opening
           ? { duration: 240, delay: 230, easing: 'ease-out', fill: 'both' }
           : { duration: CLOSE_DELAY + 40, easing: 'ease-in', fill: 'both' }));
-        ghost = makeGhost(origin);
-        if (ghost) {
-          const move = [{ transform: 'translate(0,0) scale(1,1)' }, { transform: `translate(${d.left - c.left}px,${d.top - c.top}px) scale(${d.width / c.width},${d.height / c.height})` }];
-          animations.push(ghost.animate(move, { duration: span, delay, easing: EASE, fill: 'both', direction }));
-          animations.push(ghost.animate([{ opacity: 1 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { duration: span, delay, easing: 'linear', fill: 'both', direction }));
-        }
       } else {
         // No usable origin: restrained non-spatial fade.
         span = total = opening ? 240 : 180;
@@ -503,7 +480,7 @@ const coordinator = (() => {
         animations.push(lead);
       }
       try { animations.push(dialog.animate({ opacity: opening ? [0, 1] : [1, 0] }, { duration: span, delay: origin && !opening ? delay : 0, fill: 'both', pseudoElement: '::backdrop' })); } catch { /* ::backdrop animation unsupported */ }
-      const run = { kind, animations, ghost, done, timer: 0 };
+      const run = { kind, animations, done, timer: 0 };
       motionRun = run;
       const complete = () => { if (motionRun === run) endMotion(true); };
       lead.onfinish = complete;
@@ -511,7 +488,6 @@ const coordinator = (() => {
       return true;
     } catch {
       animations.forEach(animation => { try { animation.cancel(); } catch { /* ignore */ } });
-      ghost?.remove();
       return false;
     }
   }
