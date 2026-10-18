@@ -469,6 +469,9 @@ const coordinator = (() => {
     const slug = slugFor(activeId);
     // Back is only safe when this entry was pushed by a card click, so the entry below is the portfolio.
     const viaBack = Boolean(slug) && historyOrigin === 'card' && history.state?.showcase === slug;
+    // The page cannot scroll under the modal, so the live position is authoritative. The position captured at open is
+    // stale on direct entry, where the module runs before the browser finishes fragment navigation.
+    scrollPos = { x: window.scrollX, y: window.scrollY };
     finish();
     if (viaBack) {
       setPhase('closing');
