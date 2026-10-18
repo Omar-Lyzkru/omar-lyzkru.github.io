@@ -399,8 +399,9 @@ function renderProject(id) {
 }
 
 // Showcase coordinator: the single owner of dialog lifecycle, URL/history, scroll and focus.
-// Lifecycle: portfolio -> opening -> open -> closing -> portfolio. Task 02 transitions complete synchronously;
-// 'closing' only lasts while a card-origin close waits for history.back() to settle. Nothing depends on animation events.
+// Lifecycle: portfolio -> opening -> open -> closing -> portfolio. 'opening' and 'closing' last while a Task 03 motion
+// run plays (and 'closing' also while a card-origin close waits for history.back() to settle). Motion is decorative:
+// every run has a single completion step that also runs when the run is cut short, so dismissal never depends on it.
 const routes = { permitwatch: 'permit' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
 const routeFromLocation = () => {
@@ -417,6 +418,103 @@ const coordinator = (() => {
   const setPhase = value => { phase = value; dialog.dataset.phase = value; };
   const restoreScroll = () => { if (scrollPos) window.scrollTo({ left: scrollPos.x, top: scrollPos.y, behavior: 'instant' }); };
   const cardFor = id => document.querySelector(`[data-project="${id}"]`);
+  const live = () => phase === 'open' || phase === 'opening';
+
+  // ---- Task 03 motion: FLIP-style card <-> dialog transitions on the Web Animations API ----
+  // The dialog is revealed with an animated clip-path (its text is never scaled). A decorative ghost of the card art
+  // is FLIP-transformed (translate + scale only) between the card rect and the dialog rect in the top layer.
+  const OPEN_MS = 520, CLOSE_MS = 440, CLOSE_DELAY = 140, EASE = 'cubic-bezier(.2,.8,.2,1)';
+  const shell = dialog.querySelector('.dialog-shell');
+  let motionRun = null; // the single in-flight run: { kind, animations, ghost, done, timer }
+
+  // Ends the run (if any). complete=true also runs its completion step; stale callbacks find motionRun !== run and no-op.
+  function endMotion(complete = true) {
+    const run = motionRun;
+    if (!run) return;
+    motionRun = null;
+    clearTimeout(run.timer);
+    run.animations.forEach(animation => { try { animation.cancel(); } catch { /* already gone */ } });
+    run.ghost?.remove();
+    if (complete) run.done();
+  }
+
+  // Usable origin geometry from the clicked card, or null (missing, detached, hidden, or mostly outside the viewport).
+  // Never scrolls the page to manufacture a target.
+  function measureOrigin(node) {
+    const card = node?.isConnected ? (node.closest('.project-card') || node) : null;
+    if (!card) return null;
+    const rect = card.getBoundingClientRect();
+    if (rect.width < 24 || rect.height < 24) return null;
+    const visibleW = Math.min(rect.right, document.documentElement.clientWidth) - Math.max(rect.left, 0);
+    const visibleH = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+    if (visibleW <= 0 || visibleH <= 0 || visibleW * visibleH < rect.width * rect.height * 0.5) return null;
+    return { node, rect };
+  }
+
+  const clipFor = (c, d, radius) => `inset(${c.top - d.top}px ${d.right - c.right}px ${d.bottom - c.bottom}px ${c.left - d.left}px round ${radius}px)`;
+
+  function makeGhost(origin) {
+    if (!('showPopover' in HTMLElement.prototype)) return null;
+    try {
+      const { rect, node } = origin;
+      const ghost = el('div', 'showcase-ghost');
+      ghost.setAttribute('popover', 'manual');
+      ghost.setAttribute('aria-hidden', 'true');
+      const art = node.querySelector('.project-art img');
+      if (art) { const copy = art.cloneNode(false); copy.alt = ''; copy.removeAttribute('loading'); ghost.append(copy); }
+      Object.assign(ghost.style, { left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px` });
+      document.body.append(ghost);
+      ghost.showPopover();
+      return ghost;
+    } catch { return null; }
+  }
+
+  // Starts one run. Returns false (nothing started, caller finishes immediately) when motion is reduced or unavailable.
+  function play(kind, origin, done) {
+    if (motion.reduced || typeof dialog.animate !== 'function') return false;
+    const opening = kind === 'open';
+    const animations = [];
+    let ghost = null, lead;
+    try {
+      const d = dialog.getBoundingClientRect();
+      const direction = opening ? 'normal' : 'reverse';
+      const delay = opening ? 0 : CLOSE_DELAY;
+      let span, total;
+      if (origin) {
+        const c = origin.rect;
+        span = opening ? OPEN_MS : CLOSE_MS;
+        total = span + delay;
+        lead = dialog.animate({ clipPath: [clipFor(c, d, 14), clipFor(d, d, 6)] }, { duration: span, delay, easing: EASE, fill: 'both', direction });
+        animations.push(lead);
+        // Readable content is faded, never scaled: in after the surface has mostly arrived, out before it contracts.
+        animations.push(shell.animate({ opacity: opening ? [0, 1] : [1, 0] }, opening
+          ? { duration: 240, delay: 230, easing: 'ease-out', fill: 'both' }
+          : { duration: CLOSE_DELAY + 40, easing: 'ease-in', fill: 'both' }));
+        ghost = makeGhost(origin);
+        if (ghost) {
+          const move = [{ transform: 'translate(0,0) scale(1,1)' }, { transform: `translate(${d.left - c.left}px,${d.top - c.top}px) scale(${d.width / c.width},${d.height / c.height})` }];
+          animations.push(ghost.animate(move, { duration: span, delay, easing: EASE, fill: 'both', direction }));
+          animations.push(ghost.animate([{ opacity: 1 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { duration: span, delay, easing: 'linear', fill: 'both', direction }));
+        }
+      } else {
+        // No usable origin: restrained non-spatial fade.
+        span = total = opening ? 240 : 180;
+        lead = dialog.animate({ opacity: opening ? [0, 1] : [1, 0] }, { duration: span, easing: 'ease-out', fill: 'both' });
+        animations.push(lead);
+      }
+      try { animations.push(dialog.animate({ opacity: opening ? [0, 1] : [1, 0] }, { duration: span, delay: origin && !opening ? delay : 0, fill: 'both', pseudoElement: '::backdrop' })); } catch { /* ::backdrop animation unsupported */ }
+      const run = { kind, animations, ghost, done, timer: 0 };
+      motionRun = run;
+      const complete = () => { if (motionRun === run) endMotion(true); };
+      lead.onfinish = complete;
+      run.timer = setTimeout(complete, total + 400);
+      return true;
+    } catch {
+      animations.forEach(animation => { try { animation.cancel(); } catch { /* ignore */ } });
+      ghost?.remove();
+      return false;
+    }
+  }
 
   // source: 'card' pushes a history entry; 'history' (direct entry, refresh, Back/Forward) never touches history.
   function open(id, source, from = null) {
@@ -425,6 +523,7 @@ const coordinator = (() => {
     focusTarget = null;
     activeId = id; trigger = from; scrollPos = { x: window.scrollX, y: window.scrollY };
     renderProject(id);
+    const origin = from ? measureOrigin(from) : null; // measured before the modal changes page layout
     const slug = slugFor(id);
     historyOrigin = null;
     if (slug && source === 'card') {
@@ -438,12 +537,12 @@ const coordinator = (() => {
     // Deterministic initial focus: the Close control. Re-asserted after layout and load, because on direct entry the
     // module runs before layout and the browser's fragment scrolling can move focus back to the page afterwards.
     const closeButton = document.querySelector('#dialog-close');
-    const assertFocus = () => { if (phase === 'open' && !dialog.contains(document.activeElement)) closeButton.focus({ preventScroll: true }); };
+    const assertFocus = () => { if (live() && !dialog.contains(document.activeElement)) closeButton.focus({ preventScroll: true }); };
     closeButton.focus({ preventScroll: true });
     requestAnimationFrame(assertFocus);
     if (document.readyState !== 'complete') window.addEventListener('load', () => setTimeout(assertFocus, 0), { once: true });
     openedAt = performance.now();
-    setPhase('open');
+    setPhase(play('open', origin, () => { if (phase === 'opening') setPhase('open'); }) ? 'opening' : 'open');
     return true;
   }
 
@@ -472,8 +571,7 @@ const coordinator = (() => {
     requestAnimationFrame(() => { restoreScroll(); scrollPos = null; reassertFocus(); });
   }
 
-  function close() {
-    if (phase !== 'open') return;
+  function commitClose() {
     const slug = slugFor(activeId);
     // Back is only safe when this entry was pushed by a card click, so the entry below is the portfolio.
     const viaBack = Boolean(slug) && historyOrigin === 'card' && history.state?.showcase === slug;
@@ -491,14 +589,30 @@ const coordinator = (() => {
     }
   }
 
+  function close() {
+    if (!live()) return;
+    // Closing an unfinished opening skips the reverse motion: it would start from a state the visitor never saw complete.
+    if (phase === 'opening') { endMotion(false); setPhase('open'); commitClose(); return; }
+    const origin = measureOrigin(trigger);
+    setPhase('closing');
+    if (!play('close', origin, commitClose)) commitClose();
+  }
+
   // Reconciles the dialog with the URL after Back/Forward. Opens/closes without adding history entries.
   function sync() {
     const id = routeFromLocation();
-    if (phase === 'open' && id !== activeId) finish();
+    if (live() && id !== activeId) finish();
     if (phase === 'portfolio' && id) open(id, 'history');
   }
 
   window.addEventListener('popstate', () => {
+    // Navigation overrides any running motion. An unfinished close is completed as a plain dismissal: the URL has
+    // already moved, so it must not call history.back() again.
+    if (motionRun?.kind === 'close') {
+      endMotion(false);
+      scrollPos = { x: window.scrollX, y: window.scrollY };
+      finish();
+    } else endMotion(true);
     const wasClosing = phase === 'closing';
     if (wasClosing) { clearTimeout(settleTimer); setPhase('portfolio'); }
     sync();
@@ -519,6 +633,10 @@ const coordinator = (() => {
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
   });
   document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => open(button.dataset.project, 'card', button)));
+
+  // A reduced-motion request or a viewport change mid-run resolves it to its final state at once.
+  motion.subscribe(reduced => { if (reduced) endMotion(true); });
+  window.addEventListener('resize', () => endMotion(true));
 
   setPhase('portfolio');
   return { open, close, sync, motion };
