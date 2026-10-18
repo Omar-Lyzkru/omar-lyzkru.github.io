@@ -422,6 +422,7 @@ const coordinator = (() => {
   function open(id, source, from = null) {
     if (phase !== 'portfolio' || !projects[id]) return false;
     setPhase('opening');
+    focusTarget = null;
     activeId = id; trigger = from; scrollPos = { x: window.scrollX, y: window.scrollY };
     renderProject(id);
     const slug = slugFor(id);
@@ -457,11 +458,18 @@ const coordinator = (() => {
     setPhase('portfolio');
   }
 
+  // History traversal and the native dialog close each run after our own focus() and can blur it (popstate and
+  // close may fire in either order), so the last of them to run re-asserts. It only acts on a settled portfolio whose
+  // focus fell to <body>, so it cannot override a newer interaction or an open dialog.
+  const reassertFocus = () => {
+    if (phase === 'portfolio' && !dialog.open && document.activeElement === document.body && focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
+  };
+
   function settle() {
     clearTimeout(settleTimer);
     if (phase === 'closing') setPhase('portfolio');
     if (routeFromLocation() && phase === 'portfolio' && !dialog.open && historyOrigin === 'closed') history.replaceState(null, '', urlFor(null));
-    requestAnimationFrame(() => { restoreScroll(); scrollPos = null; });
+    requestAnimationFrame(() => { restoreScroll(); scrollPos = null; reassertFocus(); });
   }
 
   function close() {
@@ -502,8 +510,7 @@ const coordinator = (() => {
   // Safety net for any native dismissal that skips cancel.
   dialog.addEventListener('close', () => {
     close();
-    // Chrome can drop focus after a keyboard (Escape) dismissal; re-assert the same target once the native close settles.
-    if (phase !== 'open' && document.activeElement === document.body) focusTarget?.focus({ preventScroll: true });
+    reassertFocus();
   });
   document.querySelector('#dialog-close').addEventListener('click', close);
   dialog.addEventListener('click', event => {
