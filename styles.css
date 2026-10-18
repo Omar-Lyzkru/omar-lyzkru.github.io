@@ -27,3 +27,53 @@
 
 @media(min-width:901px) and (max-height:800px){.profile-card{padding-block:22px}.profile-card .black-hole-art{height:160px;margin:12px 0 36px}.profile-meta{padding-top:18px}.profile-meta dl>div{margin-bottom:13px}.profile-socials{margin:16px 0}}
 @media(min-width:901px){.profile-card{max-height:calc(100dvh - 56px);overflow:auto;scrollbar-width:thin;scrollbar-color:#655845 transparent}}
+/* PermitWatch case study: Split Hero showcase in the shared native dialog. Other project dialogs keep the standard layout. */
+dialog[data-layout="showcase"]{--pad:clamp(18px,4vw,48px);width:min(1180px,calc(100% - 36px));max-width:none;max-height:calc(100dvh - 36px)}
+dialog[data-layout="showcase"] .dialog-shell{padding:0 var(--pad) clamp(28px,4vw,48px)}
+dialog[data-layout="showcase"] .dialog-top{position:sticky;top:0;z-index:3;margin:0 calc(var(--pad)*-1);padding:14px var(--pad);background:#1d1d20;border-bottom:1px solid var(--line)}
+.showcase-hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-rows:auto 1fr;grid-template-areas:"copy media" "meta media";column-gap:clamp(24px,4vw,56px);align-items:start;padding-block:clamp(26px,4vw,44px)}
+.showcase-copy{grid-area:copy;min-width:0}.showcase-media{grid-area:media;align-self:center;margin:0;min-width:0}.showcase-meta{grid-area:meta;min-width:0}
+.showcase-copy h2{font-size:clamp(34px,4.4vw,54px);font-weight:450;line-height:1.1;letter-spacing:-2px;margin-bottom:18px}
+.showcase-copy .eyebrow{margin-bottom:16px}
+.showcase-award{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:22px 0 0;padding:12px 15px;border:1px solid #66523866;border-radius:10px;background:linear-gradient(110deg,#342d22,#222125);color:var(--copper);font-size:14px}
+.showcase-award .mono{font-size:12px}
+.showcase-media img,.showcase-figure img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#111112}
+.showcase-media figcaption,.showcase-figure figcaption{margin-top:10px;line-height:1.6}
+.showcase-meta .dialog-metrics{margin:22px 0}
+.showcase-nav{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:clamp(22px,3vw,34px)}
+.showcase-nav button{border:1px solid var(--line);border-radius:999px;background:transparent;padding:8px 15px;font:12px var(--mono);letter-spacing:.04em;color:var(--muted);transition:color .2s,border-color .2s}
+.showcase-nav button:hover{color:var(--copper);border-color:var(--copper)}
+.showcase-section{padding-block:clamp(28px,4vw,48px);border-top:1px solid var(--line)}
+.showcase-section h3{font-size:clamp(26px,3vw,34px);font-weight:450;letter-spacing:-1px;line-height:1.2;margin-bottom:18px;outline:0}
+.showcase-section h4{font-size:18px;font-weight:500;line-height:1.4;margin:0 0 8px}
+.showcase-text,.showcase-challenge{max-width:72ch;font-size:16px;line-height:1.8;color:var(--muted);margin-bottom:14px}
+.showcase-steps{counter-reset:step;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;list-style:none;padding:0;margin:26px 0}
+.showcase-steps li{counter-increment:step;padding:20px;background:#232226;border:1px solid var(--line);border-radius:12px}
+.showcase-steps li:before{content:"0" counter(step);display:block;font:12px var(--mono);color:var(--copper);margin-bottom:10px}
+.showcase-steps p{font-size:15px;line-height:1.7;color:var(--muted);margin:0}
+.showcase-figure{margin:0;max-width:760px}
+.showcase-items{display:grid;gap:18px;margin-top:26px}
+.showcase-item{padding:clamp(18px,3vw,28px);background:#232226;border:1px solid var(--line);border-radius:14px}
+.showcase-contribution{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,3vw,32px);margin-top:18px}
+.showcase-contribution p{font-size:15px;line-height:1.75;color:var(--muted);margin:0 0 6px}
+.showcase-contribution p.mono{font-size:12px;margin-bottom:8px}
+.showcase-contribution>div:last-child{padding-left:clamp(14px,2vw,22px);border-left:2px solid #806a54}
+.showcase-evidence{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin:16px 0 0}
+.showcase-evidence .text-link{min-height:32px;color:var(--copper)}
+.showcase-list{padding-left:20px;margin:0 0 22px;color:var(--muted);font-size:16px;line-height:1.8}
+.showcase-list li{margin-bottom:6px}
+.showcase-section .case-note{margin:24px 0}.showcase-section .case-note .mono{margin-bottom:10px}.showcase-section .case-note .showcase-list{margin:0;font-size:14px;line-height:1.7}
+.showcase-lessons p{max-width:72ch;font-size:16px;line-height:1.8;color:var(--muted);margin:0}
+@media(max-width:900px){
+.showcase-hero{grid-template-columns:1fr;grid-template-rows:none;grid-template-areas:"copy" "media" "meta";row-gap:24px}
+.showcase-meta .dialog-metrics{margin-top:0}
+.showcase-contribution{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+dialog[data-layout="showcase"]{width:calc(100% - 20px);max-height:calc(100dvh - 20px)}
+.showcase-copy h2{letter-spacing:-1.2px}
+.showcase-steps{grid-template-columns:1fr}
+.showcase-nav{display:grid;grid-template-columns:1fr 1fr}
+.showcase-nav button{border-radius:10px;padding:10px 12px;text-align:left}
+.showcase-contribution>div:last-child{padding-left:14px}
+}
