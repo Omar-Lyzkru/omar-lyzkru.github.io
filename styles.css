@@ -28,7 +28,8 @@
 @media(min-width:901px) and (max-height:800px){.profile-card{padding-block:22px}.profile-card .black-hole-art{height:160px;margin:12px 0 36px}.profile-meta{padding-top:18px}.profile-meta dl>div{margin-bottom:13px}.profile-socials{margin:16px 0}}
 @media(min-width:901px){.profile-card{max-height:calc(100dvh - 56px);overflow:auto;scrollbar-width:thin;scrollbar-color:#655845 transparent}}
 /* PermitWatch case study: Split Hero showcase in the shared native dialog. Other project dialogs keep the standard layout. */
-dialog[data-layout="showcase"]{--pad:clamp(18px,4vw,48px);width:min(1180px,calc(100% - 36px));max-width:none;max-height:calc(100dvh - 36px)}
+dialog[data-layout="showcase"]{--pad:clamp(18px,4vw,48px);--bar-h:65px;scroll-padding-top:calc(var(--bar-h) + 12px);scroll-padding-bottom:12px;width:min(1180px,calc(100% - 36px));max-width:none;max-height:calc(100dvh - 36px)}
+dialog[data-layout="showcase"] :is(a,button){scroll-margin-block:12px}
 dialog[data-layout="showcase"] .dialog-shell{padding:0 var(--pad) clamp(28px,4vw,48px)}
 dialog[data-layout="showcase"] .dialog-top{position:sticky;top:0;z-index:3;margin:0 calc(var(--pad)*-1);padding:14px var(--pad);background:#1d1d20;border-bottom:1px solid var(--line)}
 .showcase-hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-rows:auto 1fr;grid-template-areas:"copy media" "meta media";column-gap:clamp(24px,4vw,56px);align-items:start;padding-block:clamp(26px,4vw,44px)}
@@ -45,6 +46,7 @@ dialog[data-layout="showcase"] .dialog-top{position:sticky;top:0;z-index:3;margi
 .showcase-nav button:hover{color:var(--copper);border-color:var(--copper)}
 .showcase-section{padding-block:clamp(28px,4vw,48px);border-top:1px solid var(--line)}
 .showcase-section h3{font-size:clamp(26px,3vw,34px);font-weight:450;letter-spacing:-1px;line-height:1.2;margin-bottom:18px;outline:0}
+.showcase-section h3:focus-visible{outline:2px solid var(--copper);outline-offset:6px}
 .showcase-section h4{font-size:18px;font-weight:500;line-height:1.4;margin:0 0 8px}
 .showcase-text,.showcase-challenge{max-width:72ch;font-size:16px;line-height:1.8;color:var(--muted);margin-bottom:14px}
 .showcase-steps{counter-reset:step;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;list-style:none;padding:0;margin:26px 0}
