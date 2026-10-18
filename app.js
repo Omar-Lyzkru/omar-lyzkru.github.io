@@ -471,7 +471,7 @@ const coordinator = (() => {
 
   // Starts one run. Returns false (nothing started, caller finishes immediately) when motion is reduced or unavailable.
   function play(kind, origin, done) {
-    if (motion.reduced || typeof dialog.animate !== 'function') return false;
+    if (activeId !== 'permit' || motion.reduced || typeof dialog.animate !== 'function') return false;
     const opening = kind === 'open';
     const animations = [];
     let ghost = null, lead;
@@ -623,7 +623,8 @@ const coordinator = (() => {
   dialog.addEventListener('cancel', event => { event.preventDefault(); setTimeout(close, 0); });
   // Safety net for any native dismissal that skips cancel.
   dialog.addEventListener('close', () => {
-    close();
+    // A prior close event can arrive after history navigation has reopened this same dialog.
+    if (!dialog.open) close();
     reassertFocus();
   });
   document.querySelector('#dialog-close').addEventListener('click', close);
