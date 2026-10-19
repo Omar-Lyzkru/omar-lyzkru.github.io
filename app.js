@@ -2,6 +2,7 @@ import { drawProjectArt } from './blackhole.js';
 import { createMotionPolicy } from './motion.js';
 import { classifyProjectRoute } from './route.js';
 import { createEntrySession } from './session.js';
+import { createToolkit } from './toolkit.js?v=1';
 
 const kinds = { job: 'server' }; // the other cards show genuine captures; the Job card keeps its illustrative cover
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
@@ -584,6 +585,7 @@ function renderProject(id) {
 // every run has a single completion step that also runs when the run is cut short, so dismissal never depends on it.
 const entrySession = createEntrySession();
 let gateway = null; // the entrance gateway (gateway.js); it and the showcase never hold a modal at the same time
+let toolkit = null; // the Technical Toolkit (toolkit.js); it owns its selection, the coordinator owns navigation
 const routes = { permitwatch: 'permit', 'job-automation': 'job', raycaster: 'raycaster', 'task-tracker': 'tracker' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
 const routeFromLocation = () => classifyProjectRoute(location.href, routes).id;
@@ -593,10 +595,15 @@ const urlFor = slug => {
   return url.pathname + url.search + url.hash;
 };
 const coordinator = (() => {
-  let phase = 'portfolio', focusTarget = null, activeId = null, trigger = null, scrollPos = null, openedAt = 0, historyOrigin = null, settleTimer = 0;
+  let phase = 'portfolio', focusTarget = null, activeId = null, trigger = null, source = null, scrollPos = null, openedAt = 0, historyOrigin = null, settleTimer = 0;
   const setPhase = value => { phase = value; dialog.dataset.phase = value; };
   const restoreScroll = () => { if (scrollPos) window.scrollTo({ left: scrollPos.x, top: scrollPos.y, behavior: 'instant' }); };
   const cardFor = id => document.querySelector(`[data-project="${id}"]`);
+  // Entries this coordinator pushed (card or Toolkit) sit directly above the portfolio entry, so Back can close them.
+  const pushedOrigins = ['card', 'toolkit'];
+  // Where focus returns when the invoking control is gone, or the showcase was reopened by Forward: a Toolkit-origin
+  // showcase stays in the Toolkit (D3-C) instead of sending focus and scroll to the Projects grid.
+  const fallbackFocus = id => (historyOrigin === 'toolkit' && toolkit?.fallbackFocus(id)) || cardFor(id);
   const live = () => phase === 'open' || phase === 'opening';
 
   // ---- Task 03 motion: FLIP-style card <-> dialog transitions on the Web Animations API ----
@@ -671,23 +678,24 @@ const coordinator = (() => {
     }
   }
 
-  // source: 'card' pushes a history entry; 'history' (direct entry, refresh, Back/Forward) never touches history.
-  function open(id, source, from = null) {
+  // from: 'card' and 'toolkit' push a history entry; 'history' (direct entry, refresh, Back/Forward) never touches history.
+  // Only a card has geometry to expand from; a Toolkit text control gets the restrained non-spatial reveal (D3-A).
+  function open(id, from, invoker = null) {
     if (phase !== 'portfolio' || !projects[id]) return false;
     gateway?.yieldToShowcase(); // e.g. Back/Forward onto a project URL while the gateway is up; before scroll is captured
     if (document.documentElement.dataset.gateway === 'pending') delete document.documentElement.dataset.gateway; // a showcase wins over a not-yet-initialized gateway
     setPhase('opening');
     focusTarget = null;
-    activeId = id; trigger = from; scrollPos = { x: window.scrollX, y: window.scrollY };
+    activeId = id; trigger = invoker; source = from; scrollPos = { x: window.scrollX, y: window.scrollY };
     renderProject(id);
-    const origin = from ? measureOrigin(from) : null; // measured before the modal changes page layout
+    const origin = from === 'card' && invoker ? measureOrigin(invoker) : null; // measured before the modal changes page layout
     const slug = slugFor(id);
     historyOrigin = null;
-    if (slug && source === 'card') {
-      history.pushState({ showcase: slug, origin: 'card' }, '', urlFor(slug));
-      historyOrigin = 'card';
+    if (slug && pushedOrigins.includes(from)) {
+      history.pushState({ showcase: slug, origin: from }, '', urlFor(slug));
+      historyOrigin = from;
     } else if (slug) {
-      historyOrigin = history.state?.origin === 'card' ? 'card' : 'direct';
+      historyOrigin = pushedOrigins.includes(history.state?.origin) ? history.state.origin : 'direct';
     }
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
@@ -707,10 +715,10 @@ const coordinator = (() => {
   function finish() {
     if (dialog.open) dialog.close();
     restoreScroll();
-    focusTarget = trigger?.isConnected ? trigger : cardFor(activeId);
+    focusTarget = trigger?.isConnected ? trigger : fallbackFocus(activeId);
     focusTarget?.focus({ preventScroll: true });
     restoreScroll();
-    activeId = null; trigger = null;
+    activeId = null; trigger = null; source = null;
     setPhase('portfolio');
   }
 
@@ -730,8 +738,8 @@ const coordinator = (() => {
 
   function commitClose() {
     const slug = slugFor(activeId);
-    // Back is only safe when this entry was pushed by a card click, so the entry below is the portfolio.
-    const viaBack = Boolean(slug) && historyOrigin === 'card' && history.state?.showcase === slug;
+    // Back is only safe when this entry was pushed by a card or Toolkit click, so the entry below is the portfolio.
+    const viaBack = Boolean(slug) && pushedOrigins.includes(historyOrigin) && history.state?.showcase === slug;
     // The page cannot scroll under the modal, so the live position is authoritative. The position captured at open is
     // stale on direct entry, where the module runs before the browser finishes fragment navigation.
     scrollPos = { x: window.scrollX, y: window.scrollY };
@@ -750,7 +758,7 @@ const coordinator = (() => {
     if (!live()) return;
     // Closing an unfinished opening skips the reverse motion: it would start from a state the visitor never saw complete.
     if (phase === 'opening') { endMotion(false); setPhase('open'); commitClose(); return; }
-    const origin = measureOrigin(trigger);
+    const origin = source === 'card' ? measureOrigin(trigger) : null;
     setPhase('closing');
     if (!play('close', origin, commitClose)) commitClose();
   }
@@ -791,6 +799,8 @@ const coordinator = (() => {
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
   });
   document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => { if (open(button.dataset.project, 'card', button)) entrySession.markEntered(); }));
+  // The Toolkit's View case study controls open the same presentation through this coordinator (A-V2.4).
+  toolkit = createToolkit({ root: document.querySelector('[data-toolkit]'), projects, motion, onView: (id, button) => { if (open(id, 'toolkit', button)) entrySession.markEntered(); } });
 
   // A reduced-motion request or a viewport change mid-run resolves it to its final state at once.
   motion.subscribe(reduced => { if (reduced) endMotion(true); });
@@ -808,7 +818,7 @@ coordinator.sync();
 // Entrance gateway. The early bootstrap in index.html only prevents a flash; the real route and session modules decide here.
 // Route precedence: any project route bypasses it, otherwise the entered-session cookie does. gateway.js is imported
 // dynamically so the portfolio never depends on it: if it fails to load or start, the portfolio is simply revealed.
-import('./gateway.js?v=2').then(({ createGateway }) => {
+import('./gateway.js?v=3').then(({ createGateway }) => {
   gateway = createGateway({ dialog: document.querySelector('#gateway-dialog'), motion, session: entrySession, canReplay: () => coordinator.phase === 'portfolio' });
   const replayButton = document.querySelector('#replay-intro');
   replayButton.addEventListener('click', event => gateway.replay(event.currentTarget));

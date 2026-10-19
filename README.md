@@ -11,6 +11,8 @@
 
 Each project opens a case study in the same cinematic showcase dialog, with a shareable URL: `?project=permitwatch`, `?project=job-automation`, `?project=raycaster`, and `?project=task-tracker`. Any other `project` value shows the ordinary portfolio and leaves the URL unchanged.
 
+The **Technical Toolkit** (`toolkit.js`) links each technology to the projects that verifiably use it, with a short explanation and a source file or commit as evidence. Technologies without a verified project use are left out, and there are no skill ratings. Selecting a technology changes no URL or history; **View case study** opens the same showcase as the project card, and closing it returns focus and scroll to the Toolkit.
+
 The downloadable résumé is an exact copy of Resume 15. Project ownership and implementation context are included in the case studies.
 
 The site uses a dark violet identity (Manrope for the interface, JetBrains Mono for code and technical labels) with a developer-first homepage that features PermitWatch Houston, followed by an equal-sized two-column project grid. The Pause motion control in the header and the operating-system reduced-motion setting share one motion policy. The Job Application Automation card keeps an illustrative character-based cover tinted to the palette; its case study uses a workflow diagram that is labeled as an illustration. The PermitWatch images are screenshots of the actual public team demo (landing page captured October 14, 2026; results view captured October 17, 2026).

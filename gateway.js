@@ -13,7 +13,7 @@
 // gateway.yieldToShowcase() // a project showcase is about to open: leave without restoring focus or scroll
 // gateway.active          // true from show()/replay() until the gateway has fully concluded
 const JOURNEY_MS = 1500;
-const SECTION_IDS = new Set(['main', 'work', 'about', 'contact']);
+const SECTION_IDS = new Set(['main', 'work', 'toolkit', 'about', 'contact']);
 
 export function createGateway({ dialog, motion, session, canReplay = () => true, doc = document, win = window }) {
   const root = doc.documentElement;

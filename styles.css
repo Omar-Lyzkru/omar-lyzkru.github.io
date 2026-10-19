@@ -1,5 +1,5 @@
 /* V2 Task 03: dark/violet identity, developer-first homepage, equal Projects grid.
-   Layers: tokens, base, header, hero + featured project, projects, skills, about, contact, footer, dialogs, motion.
+   Layers: tokens, base, header, hero + featured project, projects, toolkit, about, contact, footer, dialogs, motion.
    Decorative motion is scoped to html:not([data-motion="reduced"]) (set from the shared motion policy in motion.js)
    and to prefers-reduced-motion: no-preference; content is fully visible and operable without it. */
 :root{--bg:#07060e;--bg-2:#0c0a16;--surface:#110f1f;--surface-2:#171428;--raised:#1d1a33;--line:#2e2950;--line-soft:#201c38;--ink:#f1eefa;--muted:#bab4d2;--faint:#9d96bd;--accent:#b79cff;--accent-2:#8d6af0;--accent-soft:#d8c9ff;--accent-ink:#14102b;--sans:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--header-h:68px;color-scheme:dark}
@@ -116,12 +116,33 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .work-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line-soft)}
 .work-footer .mono{font-size:12px;color:var(--faint)}
 
-/* Skills (static; the interactive Technical Toolkit arrives in V2 Task 05) */
-.skills-inner{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:20px 32px;align-items:start;padding-block:30px;border-block:1px solid var(--line-soft)}
-.band-label{margin:4px 12px 0 0;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
-.skill-group{min-width:0}
-.skill-group h3{margin:0 0 8px;font:12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.skill-group p{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0;font-size:15px;color:var(--ink)}
+/* Technical Toolkit: technology picker beside the evidence panel. Selection is state (aria-pressed), never history. */
+.toolkit-section{position:relative;isolation:isolate;padding-block:88px 96px;border-top:1px solid var(--line-soft)}
+.toolkit-section:before{content:"";position:absolute;z-index:-1;left:-12%;top:18%;width:62%;height:70%;background:radial-gradient(50% 50% at 40% 50%,rgba(141,106,240,.13),transparent 70%);pointer-events:none}
+.toolkit{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4vw,64px);align-items:start}
+.toolkit-picker{display:grid;gap:26px}
+.toolkit-group-title{margin:0 0 12px;font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.toolkit-techs{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.toolkit-tech{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 17px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font:500 14px var(--sans);transition:color .2s,border-color .2s,background .2s}
+.toolkit-tech:hover{color:var(--ink);border-color:var(--accent-2)}
+.toolkit-tech[aria-pressed="true"]{background:#e9e0ff;border-color:#e9e0ff;color:var(--accent-ink);font-weight:700}
+.toolkit-tech[aria-pressed="true"]:before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--accent-2)} /* a shape cue, so selection is not shown by color alone */
+.toolkit-panel{min-width:0;padding:clamp(22px,3vw,34px);border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,rgba(29,26,51,.92),rgba(17,15,31,.92));box-shadow:0 30px 70px -44px rgba(141,106,240,.7)}
+.toolkit-kicker{margin:0 0 6px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.toolkit-panel-title{margin:0 0 4px;font-size:clamp(26px,3vw,34px);font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.toolkit-count{margin:0 0 20px;font-size:12px;color:var(--faint)}
+.toolkit-uses{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.toolkit-use{padding:18px 20px 14px;border:1px solid var(--line-soft);border-radius:14px;background:rgba(7,6,14,.38)}
+.toolkit-use-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;margin-bottom:8px}
+.toolkit-use h4{margin:0;font-size:17px;font-weight:650;line-height:1.35}
+.toolkit-context{font-size:11.5px;letter-spacing:.06em;color:var(--accent-soft)}
+.toolkit-text{margin:0 0 6px;font-size:15px;line-height:1.7;color:var(--muted)}
+.toolkit-evidence{display:flex;flex-wrap:wrap;align-items:center;gap:0 14px;margin:0;font-size:11.5px;letter-spacing:.06em}
+.toolkit-evidence .text-link{min-height:36px;font:12px var(--mono);color:var(--accent)}
+.toolkit-view{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:transparent;color:var(--accent-soft);font:650 14px var(--sans)}
+.toolkit-view:hover{color:#fff;text-decoration:underline;text-underline-offset:5px}
+.toolkit-view-arrow{margin-left:.45em;color:var(--accent)}
+.toolkit-note{max-width:62ch;margin:28px 0 0;font-size:14px;line-height:1.7;color:var(--faint)}
 
 /* About (palette only; the final About redesign belongs to a later task) */
 .about-section{padding-block:96px 100px}
@@ -305,7 +326,8 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
   .hero-feature{max-width:760px}
   .section-heading{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:36px}
   .section-heading>p{max-width:none}.section-heading>p br{display:none}
-  .skills-inner{grid-template-columns:repeat(3,minmax(0,1fr))}.band-label{grid-column:1/-1;margin:0}
+  .toolkit{grid-template-columns:minmax(0,1fr)}
+  .toolkit-section{padding-block:68px 76px}
   .about-grid,.contact-grid{grid-template-columns:minmax(0,1fr)}
   .about-section{padding-block:72px 76px}.contact-section{padding-block:64px 72px}
 }
@@ -324,14 +346,11 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
 }
 @media(max-width:520px){
   .wrap{width:calc(100% - 32px)}
-  .site-header nav{gap:16px}
-  .site-header nav a{font-size:13px}
   .hero{padding-top:32px}
   .hero h1{font-size:clamp(42px,13vw,56px)}
   .hero-facts{gap:14px 20px}
   .button{width:100%}
-  .skills-inner{grid-template-columns:minmax(0,1fr);gap:16px}
-  .skill-group{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px}.skill-group h3{margin:3px 0 0}
+  .toolkit-use{padding:16px 16px 12px}
   .project-info h3{font-size:20px}
   .feature-chip{right:12px;bottom:12px}
   .about-terminal pre{padding:20px 16px 14px}
@@ -341,9 +360,16 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
   .dialog-metrics{grid-template-columns:1fr;gap:18px}
   .metric{display:flex;align-items:center;gap:18px}.metric strong{flex:0 0 85px}.metric span{margin-top:0}
 }
-@media(max-width:380px){.hero-facts{grid-template-columns:minmax(0,1fr)}.site-header nav{gap:13px}.site-header nav a{font-size:12.5px}}
-/* Compact header: below ~350px the brand, nav, and Pause button need ~300px, more than the content box, which pushed Pause (and its focus ring) past the viewport edge. */
-@media(max-width:350px){.header-inner{gap:8px}.site-header nav{gap:10px;margin-left:0}.site-header nav a{font-size:12px}.site-header .brand{font-size:22px}}
+@media(max-width:380px){.hero-facts{grid-template-columns:minmax(0,1fr)}}
+/* Two-row header: with four section links, the brand, nav, and Pause no longer fit on one row below ~560px (Pause and its
+   focus ring were pushed past the viewport edge), so the nav takes its own full-width row. --header-h keeps anchors clear of it. */
+@media(max-width:560px){
+  :root{--header-h:92px}
+  .header-inner{height:auto;flex-wrap:wrap;gap:0 12px;padding-top:6px}
+  .header-inner>.brand{min-height:48px;align-items:center}
+  .site-header nav{order:3;width:100%;justify-content:space-between;gap:8px;margin-left:0}
+  .site-header nav a{padding:4px 0 10px}
+}
 @media(max-height:520px){:root{--header-h:0px}.site-header{position:relative}}
 
 /* Motion: decorative effects obey the shared policy (manual Pause OR system reduced motion). Content never depends on them. */

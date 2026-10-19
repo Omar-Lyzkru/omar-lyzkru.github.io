@@ -27,8 +27,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=27">
-  <script type="module" src="app.js?v=28"></script>
+  <link rel="stylesheet" href="styles.css?v=28">
+  <script type="module" src="app.js?v=29"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -36,7 +36,7 @@
   <header class="site-header">
     <div class="header-inner wrap">
       <a href="#" class="brand" aria-label="Omar Aguilar, home">omar<span class="brand-dot">.</span></a>
-      <nav aria-label="Main navigation"><a href="#work">Projects</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+      <nav aria-label="Main navigation"><a href="#work">Projects</a><a href="#toolkit">Toolkit</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
       <div class="header-tools">
         <button id="motion-toggle" class="motion-toggle" type="button" aria-label="Pause animation" aria-pressed="false"><span id="motion-icon" aria-hidden="true">Ⅱ</span><span id="motion-label">Pause motion</span></button>
         <a class="resume-link" href="Omar-Aguilar-Resume.pdf?v=15" aria-label="Resume 15 (PDF)" title="Resume 15" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↗</span></a>
@@ -111,17 +111,18 @@
       </div>
       <div class="work-footer reveal"><span class="mono quiet">EVERY PROJECT STARTS WITH A QUESTION.</span><a class="text-link" href="https://github.com/Omar-Lyzkru?tab=repositories" target="_blank" rel="noopener noreferrer">More on GitHub <span class="link-line" aria-hidden="true"></span></a></div>
     </section>
-    <!-- The interactive Technical Toolkit (V2 Task 05) replaces this static list between Projects and About. -->
-    <section class="skills-band wrap" aria-labelledby="skills-title">
-      <div class="skills-inner">
-        <h2 id="skills-title" class="mono band-label">Technical skills</h2>
-        <div class="skill-group"><h3>Languages</h3><p><span>C++</span><span>Python</span><span>JavaScript</span><span>TypeScript</span></p></div>
-        <div class="skill-group"><h3>Web</h3><p><span>HTML</span><span>CSS</span><span>React</span><span>Node.js</span></p></div>
-        <div class="skill-group"><h3>Tools</h3><p><span>Git</span><span>Linux</span><span>Playwright</span><span>CMake</span></p></div>
+    <section id="toolkit" class="toolkit-section wrap" aria-labelledby="toolkit-title">
+      <div class="section-top reveal"><p class="eyebrow">02 / Technical toolkit</p><span class="mono quiet">Evidence, not ratings</span></div>
+      <div class="section-heading reveal"><h2 id="toolkit-title">Technical toolkit<span class="accent">.</span></h2><p>Choose a technology to see which projects use it, what it does there, and the source that shows it.</p></div>
+      <div class="toolkit" data-toolkit>
+        <div class="toolkit-picker" data-toolkit-picker></div>
+        <div class="toolkit-panel" id="toolkit-panel" data-toolkit-panel></div>
+        <p class="visually-hidden" role="status" data-toolkit-status></p>
       </div>
+      <p class="toolkit-note">Python is also on my résumé, but none of these four projects uses it, so it has no entry here.</p>
     </section>
     <section id="about" class="about-section wrap" aria-labelledby="about-title">
-      <div class="section-top"><p class="eyebrow">02 / THE PERSON BEHIND THE PIXELS</p><span class="mono quiet">HELLO, WORLD.</span></div>
+      <div class="section-top"><p class="eyebrow">03 / THE PERSON BEHIND THE PIXELS</p><span class="mono quiet">HELLO, WORLD.</span></div>
       <div class="about-grid"><div class="about-copy"><h2 id="about-title">Grounded in code.<br>Drawn to the cosmos<span class="accent">.</span></h2><p>I’m a Computer Science student at the University of Houston, graduating in May 2028. I’m interested in software engineering and building my skills through individual and team projects. At CodeRED Orion, my four-person team won the Environmental Track with PermitWatch Houston. I’m seeking Summer 2027 internships and technical campus experience.</p><p>Outside of coding, I enjoy reading philosophy, watching shows and movies, and playing video games. I’m also really into black holes and ASCII art.</p><a class="text-link" href="Omar-Aguilar-Resume.pdf?v=15" target="_blank" rel="noopener">Download résumé 15 <span class="link-line" aria-hidden="true"></span></a></div><div class="about-terminal"><div class="terminal-bar"><span><i></i><i></i><i></i></span><span>omar.json</span><span>UTF-8</span></div><pre><span class="code-comment">// a small introduction</span>
 <span class="code-bracket">{</span>
   <span class="code-key">"name"</span>: <span class="code-value">"Omar Aguilar"</span>,
@@ -139,7 +140,7 @@
 <span class="code-bracket">}</span></pre><div class="terminal-foot"><span class="accent">✳</span> ALWAYS LEARNING, ALWAYS EXPLORING</div></div></div>
       <div class="about-facts"><div><span class="mono quiet">EDUCATION</span><strong>B.S. Computer Science</strong><p>University of Houston · Expected May 2028</p></div><div><span class="mono quiet">LEADERSHIP</span><strong>Peer mentor</strong><p>CodePathways · Code[Coogs] × Cougarrettes</p></div><div><span class="mono quiet">TEAM ACHIEVEMENT</span><strong>Environmental Track Winner</strong><p>CodeRED Orion · University of Houston</p></div></div>
     </section>
-    <section id="contact" class="contact-section" aria-labelledby="contact-title"><div class="wrap"><div class="section-top"><p class="eyebrow">03 / OPEN A CHANNEL</p><span class="mono quiet">GOOD THINGS START WITH HELLO.</span></div><div class="contact-grid"><h2 id="contact-title">Let’s create<br>some <em>gravity.</em></h2><div class="contact-copy"><p>Open to software engineering internships, student developer roles, and technical research or campus opportunities.</p><a class="button button-primary" href="mailto:o9086498@gmail.com">Say hello <span aria-hidden="true">+</span></a><div class="email-row"><a href="mailto:o9086498@gmail.com">o9086498@gmail.com</a><button id="copy-email" type="button" aria-label="Copy email address"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div><span id="copy-status" class="copy-status mono" role="status" aria-live="polite"></span></div></div></div></section>
+    <section id="contact" class="contact-section" aria-labelledby="contact-title"><div class="wrap"><div class="section-top"><p class="eyebrow">04 / OPEN A CHANNEL</p><span class="mono quiet">GOOD THINGS START WITH HELLO.</span></div><div class="contact-grid"><h2 id="contact-title">Let’s create<br>some <em>gravity.</em></h2><div class="contact-copy"><p>Open to software engineering internships, student developer roles, and technical research or campus opportunities.</p><a class="button button-primary" href="mailto:o9086498@gmail.com">Say hello <span aria-hidden="true">+</span></a><div class="email-row"><a href="mailto:o9086498@gmail.com">o9086498@gmail.com</a><button id="copy-email" type="button" aria-label="Copy email address"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div><span id="copy-status" class="copy-status mono" role="status" aria-live="polite"></span></div></div></div></section>
   </main>
   <footer class="site-footer wrap"><a class="brand" href="#"><span>omar<span class="brand-dot">.</span></span><span class="visually-hidden"> Back to top</span></a><span class="footer-note">A little code. A little cosmic curiosity.</span><div><a href="https://github.com/Omar-Lyzkru" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/omar-aguilar-b590b4277" target="_blank" rel="noopener noreferrer">LinkedIn</a><button id="replay-intro" class="replay-intro" type="button" hidden>↻ Replay intro</button><span>© <span id="year">2026</span> Omar Aguilar</span></div></footer>
   </div>
