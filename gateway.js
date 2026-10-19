@@ -99,6 +99,7 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
     setState('idle');
     root.dataset.gateway = 'active';
     try {
+      dialog.inert = false; // inert until the controller is ready, so the pending cover is never a focus stop
       if (!dialog.open) dialog.showModal();
       enterButton.focus({ preventScroll: true });
     } catch {

@@ -491,6 +491,7 @@ const coordinator = (() => {
   function open(id, source, from = null) {
     if (phase !== 'portfolio' || !projects[id]) return false;
     gateway?.yieldToShowcase(); // e.g. Back/Forward onto a project URL while the gateway is up; before scroll is captured
+    if (document.documentElement.dataset.gateway === 'pending') delete document.documentElement.dataset.gateway; // a showcase wins over a not-yet-initialized gateway
     setPhase('opening');
     focusTarget = null;
     activeId = id; trigger = from; scrollPos = { x: window.scrollX, y: window.scrollY };
@@ -623,10 +624,15 @@ coordinator.sync();
 // Entrance gateway. The early bootstrap in index.html only prevents a flash; the real route and session modules decide here.
 // Route precedence: any project route bypasses it, otherwise the entered-session cookie does. gateway.js is imported
 // dynamically so the portfolio never depends on it: if it fails to load or start, the portfolio is simply revealed.
-import('./gateway.js').then(({ createGateway }) => {
+import('./gateway.js?v=2').then(({ createGateway }) => {
   gateway = createGateway({ dialog: document.querySelector('#gateway-dialog'), motion, session: entrySession, canReplay: () => coordinator.phase === 'portfolio' });
-  document.querySelector('#replay-intro').addEventListener('click', event => gateway.replay(event.currentTarget));
-  if (routeKind === 'none' && entrySession.state() !== 'entered') gateway.show();
+  const replayButton = document.querySelector('#replay-intro');
+  replayButton.addEventListener('click', event => gateway.replay(event.currentTarget));
+  replayButton.hidden = false; // Replay is only offered once it can work
+  // Automatic presentation needs the startup to still be pending: the failsafe (or a showcase) clearing it means the visitor
+  // is already in the portfolio, so a late module may initialize for Replay but never opens by itself.
+  const pending = document.documentElement.dataset.gateway === 'pending';
+  if (pending && routeKind === 'none' && entrySession.state() !== 'entered' && coordinator.phase === 'portfolio') gateway.show();
   else delete document.documentElement.dataset.gateway;
 }).catch(() => {
   gateway = null;
