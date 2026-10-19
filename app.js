@@ -398,6 +398,7 @@ function renderProject(id) {
 // Lifecycle: portfolio -> opening -> open -> closing -> portfolio. 'opening' and 'closing' last while a Task 03 motion
 // run plays (and 'closing' also while a card-origin close waits for history.back() to settle). Motion is decorative:
 // every run has a single completion step that also runs when the run is cut short, so dismissal never depends on it.
+const entrySession = createEntrySession();
 const routes = { permitwatch: 'permit' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
 const routeFromLocation = () => classifyProjectRoute(location.href, routes).id;
@@ -602,7 +603,7 @@ const coordinator = (() => {
     const bounds = dialog.getBoundingClientRect();
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
   });
-  document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => open(button.dataset.project, 'card', button)));
+  document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => { if (open(button.dataset.project, 'card', button)) entrySession.markEntered(); }));
 
   // A reduced-motion request or a viewport change mid-run resolves it to its final state at once.
   motion.subscribe(reduced => { if (reduced) endMotion(true); });
@@ -611,9 +612,8 @@ const coordinator = (() => {
   setPhase('portfolio');
   return { open, close, sync, motion };
 })();
-// Session foundation for the later entrance: supported and invalid project URLs both count as entry.
-// Ordinary URLs establish nothing here. No gateway exists yet, so this has no visible effect.
-const entrySession = createEntrySession();
+// Entry is recorded for supported and invalid project URLs (here) and for card-origin opens (in the coordinator).
+// Ordinary page loads establish nothing. No gateway exists yet, so this has no visible effect.
 if (classifyProjectRoute(location.href, routes).kind !== 'none') entrySession.markEntered();
 coordinator.sync();
 
