@@ -3,7 +3,7 @@ import { createMotionPolicy } from './motion.js';
 import { classifyProjectRoute } from './route.js';
 import { createEntrySession } from './session.js';
 
-const kinds = { raycaster: 'network', tracker: 'terminal', job: 'server' };
+const kinds = { job: 'server' }; // the other cards show genuine captures; the Job card keeps its illustrative cover
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
 // One effective motion policy (manual Pause OR system reduced motion) lives in motion.js. The header Pause control and the
 // data-motion attribute (which scopes decorative CSS motion) only consume it; nothing in the homepage owns preference state.
@@ -136,7 +136,8 @@ const projects = {
       ]
     },
     "repo": "https://github.com/Abbas9x/permitwatch-houston",
-    "demo": "https://permitwatch-houston.onrender.com/",
+    "repoLabel": "View team source on GitHub",
+    "demo":"https://permitwatch-houston.onrender.com/",
     "source": "TEAM PROJECT · BEST ENVIRONMENT HACK WINNER"
   },
   "job": {
@@ -149,31 +150,104 @@ const projects = {
       "Node.js",
       "Playwright",
       "HTML & CSS",
-      "Vanilla JavaScript frontend",
-      "Node HTTP server/API",
       "JSON file persistence"
     ],
     "metrics": [
       [
         "Local",
-        "dashboard & browser"
+        "loopback-only dashboard"
       ],
       [
-        "JSON",
-        "file persistence"
+        "Dry run",
+        "stops before Submit"
       ],
       [
-        "Tests",
-        "unit/API & synthetic browser"
+        "2 suites",
+        "unit/API & browser fixtures"
       ]
     ],
-    "problem": "Repeated forms and scattered application records make a job search difficult to track. The goal is a local workflow for finding relevant roles, handling supported forms, and keeping saved answers and application outcomes together.",
-    "approach": "The application uses a vanilla JavaScript dashboard, a Node HTTP server/API, Playwright, and JSON files for persistence. I defined product requirements and workflow/safety behavior, directed iterative AI-assisted development, reviewed results, and requested fixes. Most implementation code was AI-generated under my direction.",
-    "process": "[ Job filters + saved answers ]\n              |\n     Inspect a supported form\n              |\n [ Block unknowns / review / apply ]\n              |\n  Record lifecycle + protect duplicates\n              |\n [ Recover interrupted work / explicit retry ]",
-    "result": "Application lifecycle records distinguish blocked, interrupted, unconfirmed, and submitted work. Unknown questions stop the workflow instead of being answered by guesswork. Duplicate protection, interrupted-work recovery, and user-controlled retries support a more reliable workflow. Unit/API and synthetic browser tests exercise supported behavior; live forms can still require manual completion.",
-    "learningTitle": "What I’m learning",
-    "learning": "I’m strengthening my understanding of JavaScript/Node.js workflows and independent debugging. I use unit/API and synthetic browser tests to investigate failures and verify changes in supported application workflows.",
+    "showcase": {
+      "recognition": ["How it was built", "AI-assisted development · my requirements, direction & review"],
+      "hero": {
+        "flow": [
+          ["Saved settings and explicit answers", ""],
+          ["Search and filter jobs", "Keyword rules, or an opt-in fit ranking"],
+          ["Inspect a supported form", "Unknown question → stops as “Needs answer”"],
+          ["Fill and verify answers", "Dry run → stops at review, nothing submitted"],
+          ["Reserve the attempt, then Submit", "Interrupted → recorded, never resumed automatically"],
+          ["Record the outcome", "“Submitted” only when confirmation is observed"]
+        ],
+        "label": "Application workflow",
+        "caption": "Workflow diagram based on the repository README. It is an illustration, not a screenshot of the app."
+      },
+      "sections": [
+        {
+          "id": "goal",
+          "title": "The Goal",
+          "paragraphs": [
+            "Repeated forms and scattered application records make a job search difficult to track. The goal is a local workflow for finding relevant roles, handling supported forms, and keeping saved answers and application outcomes together.",
+            "It runs on my own computer: a dashboard in the browser, a local Node.js server, and a separate Playwright-controlled browser session. Settings, answers, and history are JSON files kept out of Git."
+          ]
+        },
+        {
+          "id": "workflow",
+          "title": "The Workflow",
+          "paragraphs": ["The safety rules matter more than the speed. Whenever the app is unsure, it stops and asks instead of guessing."],
+          "steps": [
+            ["Configure the search", "Job titles, location, experience levels, and include/exclude keywords. An optional fit score ranks a bounded scan with a published rubric. It is a ranking, not a hiring probability."],
+            ["Dry run first", "With Dry run on, supported forms are filled and stopped at review. Nothing is submitted, and the result reads “Ready — dry run.”"],
+            ["Answer explicitly", "Screening answers come only from answers saved in the dashboard. The résumé is never used to guess them, and unknown wording stops the application as “Needs answer.”"],
+            ["Review the outcome", "History separates Submitted, Unconfirmed, Interrupted, Needs answer, and Skipped. Blocked work waits for an explicit retry."]
+          ]
+        },
+        {
+          "id": "engineering",
+          "title": "Engineering & My Role",
+          "paragraphs": ["The items below describe what the AI-assisted code does. My own role is stated once, after them, rather than claimed item by item."],
+          "items": [
+            {
+              "title": "No double submissions",
+              "challenge": "A crash or a Stop in the middle of an application must never lead to a second submission.",
+              "body": "Each application is saved before inspecting or filling, and an attempt is reserved before Submit. After a restart, unfinished work becomes Interrupted and a reserved submission becomes Unconfirmed. Neither resumes automatically, and Submit is never retried automatically.",
+              "evidence": [["application-lifecycle.mjs", "blob/main/src/application-lifecycle.mjs"], ["runner.mjs", "blob/main/src/runner.mjs"]]
+            },
+            {
+              "title": "Private, local data",
+              "challenge": "Profile details, saved answers, and a signed-in browser session are sensitive.",
+              "body": "The server listens only on 127.0.0.1 and rejects cross-origin requests. Personal data stays in a data folder that Git ignores. Failure snapshots keep fixed codes and timings, not form values, employer text, cookies, or screenshots.",
+              "evidence": [["server.mjs", "blob/main/src/server.mjs"], ["failure-snapshots.mjs", "blob/main/src/failure-snapshots.mjs"]]
+            },
+            {
+              "title": "Verification without live submissions",
+              "challenge": "Real application forms cannot serve as a test suite.",
+              "body": "Unit and API tests run on Node.js’s built-in test runner. A separate Playwright suite drives the dashboard against local fixture forms. It never contacts the live site or submits a real application.",
+              "evidence": [["Tests", "tree/main/test"], ["test-browser.mjs", "blob/main/scripts/test-browser.mjs"]]
+            }
+          ],
+          "note": ["MY ROLE", "I defined the product requirements and the workflow and safety behavior, directed iterative AI-assisted development, reviewed the results, and requested fixes. Most implementation code was AI-generated under my direction."]
+        },
+        {
+          "id": "outcome",
+          "title": "Outcome & Limits",
+          "outcomes": [
+            "Application records distinguish blocked, interrupted, unconfirmed, and submitted work, and the dashboard lists everything that needs attention.",
+            "Unknown questions stop the workflow instead of being answered by guesswork.",
+            "Duplicate protection, interrupted-work recovery, and explicit retries keep the workflow predictable.",
+            "Unit/API tests and a synthetic browser suite exercise the supported behavior."
+          ],
+          "limits": [
+            "Only supported forms on English-language screens are handled. Applications on company websites need manual completion.",
+            "Live layouts change, and fixture tests cannot establish support for every live form, so some applications still need manual completion.",
+            "It is a personal tool that runs locally on Linux (on Windows, through WSL2), not a hosted service.",
+            "Because the work is AI-assisted, the repository does not show that I wrote every subsystem or test."
+          ],
+          "lessonsTitle": "What I’m learning",
+          "lessons": "I’m strengthening my understanding of JavaScript/Node.js workflows and independent debugging. I use unit/API and synthetic browser tests to investigate failures and verify changes in supported application workflows."
+        }
+      ]
+    },
     "repo": "https://github.com/Omar-Lyzkru/job-applier",
+    "repoLabel": "View source on GitHub",
     "source": "AI-ASSISTED · PRODUCT DIRECTION & REVIEW"
   },
   "raycaster": {
@@ -182,32 +256,91 @@ const projects = {
     "title": "C++ Console Raycaster",
     "summary": "A first-person C++ raycaster that renders a character-based scene using the Windows Console API.",
     "tags": [
-      "C++",
+      "C++17",
       "Windows Console API",
       "CMake",
-      "Fixed-distance ray stepping"
+      "CTest"
     ],
     "metrics": [
       [
-        "16×16",
-        "map"
-      ],
-      [
         "120×40",
-        "character console"
+        "character frame"
       ],
       [
-        "0.1",
-        "fixed ray-step distance"
+        "45°",
+        "field of view"
+      ],
+      [
+        "5",
+        "portable test groups"
       ]
     ],
-    "problem": "How can a two-dimensional map become a first-person view in a character console? This project was a way to work through rendering, movement, and collision handling in C++.",
-    "approach": "The implementation steps rays through a 16×16 map, translates wall distances into character columns, and uses elapsed time for movement and wall-collision checks. I implemented the project while following a YouTube programming tutorial and worked through how these pieces fit together.",
-    "process": "[ 16×16 map + player position ]\n               |\n      Step rays at fixed distances\n               |\n      Measure walls → choose shading\n               |\n [ 120×40 console scene + map overlay ]",
-    "result": "The checked-in implementation draws a 120×40 character scene with distance-based wall shading and a map overlay. The current repository includes CMake builds and portable movement/ray-calculation regression tests; the interactive renderer remains Windows-only.",
-    "learningTitle": "What I learned",
-    "learning": "Working through the tutorial helped me connect C++ loops, trigonometry, elapsed-time movement, collision checks, and console output. I’m also practicing CMake builds and regression testing around the renderer’s calculations.",
+    "showcase": {
+      "recognition": ["How it was built", "Tutorial-guided · followed a YouTube programming tutorial"],
+      "hero": {
+        "src": "assets/raycaster/raycaster-frame.webp",
+        "width": 1440,
+        "height": 1032,
+        "alt": "One frame of the C++ Console Raycaster drawn in characters: a status line reading X=14.70 Y=5.09 A=0.00 FPS=62.4, the 16 by 16 map overlay with the player marked P, solid block-character walls whose height depends on distance, blank gaps at detected tile edges, and rows of x and # characters shading the floor.",
+        "caption": "Real output: one frame read from the running Windows renderer’s console screen buffer at its starting position, October 19, 2026. The characters are unchanged; the font and violet color are presentation."
+      },
+      "sections": [
+        {
+          "id": "question",
+          "title": "The Question",
+          "paragraphs": [
+            "How can a two-dimensional map become a first-person view in a character console? This project was a way to work through rendering, movement, and collision handling in C++.",
+            "I built it by following a YouTube programming tutorial. The rendering approach comes from that tutorial, not from me; implementing it is how I learned how the pieces fit together."
+          ]
+        },
+        {
+          "id": "rendering",
+          "title": "How a Frame Is Drawn",
+          "steps": [
+            ["Cast a ray per column", "Each of the 120 columns casts a ray across a 45° field of view. It advances in fixed 0.1-unit steps until it reaches a wall, the map edge, or the 16-unit limit."],
+            ["Correct the distance", "Projection uses the perpendicular distance, so a straight wall stays straight instead of bowing into a fish-eye curve."],
+            ["Shade by distance", "Closer walls are taller and use denser blocks (█ ▓ ▒ ░). Floor rows fade from # to x, ., and -. A ray that lands on a tile corner is left blank, which outlines wall edges."],
+            ["Move with elapsed time", "W and S move, A and D turn. Movement scales with frame time, is checked in small steps along each axis, and slides along walls instead of passing through them."]
+          ]
+        },
+        {
+          "id": "code",
+          "title": "Code & Tests",
+          "paragraphs": ["The repository separates the Windows-only program from calculations that can be built and tested anywhere."],
+          "items": [
+            {
+              "title": "Interactive Windows renderer",
+              "body": "confpsbutbetter.cpp creates a 120×40 console screen buffer, polls the keyboard, targets 60 frames per second, and writes each frame one 120-character row at a time, checking every write. Escape or a handled error restores the previous console.",
+              "evidence": [["confpsbutbetter.cpp", "blob/main/1st%20project/confpsbutbetter.cpp"]]
+            },
+            {
+              "title": "Portable calculations and tests",
+              "body": "raycaster_core.h holds map lookup, movement, ray casting, and projection. Five CTest groups (coordinates, bounds, collision, projection, and rays) check them on Windows, Linux, and macOS without a console.",
+              "evidence": [["raycaster_core.h", "blob/main/1st%20project/raycaster_core.h"], ["raycaster_tests.cpp", "blob/main/tests/raycaster_tests.cpp"]]
+            }
+          ],
+          "code": ["Excerpt from raycaster_core.h: fish-eye correction", "inline float projectedDistance(float distance, float rayAngle, float playerAngle) {\n    // Perpendicular depth keeps a straight wall straight across the view.\n    return std::max(0.1f, distance * std::cos(rayAngle - playerAngle));\n}"]
+        },
+        {
+          "id": "outcome",
+          "title": "Outcome & Limits",
+          "outcomes": [
+            "The renderer draws a 120×40 character scene with distance-based wall and floor shading, a map overlay with the player marker, and a status line with position, angle, and FPS.",
+            "The current repository builds with CMake and includes portable movement and ray-calculation regression tests."
+          ],
+          "limits": [
+            "The interactive renderer is Windows-only; on other platforms CMake builds just the tests.",
+            "Rays use fixed-size steps rather than a grid-traversal algorithm, and the player is treated as a point for collision.",
+            "There are no textures, enemies, or map files. It is a learning project, not a game engine.",
+            "Keys are polled globally, so they can affect the program while another window has focus."
+          ],
+          "lessonsTitle": "What I learned",
+          "lessons": "Working through the tutorial helped me connect C++ loops, trigonometry, elapsed-time movement, collision checks, and console output. I’m also practicing CMake builds and regression testing around the renderer’s calculations."
+        }
+      ]
+    },
     "repo": "https://github.com/Omar-Lyzkru/raycaster",
+    "repoLabel": "View source on GitHub",
     "source": "TUTORIAL-GUIDED · C++ PRACTICE"
   },
   "tracker": {
@@ -220,8 +353,7 @@ const projects = {
       "HTML",
       "CSS",
       "localStorage",
-      "JSON",
-      "August 2026"
+      "GitHub Pages"
     ],
     "metrics": [
       [
@@ -230,26 +362,74 @@ const projects = {
       ],
       [
         "Saved",
-        "browser state"
+        "between visits"
       ],
       [
-        "Inline",
-        "task editing"
+        "0",
+        "frameworks or build steps"
       ]
     ],
-    "problem": "A useful task list should preserve work after a refresh and make everyday updates straightforward.",
-    "approach": "I wrote HTML and JavaScript for task creation, completion, deletion, All / Active / Completed filters, and a remaining-task counter. Tasks are saved as JSON in localStorage, with malformed-data handling, inline editing, and keyboard interactions.",
-    "process": "[ Create / edit / complete / delete ]\n                  |\n          Update task objects\n             /         \\\n       Render DOM     Save JSON\n             |         |\n        Filter view  localStorage",
-    "result": "Task state persists across visits. Inline edits support Enter to save and Escape to cancel, and invalid saved records are filtered during loading.",
-    "learningTitle": "What I practiced",
-    "learning": "This project helped me work with DOM updates, arrays and objects, event handling, and keeping browser state synchronized with persistent storage.",
+    "showcase": {
+      "recognition": ["How it was built", "Personal project · vanilla JavaScript practice"],
+      "hero": {
+        "src": "assets/tracker/tracker-tasks.webp",
+        "width": 1440,
+        "height": 900,
+        "alt": "Tiny Task Tracker with four sample tasks, two active and two completed with strikethrough, the All filter selected, and a counter reading 2 tasks left.",
+        "caption": "The live GitHub Pages app with sample tasks entered for this capture, October 19, 2026."
+      },
+      "sections": [
+        {
+          "id": "features",
+          "title": "What It Does",
+          "paragraphs": ["A task list that keeps its state after a refresh, with everyday edits that work from the keyboard."],
+          "steps": [
+            ["Add", "Type a task and press Enter or Add Task. Empty tasks are rejected, and tasks are limited to 120 characters."],
+            ["Complete and delete", "A checkbox moves a task between active and completed, and Delete removes it."],
+            ["Edit inline", "Edit swaps the label for a text field. Enter saves, Escape cancels, and an empty edit is refused."],
+            ["Filter and count", "All, Active, and Completed filters, with a live count of the tasks left."]
+          ],
+          "figure": {
+            "src": "assets/tracker/tracker-inline-edit.webp",
+            "width": 1440,
+            "height": 900,
+            "alt": "Inline editing in Tiny Task Tracker: the Active filter is selected, and the first task’s label has become a focused text field with its text selected and a Save button beside it.",
+            "caption": "Inline editing under the Active filter, from the same capture session."
+          }
+        },
+        {
+          "id": "implementation",
+          "title": "How It Works",
+          "paragraphs": [
+            "The app keeps one in-memory array of task objects as its state. Every change updates the array, saves it to localStorage as JSON, and re-renders the list from that state.",
+            "Loading is defensive: unreadable JSON becomes an empty list, and entries without text are dropped. Filter buttons expose their state with aria-pressed, and a live region announces changes such as “Task deleted.”"
+          ],
+          "code": ["Excerpt from script.js: restoring saved tasks", "const tasks = Array.isArray(parsedTasks)\n    ? parsedTasks\n        .filter(task => task && typeof task.text === 'string')\n        .map(task => ({\n            text: task.text.trim(),\n            completed: Boolean(task.completed)\n        }))\n        .filter(task => task.text !== '')\n    : [];"]
+        },
+        {
+          "id": "outcome",
+          "title": "Outcome & Limits",
+          "outcomes": [
+            "Tasks and their completion state survive refreshes and later visits in the same browser.",
+            "A GitHub Actions workflow deploys the app to GitHub Pages."
+          ],
+          "limits": [
+            "Tasks live in one browser’s localStorage. There is no account, backend, or sync between devices.",
+            "It is a small practice project, without due dates, reordering, or automated tests."
+          ],
+          "lessonsTitle": "What I practiced",
+          "lessons": "This project helped me work with DOM updates, arrays and objects, event handling, and keeping browser state synchronized with persistent storage."
+        }
+      ]
+    },
     "repo": "https://github.com/Omar-Lyzkru/tiny-task-tracker",
+    "repoLabel": "View source on GitHub",
+    "demo": "https://omar-lyzkru.github.io/tiny-task-tracker/",
     "source": "PERSONAL PROJECT · JAVASCRIPT PRACTICE"
   }
 };
 
 const dialog = document.querySelector('#project-dialog');
-const setText = (id, value) => { document.getElementById(id).textContent = value; };
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -262,8 +442,7 @@ const externalLink = (href, className, text) => {
   return link;
 };
 const showcase = document.querySelector('#dialog-showcase');
-const standard = document.querySelector('#dialog-generic');
-const repoBase = 'https://github.com/Abbas9x/permitwatch-houston/';
+// Every project uses the same showcase presentation; case studies differ only in which parts their data provides.
 function showcaseImage(image, className) {
   const figure = el('figure', className);
   const img = el('img');
@@ -271,13 +450,36 @@ function showcaseImage(image, className) {
   figure.append(img, el('figcaption', 'mono quiet', image.caption));
   return figure;
 }
+// An illustrative workflow, drawn as an ordered list so it reads correctly without the visual styling.
+function showcaseFlow(media, className) {
+  const figure = el('figure', `${className} showcase-flow`);
+  const list = el('ol');
+  list.setAttribute('aria-label', media.label);
+  for (const [step, branch] of media.flow) {
+    const item = el('li');
+    item.append(el('span', 'flow-step', step));
+    if (branch) item.append(el('span', 'flow-branch mono', branch));
+    list.append(item);
+  }
+  figure.append(list, el('figcaption', 'mono quiet', media.caption));
+  return figure;
+}
+function showcaseCode([caption, text]) {
+  const figure = el('figure', 'showcase-code');
+  const pre = el('pre');
+  pre.append(el('code', '', text));
+  figure.append(el('figcaption', 'mono quiet', caption), pre);
+  return figure;
+}
 function projectLinks(project) {
   const links = el('div', 'dialog-links');
-  const repo = externalLink(project.repo, 'button button-primary', 'View team source on GitHub ');
+  const repo = externalLink(project.repo, 'button button-primary', `${project.repoLabel} `);
   const plus = el('span', '', '+');
   plus.setAttribute('aria-hidden', 'true');
   repo.append(plus);
-  links.append(repo, externalLink(project.demo, 'text-link', 'Live demo ↗'), el('span', 'mono quiet', project.source));
+  links.append(repo);
+  if (project.demo) links.append(externalLink(project.demo, 'text-link', 'Live demo ↗'));
+  links.append(el('span', 'mono quiet', project.source));
   return links;
 }
 function showcaseSection(section, number, project) {
@@ -298,17 +500,31 @@ function showcaseSection(section, number, project) {
     const items = el('div', 'showcase-items');
     for (const entry of section.items) {
       const item = el('article', 'showcase-item');
-      const contribution = el('div', 'showcase-contribution');
-      const team = el('div'); team.append(el('p', 'mono quiet', 'TEAM'), el('p', '', entry.team));
-      const mine = el('div'); mine.append(el('p', 'mono copper', 'MY CONTRIBUTION'), el('p', '', entry.mine));
-      contribution.append(team, mine);
+      item.append(el('h4', '', entry.title));
+      if (entry.challenge) item.append(el('p', 'showcase-challenge', entry.challenge));
+      if (entry.team) {
+        // Team projects separate the shared system from the changes I implemented.
+        const contribution = el('div', 'showcase-contribution');
+        const team = el('div'); team.append(el('p', 'mono quiet', 'TEAM'), el('p', '', entry.team));
+        const mine = el('div'); mine.append(el('p', 'mono copper', 'MY CONTRIBUTION'), el('p', '', entry.mine));
+        contribution.append(team, mine);
+        item.append(contribution);
+      }
+      if (entry.body) item.append(el('p', 'showcase-body', entry.body));
       const evidence = el('p', 'showcase-evidence mono quiet', 'EVIDENCE');
-      for (const [label, path] of entry.evidence) evidence.append(externalLink(repoBase + path, 'text-link', `${label} ↗`));
-      item.append(el('h4', '', entry.title), el('p', 'showcase-challenge', entry.challenge), contribution, evidence);
+      for (const [label, path] of entry.evidence) evidence.append(externalLink(`${project.repo}/${path}`, 'text-link', `${label} ↗`));
+      item.append(evidence);
       items.append(item);
     }
     root.append(items);
   }
+  if (section.note) {
+    const [label, text] = section.note;
+    const note = el('div', 'case-note showcase-role');
+    note.append(el('p', 'mono copper', label), el('p', '', text));
+    root.append(note);
+  }
+  if (section.code) root.append(showcaseCode(section.code));
   if (section.outcomes) {
     const list = el('ul', 'showcase-list');
     for (const text of section.outcomes) list.append(el('li', '', text));
@@ -338,7 +554,7 @@ function renderShowcase(project) {
   const metrics = el('div', 'dialog-metrics');
   metrics.append(...project.metrics.map(([value, label]) => { const item = el('div', 'metric'); item.append(el('strong', '', value), el('span', '', label)); return item; }));
   meta.append(tags, metrics, projectLinks(project));
-  header.append(copy, showcaseImage(hero, 'showcase-media'), meta);
+  header.append(copy, hero.flow ? showcaseFlow(hero, 'showcase-media') : showcaseImage(hero, 'showcase-media'), meta);
   const nav = el('nav', 'showcase-nav');
   nav.setAttribute('aria-label', 'Case study sections');
   sections.forEach(section => {
@@ -358,37 +574,8 @@ function jumpToSection(id) {
 }
 function renderProject(id) {
   const project = projects[id];
-  setText('dialog-number', `${project.number} / SELECTED WORK`);
-  const isShowcase = Boolean(project.showcase);
-  dialog.dataset.layout = isShowcase ? 'showcase' : 'standard';
-  dialog.setAttribute('aria-labelledby', isShowcase ? 'showcase-title' : 'dialog-title');
-  showcase.hidden = !isShowcase;
-  standard.hidden = isShowcase;
-  if (isShowcase) {
-    renderShowcase(project);
-    return;
-  }
-  showcase.replaceChildren();
-  for (const field of ['category', 'title', 'summary', 'problem', 'approach', 'process', 'result', 'learning', 'source']) setText(`dialog-${field}`, project[field]);
-  setText('dialog-learning-title', project.learningTitle);
-  const note = document.querySelector('#dialog-note');
-  note.hidden = !project.note;
-  note.textContent = project.note || '';
-  const tags = document.querySelector('#dialog-tags');
-  tags.replaceChildren(...project.tags.map(tag => { const span = document.createElement('span'); span.textContent = tag; return span; }));
-  const metrics = document.querySelector('#dialog-metrics');
-  metrics.replaceChildren(...project.metrics.map(([value, label]) => {
-    const item = document.createElement('div'); item.className = 'metric';
-    const strong = document.createElement('strong'); strong.textContent = value;
-    const span = document.createElement('span'); span.textContent = label;
-    item.append(strong, span); return item;
-  }));
-  const repo = document.querySelector('#dialog-repo');
-  repo.hidden = !project.repo;
-  if (project.repo) repo.href = project.repo; else repo.removeAttribute('href');
-  const demo = document.querySelector('#dialog-demo');
-  demo.hidden = !project.demo;
-  if (project.demo) demo.href = project.demo; else demo.removeAttribute('href');
+  document.querySelector('#dialog-number').textContent = `${project.number} / SELECTED WORK`;
+  renderShowcase(project);
 }
 
 // Showcase coordinator: the single owner of dialog lifecycle, URL/history, scroll and focus.
@@ -397,7 +584,7 @@ function renderProject(id) {
 // every run has a single completion step that also runs when the run is cut short, so dismissal never depends on it.
 const entrySession = createEntrySession();
 let gateway = null; // the entrance gateway (gateway.js); it and the showcase never hold a modal at the same time
-const routes = { permitwatch: 'permit' };
+const routes = { permitwatch: 'permit', 'job-automation': 'job', raycaster: 'raycaster', 'task-tracker': 'tracker' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
 const routeFromLocation = () => classifyProjectRoute(location.href, routes).id;
 const urlFor = slug => {
@@ -446,7 +633,7 @@ const coordinator = (() => {
 
   // Starts one run. Returns false (nothing started, caller finishes immediately) when motion is reduced or unavailable.
   function play(kind, origin, done) {
-    if (activeId !== 'permit' || motion.reduced || typeof dialog.animate !== 'function') return false;
+    if (!activeId || motion.reduced || typeof dialog.animate !== 'function') return false;
     const opening = kind === 'open';
     const animations = [];
     let lead;

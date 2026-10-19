@@ -100,7 +100,7 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .project-open:hover .project-art{border-color:var(--accent-2);box-shadow:0 26px 60px -34px rgba(141,106,240,.8)}
 .project-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
 .project-art canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.85;filter:hue-rotate(232deg) saturate(1.35) brightness(1.08)} /* illustrative ASCII covers are tinted to the violet palette without changing blackhole.js */
-.art-tracker canvas{opacity:.16}
+.art-raycaster img{object-position:50% 0} /* keep the real frame's status line and map overlay in view */
 .art-caption{position:absolute;left:20px;bottom:20px;max-width:75%;font:11px/1.5 var(--mono);letter-spacing:.08em;color:var(--muted)}
 .project-plus{position:absolute;right:16px;bottom:16px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(183,156,255,.4);border-radius:50%;background:rgba(7,6,14,.78);color:var(--accent);font-size:22px;line-height:1;transition:transform .3s,background .2s}
 .project-open:hover .project-plus{background:rgba(141,106,240,.3)}
@@ -113,12 +113,6 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .tags span{padding:4px 11px;border:1px solid var(--line);border-radius:999px;font:12px var(--mono);color:var(--muted)}
 .project-links{display:flex;flex-wrap:wrap;align-items:center;gap:0 22px;margin-top:8px}
 .project-context{margin:2px 0 0;font:12px/1.6 var(--mono);color:var(--faint)}
-.terminal-art{position:absolute;top:22%;left:9%;right:6%;z-index:1;font:13px/1.7 var(--mono)}
-.terminal-art p{margin:8px 0;color:var(--muted)}
-.terminal-art b{margin-right:12px;font-weight:400;color:var(--accent)}
-.terminal-prompt{font-size:12px;color:var(--faint)}
-.terminal-status{display:block;margin-top:18px;font-size:11px;letter-spacing:.08em;color:var(--faint)}
-.terminal-cursor{color:var(--accent)}
 .work-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line-soft)}
 .work-footer .mono{font-size:12px;color:var(--faint)}
 
@@ -174,29 +168,20 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .replay-intro[hidden]{display:none}
 .replay-intro:hover{color:var(--accent-soft)}
 
-/* Project dialogs: standard layout (Job, Raycaster, Tracker) and the PermitWatch showcase share one surface */
+/* Project dialog: every project uses the Split Hero showcase in one shared native dialog */
 dialog{width:min(760px,calc(100% - 36px));max-height:calc(100dvh - 60px);padding:0;border:1px solid var(--line);border-radius:16px;overscroll-behavior:contain;color:var(--ink);background:var(--surface-2)}
 dialog::backdrop{background:#000b;backdrop-filter:blur(8px)}
-.dialog-shell{padding:30px 42px 42px}
 .dialog-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:25px}
 .dialog-top .mono{font-size:12px}
 #dialog-close{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:transparent;font-size:25px;line-height:1}
 #dialog-close:hover{color:var(--accent);border-color:var(--accent)}
-#dialog-category{margin-bottom:12px}
-#dialog-title{margin-bottom:18px;font-size:42px;letter-spacing:-.03em}
 .dialog-summary{margin-bottom:18px;font-size:17px;line-height:1.7;color:var(--muted)}
 .dialog-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0;padding:23px 0;border-block:1px solid var(--line)}
 .metric strong{display:block;font-size:28px;font-weight:600;letter-spacing:-.02em;color:var(--accent)}
 .metric span{display:block;margin-top:3px;font:12px/1.5 var(--mono);color:var(--muted)}
-.case-body section{margin-top:27px}
-.case-body h3{margin-bottom:10px;font-size:19px;font-weight:650}
-.case-body p{margin-bottom:0;font-size:16px;line-height:1.8;color:var(--muted)}
-.process-diagram{margin-top:20px;padding:20px;border:1px solid var(--line);border-radius:10px;background:var(--bg-2);font:12px/1.9 var(--mono);color:var(--accent);white-space:pre-wrap;overflow-wrap:anywhere}
 .dialog-links{display:flex;flex-wrap:wrap;align-items:center;gap:12px 17px;margin-top:30px}
 .dialog-links>.mono{max-width:100%;font-size:12px;line-height:1.7}
 .case-note{margin-top:26px;padding-left:15px;border-left:2px solid var(--accent-2);font-size:14px;line-height:1.7;color:var(--muted)}
-/* PermitWatch case study: Split Hero showcase in the shared native dialog. Other project dialogs keep the standard layout. */
-/* PermitWatch case study: Split Hero showcase in the shared native dialog. Other project dialogs keep the standard layout. */
 dialog[data-layout="showcase"]{--pad:clamp(18px,4vw,48px);--bar-h:65px;scroll-padding-top:calc(var(--bar-h) + 12px);scroll-padding-bottom:12px;width:min(1180px,calc(100% - 36px));max-width:none;max-height:calc(100dvh - 36px)}
 dialog[data-layout="showcase"] :is(a,button){scroll-margin-block:12px}
 dialog[data-layout="showcase"] .dialog-shell{padding:0 var(--pad) clamp(28px,4vw,48px)}
@@ -235,6 +220,22 @@ dialog[data-layout="showcase"] .dialog-top{position:sticky;top:0;z-index:3;margi
 .showcase-list li{margin-bottom:6px}
 .showcase-section .case-note{margin:24px 0}.showcase-section .case-note .mono{margin-bottom:10px}.showcase-section .case-note .showcase-list{margin:0;font-size:14px;line-height:1.7}
 .showcase-lessons p{max-width:72ch;font-size:16px;line-height:1.8;color:var(--muted);margin:0}
+.showcase-body{max-width:72ch;margin:14px 0 0;font-size:15px;line-height:1.75;color:var(--muted)}
+.showcase-role p:last-child{margin:0;font-size:15px;line-height:1.75}
+/* Illustrative workflow (Job Application Automation): an ordered list styled as a vertical flow, labeled as an illustration */
+.showcase-flow{padding:clamp(18px,3vw,28px);border:1px solid var(--line);border-radius:12px;background:var(--bg-2)}
+.showcase-flow ol{list-style:none;margin:0;padding:0;counter-reset:flow}
+.showcase-flow li{position:relative;counter-increment:flow;padding:0 0 18px 42px}
+.showcase-flow li:last-child{padding-bottom:0}
+.showcase-flow li:before{content:counter(flow);position:absolute;left:0;top:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--accent-2);border-radius:50%;font:12px var(--mono);color:var(--accent)}
+.showcase-flow li:not(:last-child):after{content:"";position:absolute;left:13px;top:30px;bottom:4px;width:1px;background:var(--line)}
+.flow-step{display:block;font-size:15px;font-weight:600;line-height:1.5}
+.flow-branch{display:block;margin-top:3px;font-size:12px;line-height:1.6;color:var(--accent-soft)}
+.showcase-flow figcaption{margin-top:18px;line-height:1.6}
+/* Genuine source excerpts */
+.showcase-code{max-width:760px;margin:26px 0 0}
+.showcase-code figcaption{margin-bottom:10px;line-height:1.6}
+.showcase-code pre{margin:0;padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:var(--bg-2);font:13px/1.7 var(--mono);color:var(--accent-soft);white-space:pre-wrap;overflow-wrap:anywhere}
 @media(max-width:900px){
 .showcase-hero{grid-template-columns:1fr;grid-template-rows:none;grid-template-areas:"copy" "media" "meta";row-gap:24px}
 .showcase-meta .dialog-metrics{margin-top:0}
@@ -320,7 +321,6 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
   .work-section{padding-block:44px 76px}
   .about-facts{grid-template-columns:minmax(0,1fr);gap:22px;margin-top:44px}
   .work-footer{flex-wrap:wrap}
-  .dialog-shell{padding:23px 27px 30px}
 }
 @media(max-width:520px){
   .wrap{width:calc(100% - 32px)}
@@ -333,17 +333,13 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
   .skills-inner{grid-template-columns:minmax(0,1fr);gap:16px}
   .skill-group{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px}.skill-group h3{margin:3px 0 0}
   .project-info h3{font-size:20px}
-  .terminal-art{font-size:11.5px;top:20%}
   .feature-chip{right:12px;bottom:12px}
   .about-terminal pre{padding:20px 16px 14px}
   .contact-grid h2{font-size:clamp(40px,13vw,56px)}
   .site-footer>div{gap:2px 18px}
-  .dialog-shell{padding:17px 22px 27px}
-  #dialog-title{font-size:32px}
   .dialog-summary{font-size:16px}
   .dialog-metrics{grid-template-columns:1fr;gap:18px}
   .metric{display:flex;align-items:center;gap:18px}.metric strong{flex:0 0 85px}.metric span{margin-top:0}
-  .process-diagram{padding:15px}
 }
 @media(max-width:380px){.hero-facts{grid-template-columns:minmax(0,1fr)}.site-header nav{gap:13px}.site-header nav a{font-size:12.5px}}
 /* Compact header: below ~350px the brand, nav, and Pause button need ~300px, more than the content box, which pushed Pause (and its focus ring) past the viewport edge. */
