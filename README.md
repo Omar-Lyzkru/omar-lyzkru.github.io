@@ -11,6 +11,6 @@
 
 The downloadable résumé is an exact copy of Resume 15. Project ownership and implementation context are included in the case studies.
 
-The dark card layout is independently implemented, with inspiration from [codewithsadee’s vCard portfolio](https://github.com/codewithsadee/vcard-personal-portfolio). ASCII artwork and motion controls are retained. The PermitWatch image is a screenshot of the actual public team demo, captured in dark mode on October 14, 2026.
+The site uses a dark violet identity (Manrope for the interface, JetBrains Mono for code and technical labels) with a developer-first homepage that features PermitWatch Houston, followed by an equal-sized two-column project grid. The Pause motion control in the header and the operating-system reduced-motion setting share one motion policy. The character-based project covers are retained and tinted to the palette. The PermitWatch images are screenshots of the actual public team demo (landing page captured October 14, 2026; results view captured October 17, 2026).
 
 GitHub Pages serves the root files directly via `.nojekyll`. For local preview, run `python3 -m http.server 4173` from the repository root. No dependencies or build step are needed.

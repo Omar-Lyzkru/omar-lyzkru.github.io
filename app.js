@@ -1,25 +1,22 @@
-import { mountBlackHole, drawProjectArt } from './blackhole.js';
+import { drawProjectArt } from './blackhole.js';
 import { createMotionPolicy } from './motion.js';
 import { classifyProjectRoute } from './route.js';
 import { createEntrySession } from './session.js';
 
-const hole = mountBlackHole(document.querySelector('#black-hole'), { fps: 18 });
-document.querySelector('.black-hole-art').classList.add('art-ready');
 const kinds = { raycaster: 'network', tracker: 'terminal', job: 'server' };
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
-// One effective motion policy (manual Pause OR system reduced motion) lives in motion.js; the renderer only consumes it.
+// One effective motion policy (manual Pause OR system reduced motion) lives in motion.js. The header Pause control and the
+// data-motion attribute (which scopes decorative CSS motion) only consume it; nothing in the homepage owns preference state.
 const motion = createMotionPolicy();
 const systemReduced = () => motion.systemReduced;
 function updateMotion(effectivePaused = motion.reduced) {
   document.documentElement.dataset.motion = effectivePaused ? 'reduced' : 'full';
-  hole.setPaused(effectivePaused);
   const button = document.querySelector('#motion-toggle');
   button.disabled = systemReduced();
   button.setAttribute('aria-pressed', String(effectivePaused));
-  button.setAttribute('aria-label', systemReduced() ? 'Animation paused for your reduced motion preference' : motion.manualPaused ? 'Resume black hole animation' : 'Pause black hole animation');
+  button.setAttribute('aria-label', systemReduced() ? 'Animation paused for your reduced motion preference' : motion.manualPaused ? 'Resume animation' : 'Pause animation');
   document.querySelector('#motion-label').textContent = systemReduced() ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion';
   document.querySelector('#motion-icon').textContent = effectivePaused ? '▷' : 'Ⅱ';
-  document.querySelector('.art-mode').textContent = effectivePaused ? 'ASCII / STILL' : 'ASCII / LIVE';
 }
 motion.subscribe(updateMotion);
 document.querySelector('#motion-toggle').addEventListener('click', () => motion.toggleManualPaused());
