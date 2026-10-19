@@ -81,3 +81,48 @@ dialog[data-layout="showcase"]{width:calc(100% - 20px);max-height:calc(100dvh - 
 }
 /* Task 02: keep the portfolio layout stable while the modal locks page scroll; restore programmatically with instant scrolling. */
 html{scrollbar-gutter:stable}
+
+/* V2 Task 02: entrance gateway. Scoped violet styling only; the portfolio's own palette is unchanged. */
+html[data-gateway]{overflow:hidden;background:#05040c} /* the stable scrollbar gutter would otherwise show the page background beside the gateway */
+.gateway{--gw-ink:#f3effc;--gw-muted:#c3b9dc;--gw-violet:#b79cff;--gw-deep:#05040c;position:fixed;inset:0;width:100%;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;border-radius:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;color:var(--gw-ink);z-index:2147483000;
+  background:radial-gradient(circle at 64% 50%,#000 0 5.5%,#8d6af0 6.2%,#3b2380 11%,transparent 30%),var(--gw-deep)}
+html[data-gateway="pending"] .gateway:not([open]){display:block}
+.gateway::backdrop{background:transparent}
+.gateway[hidden]{display:none}
+.gw-scene{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.gw-art{position:absolute;inset:0;transform-origin:64% 50%}
+.gw-art picture,.gw-art img{display:block;width:100%;height:100%}
+.gw-art img{object-fit:cover;object-position:64% 50%}
+/* Legibility scrim behind the copy; the artwork itself is untouched. */
+.gw-scene:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,4,12,.9) 0,rgba(5,4,12,.62) min(640px,62%),transparent min(940px,100%))}
+.gw-content{position:relative;z-index:1;min-height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:28px;width:min(640px,100%);padding:clamp(28px,6vw,96px)}
+.gw-eyebrow{margin:0 0 14px;font:500 12px var(--mono);letter-spacing:.22em;color:var(--gw-violet)}
+.gateway h2{margin:0 0 16px;font-size:clamp(40px,7vw,84px);font-weight:450;line-height:1.02;letter-spacing:-.03em;color:var(--gw-ink)}
+.gw-lede{margin:0;max-width:46ch;font-size:clamp(16px,2vw,19px);line-height:1.65;color:var(--gw-muted)}
+.gw-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px}
+.gw-button{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 26px;border:1px solid transparent;border-radius:999px;font:550 15px var(--sans);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.gw-primary{background:#e9e0ff;color:#14102b}
+.gw-primary:hover{background:#fff}
+.gw-secondary{background:rgba(20,14,44,.55);border-color:#6f5bb3;color:var(--gw-ink)}
+.gw-secondary:hover{border-color:var(--gw-violet);color:#fff}
+.gw-button[hidden]{display:none}
+.gw-art img[hidden]{display:none}
+.gw-motion{margin-left:auto;padding:12px 4px;border:0;background:transparent;color:var(--gw-muted);font:12px var(--mono);letter-spacing:.04em;cursor:pointer}
+.gw-motion:hover{color:#fff}
+.gw-motion:disabled{cursor:default;color:#9a90b8}
+.gateway :focus-visible{outline:2px solid #d8c9ff;outline-offset:4px}
+.gw-status{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-aspect-ratio:4/5){
+  .gw-art{transform-origin:50% 30%}.gw-art img{object-position:50% 30%}
+  .gateway{background:radial-gradient(circle at 50% 30%,#000 0 5.5%,#8d6af0 6.2%,#3b2380 11%,transparent 30%),var(--gw-deep)}
+  .gw-scene:after{background:linear-gradient(0deg,rgba(5,4,12,.94) 0,rgba(5,4,12,.72) 36%,transparent 62%)}
+  .gw-content{width:100%;justify-content:flex-end;padding:24px 22px 28px;gap:22px}
+  .gateway h2{font-size:clamp(36px,11vw,56px)}
+}
+@media(max-height:520px){.gw-content{padding-block:20px;gap:16px}.gateway h2{font-size:clamp(30px,7vw,44px);margin-bottom:8px}.gw-lede{font-size:15px;line-height:1.5}.gw-button{min-height:46px;padding-block:10px}}
+@media(max-width:420px){.gw-actions{gap:10px}.gw-button{flex:1 1 100%}.gw-motion{margin-left:0}}
+@media(prefers-reduced-motion:reduce){.gw-button{transition:none}}
+.replay-intro{display:inline-flex;align-items:center;margin:2px 0 0;padding:8px 0;border:0;background:transparent;color:var(--faint);font:12px var(--mono);letter-spacing:.04em;cursor:pointer}
+.replay-intro:hover{color:var(--copper)}
+/* #main and section anchors are programmatic landing targets after the gateway, not controls: no ring around whole regions. */
+#main:focus-visible,section[tabindex="-1"]:focus-visible{outline:none}

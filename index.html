@@ -6,12 +6,29 @@
   <meta name="theme-color" content="#0a0a0a">
   <meta name="description" content="Omar Aguilar, Computer Science student at the University of Houston, graduating May 2028. Seeking Summer 2027 software engineering internships and student developer or research roles.">
   <title>Omar Aguilar | A pull toward possibility</title>
+  <script>
+    // Early gateway eligibility, resolved before first paint so a bypass route never flashes the gateway.
+    // Mirrors route.js/session.js for this one decision: any ?project= parameter (supported or invalid) bypasses the
+    // gateway, as does the entered-session cookie. app.js re-checks with those modules and takes over; if it never
+    // does (module failure, slow network), the failsafe reveals the portfolio so the gateway can never block access.
+    (function () {
+      var root = document.documentElement;
+      try {
+        if (new URLSearchParams(location.search).has('project')) return;
+        var entered = false;
+        try { entered = /(?:^|;\s*)portfolio_entered=1(?:;|$)/.test(document.cookie); } catch (error) { /* blocked cookies: not entered */ }
+        if (entered) return;
+        root.dataset.gateway = 'pending';
+        setTimeout(function () { if (root.dataset.gateway === 'pending') delete root.dataset.gateway; }, 4000);
+      } catch (error) { /* unreadable URL: show the portfolio */ }
+    })();
+  </script>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%230a0a0a'/%3E%3Cellipse cx='20' cy='20' rx='17' ry='6' fill='none' stroke='%23d6ac83' stroke-width='2' transform='rotate(-25 20 20)'/%3E%3Ccircle cx='20' cy='20' r='8' fill='%230a0a0a' stroke='%23f2ede7' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20">
-  <script type="module" src="app.js?v=23"></script>
+  <link rel="stylesheet" href="styles.css?v=23">
+  <script type="module" src="app.js?v=25"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -41,6 +58,7 @@
         <dl><div><dt>UNIVERSITY</dt><dd>University of Houston</dd></div><div><dt>GRADUATION</dt><dd>Expected May 2028</dd></div><div><dt>EMAIL</dt><dd><a href="mailto:o9086498@gmail.com">o9086498@gmail.com</a></dd></div><div><dt>BASED IN</dt><dd>Houston, TX</dd></div></dl>
         <div class="profile-socials"><a href="https://github.com/Omar-Lyzkru" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/omar-aguilar-b590b4277" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div>
         <a class="button button-primary profile-resume" href="Omar-Aguilar-Resume.pdf?v=15" target="_blank" rel="noopener" aria-label="Download Resume 15 (PDF)">Résumé 15 <span aria-hidden="true">↗</span></a>
+        <button id="replay-intro" class="replay-intro" type="button">↻ Replay intro</button>
       </div>
     </aside>
     <div class="portfolio-content">
@@ -133,6 +151,30 @@
   <footer class="site-footer wrap"><a class="brand" href="#" aria-label="Back to top">omar<span class="brand-dot">.</span></a><span class="footer-note">A little code. A little cosmic curiosity.</span><div><a href="https://github.com/Omar-Lyzkru" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/omar-aguilar-b590b4277" target="_blank" rel="noopener noreferrer">LinkedIn</a><span>© <span id="year">2026</span> Omar Aguilar</span></div></footer>
     </div>
   </div>
+  <dialog id="gateway-dialog" class="gateway" aria-labelledby="gateway-title" aria-describedby="gateway-desc" data-state="closed">
+    <div class="gw-scene" aria-hidden="true">
+      <div class="gw-art" data-gateway-stage>
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="assets/gateway/gateway-tall.webp" type="image/webp">
+          <img src="assets/gateway/gateway-wide.webp" width="1920" height="1080" alt="" decoding="async" fetchpriority="high" onerror="this.hidden=true">
+        </picture>
+      </div>
+    </div>
+    <div class="gw-content">
+      <div class="gw-copy" data-gateway-copy>
+        <p class="gw-eyebrow">PORTFOLIO</p>
+        <h2 id="gateway-title">Omar Aguilar</h2>
+        <p id="gateway-desc" class="gw-lede">Computer Science student and software developer. Step through to see selected work, or skip straight to the portfolio.</p>
+      </div>
+      <div class="gw-actions">
+        <button type="button" class="gw-button gw-primary" data-gateway-enter autofocus>Enter Portfolio</button>
+        <button type="button" class="gw-button gw-secondary" data-gateway-skip>Skip Intro</button>
+        <button type="button" class="gw-button gw-secondary" data-gateway-return hidden>Return to Portfolio</button>
+        <button type="button" class="gw-motion" data-gateway-motion aria-pressed="false" aria-label="Pause animation"><span data-gateway-motion-label>Pause motion</span></button>
+      </div>
+      <p class="gw-status" role="status" data-gateway-status></p>
+    </div>
+  </dialog>
   <dialog id="project-dialog" aria-labelledby="dialog-title"><div class="dialog-shell"><div class="dialog-top"><span id="dialog-number" class="mono quiet"></span><button id="dialog-close" type="button" aria-label="Close project case study">×</button></div><div id="dialog-generic"><p id="dialog-category" class="eyebrow"></p><h2 id="dialog-title"></h2><p id="dialog-summary" class="dialog-summary"></p><div id="dialog-tags" class="tags"></div><div id="dialog-metrics" class="dialog-metrics"></div><div class="case-body"><section><h3>The problem</h3><p id="dialog-problem"></p></section><section><h3>How it works &amp; my contribution</h3><p id="dialog-approach"></p><pre id="dialog-process" class="process-diagram" aria-label="Project process diagram"></pre></section><section><h3>The result</h3><p id="dialog-result"></p></section><section><h3 id="dialog-learning-title"></h3><p id="dialog-learning"></p></section><p id="dialog-note" class="case-note" hidden></p></div><div class="dialog-links"><a id="dialog-repo" class="button button-primary" target="_blank" rel="noopener noreferrer">View source on GitHub <span aria-hidden="true">+</span></a><a id="dialog-demo" class="text-link" target="_blank" rel="noopener noreferrer" hidden>Live demo ↗</a><span id="dialog-source" class="mono quiet"></span></div></div><div id="dialog-showcase" class="showcase" hidden></div></div></dialog>
 </body>
 </html>

@@ -399,6 +399,7 @@ function renderProject(id) {
 // run plays (and 'closing' also while a card-origin close waits for history.back() to settle). Motion is decorative:
 // every run has a single completion step that also runs when the run is cut short, so dismissal never depends on it.
 const entrySession = createEntrySession();
+let gateway = null; // the entrance gateway (gateway.js); it and the showcase never hold a modal at the same time
 const routes = { permitwatch: 'permit' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
 const routeFromLocation = () => classifyProjectRoute(location.href, routes).id;
@@ -489,6 +490,7 @@ const coordinator = (() => {
   // source: 'card' pushes a history entry; 'history' (direct entry, refresh, Back/Forward) never touches history.
   function open(id, source, from = null) {
     if (phase !== 'portfolio' || !projects[id]) return false;
+    gateway?.yieldToShowcase(); // e.g. Back/Forward onto a project URL while the gateway is up; before scroll is captured
     setPhase('opening');
     focusTarget = null;
     activeId = id; trigger = from; scrollPos = { x: window.scrollX, y: window.scrollY };
@@ -610,12 +612,26 @@ const coordinator = (() => {
   window.addEventListener('resize', () => endMotion(true));
 
   setPhase('portfolio');
-  return { open, close, sync, motion };
+  return { open, close, sync, motion, get phase() { return phase; } };
 })();
 // Entry is recorded for supported and invalid project URLs (here) and for card-origin opens (in the coordinator).
-// Ordinary page loads establish nothing. No gateway exists yet, so this has no visible effect.
-if (classifyProjectRoute(location.href, routes).kind !== 'none') entrySession.markEntered();
+// Ordinary page loads establish nothing until the visitor enters or skips.
+const routeKind = classifyProjectRoute(location.href, routes).kind;
+if (routeKind !== 'none') entrySession.markEntered();
 coordinator.sync();
+
+// Entrance gateway. The early bootstrap in index.html only prevents a flash; the real route and session modules decide here.
+// Route precedence: any project route bypasses it, otherwise the entered-session cookie does. gateway.js is imported
+// dynamically so the portfolio never depends on it: if it fails to load or start, the portfolio is simply revealed.
+import('./gateway.js').then(({ createGateway }) => {
+  gateway = createGateway({ dialog: document.querySelector('#gateway-dialog'), motion, session: entrySession, canReplay: () => coordinator.phase === 'portfolio' });
+  document.querySelector('#replay-intro').addEventListener('click', event => gateway.replay(event.currentTarget));
+  if (routeKind === 'none' && entrySession.state() !== 'entered') gateway.show();
+  else delete document.documentElement.dataset.gateway;
+}).catch(() => {
+  gateway = null;
+  delete document.documentElement.dataset.gateway;
+});
 
 document.querySelector('#copy-email').addEventListener('click', async () => {
   const status = document.querySelector('#copy-status');
