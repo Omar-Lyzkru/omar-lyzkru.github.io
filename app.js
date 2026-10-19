@@ -2,7 +2,7 @@ import { drawProjectArt } from './blackhole.js';
 import { createMotionPolicy } from './motion.js';
 import { classifyProjectRoute } from './route.js';
 import { createEntrySession } from './session.js';
-import { createToolkit } from './toolkit.js?v=1';
+import { createToolkit } from './toolkit.js?v=2';
 
 const kinds = { job: 'server' }; // the other cards show genuine captures; the Job card keeps its illustrative cover
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
@@ -280,8 +280,8 @@ const projects = {
       "recognition": ["How it was built", "Tutorial-guided · followed a YouTube programming tutorial"],
       "hero": {
         "src": "assets/raycaster/raycaster-frame.webp",
-        "width": 1440,
-        "height": 1032,
+        "width": 1200,
+        "height": 860,
         "alt": "One frame of the C++ Console Raycaster drawn in characters: a status line reading X=14.70 Y=5.09 A=0.00 FPS=62.4, the 16 by 16 map overlay with the player marked P, solid block-character walls whose height depends on distance, blank gaps at detected tile edges, and rows of x and # characters shading the floor.",
         "caption": "Real output: one frame read from the running Windows renderer’s console screen buffer at its starting position, October 19, 2026. The characters are unchanged; the font and violet color are presentation."
       },
@@ -799,8 +799,6 @@ const coordinator = (() => {
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
   });
   document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => { if (open(button.dataset.project, 'card', button)) entrySession.markEntered(); }));
-  // The Toolkit's View case study controls open the same presentation through this coordinator (A-V2.4).
-  toolkit = createToolkit({ root: document.querySelector('[data-toolkit]'), projects, motion, onView: (id, button) => { if (open(id, 'toolkit', button)) entrySession.markEntered(); } });
 
   // A reduced-motion request or a viewport change mid-run resolves it to its final state at once.
   motion.subscribe(reduced => { if (reduced) endMotion(true); });
@@ -809,6 +807,12 @@ const coordinator = (() => {
   setPhase('portfolio');
   return { open, close, sync, motion, get phase() { return phase; } };
 })();
+// The Toolkit's View case study controls open the same presentation through the coordinator (A-V2.4). It is created
+// outside the coordinator so a Toolkit failure can never take project navigation down with it.
+try {
+  toolkit = createToolkit({ root: document.querySelector('[data-toolkit]'), projects, motion, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
+} catch { toolkit = null; }
+
 // Entry is recorded for supported and invalid project URLs (here) and for card-origin opens (in the coordinator).
 // Ordinary page loads establish nothing until the visitor enters or skips.
 const routeKind = classifyProjectRoute(location.href, routes).kind;

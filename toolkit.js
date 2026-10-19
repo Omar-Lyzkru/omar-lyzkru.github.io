@@ -151,7 +151,6 @@ export function createToolkit({ root, projects, motion, onView, initial = 'javas
       }
       list.append(item);
     }
-    panel.setAttribute('aria-labelledby', title.id);
     panel.replaceChildren(el('p', 'toolkit-kicker mono', tech.group), title, el('p', 'toolkit-count mono', `Used in ${count} of ${Object.keys(projects).length} projects`), list);
   }
 

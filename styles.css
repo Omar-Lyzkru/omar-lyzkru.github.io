@@ -144,13 +144,13 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .toolkit-view-arrow{margin-left:.45em;color:var(--accent)}
 .toolkit-note{max-width:62ch;margin:28px 0 0;font-size:14px;line-height:1.7;color:var(--faint)}
 
-/* About (palette only; the final About redesign belongs to a later task) */
+/* About: readable biography beside the omar.json card. No portrait; the cosmic styling is the site's theme, not a listed interest. */
 .about-section{padding-block:96px 100px}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center;margin-top:40px}
 .about-copy h2{margin-bottom:26px;font-size:clamp(30px,3.6vw,44px)}
 .about-copy p{margin-bottom:16px;font-size:16px;line-height:1.8;color:var(--muted)}
 .about-copy .text-link{margin-top:8px}
-.about-terminal{min-width:0;border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden;box-shadow:0 30px 70px -40px rgba(141,106,240,.6)}
+.about-terminal{min-width:0;margin:0;border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden;box-shadow:0 30px 70px -40px rgba(141,106,240,.6)}
 .terminal-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line-soft);font:12px var(--mono);color:var(--faint)}
 .terminal-bar>span:first-child{display:flex;gap:6px}
 .terminal-bar i{display:block;width:7px;height:7px;border-radius:50%;background:#40395f}
@@ -159,13 +159,13 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .code-comment{color:var(--faint)}.code-key{color:var(--ink)}.code-value{color:var(--accent)}.code-bracket{color:#8b84ad}
 .terminal-foot{padding:14px 24px;border-top:1px solid var(--line-soft);font:12px var(--mono);letter-spacing:.05em;color:var(--faint)}
 .terminal-foot .accent{margin-right:8px}
-.about-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:64px;padding-top:30px;border-top:1px solid var(--line-soft)}
+.about-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:64px;padding-top:30px;border-top:1px solid var(--line-soft)}
 .about-facts .mono{display:block;margin-bottom:10px;color:var(--faint)}
 .about-facts strong{display:block;font-size:16px;font-weight:650}
 .about-facts p{margin:4px 0 0;font-size:14px;color:var(--muted)}
 
-/* Contact (violet lighting only; the finale redesign belongs to a later task) */
-.contact-section{position:relative;isolation:isolate;overflow:hidden;padding-block:84px 96px;border-top:1px solid var(--line-soft);background:linear-gradient(180deg,transparent,#0c0920)}
+/* Contact finale: localized violet light recalling the entrance (a lit horizon rim, not another black hole), then clear actions. */
+.contact-section{position:relative;isolation:isolate;overflow:hidden;padding-block:84px 150px;border-top:1px solid var(--line-soft);background:linear-gradient(180deg,transparent,#0c0920)}
 .contact-section:before{content:"";position:absolute;z-index:-1;inset:auto -10% -40% 30%;height:120%;background:radial-gradient(50% 55% at 60% 80%,rgba(141,106,240,.32),transparent 72%);pointer-events:none}
 .contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(32px,6vw,90px);align-items:center;margin-top:44px}
 .contact-grid h2{font-size:clamp(40px,6vw,72px);line-height:1.04;letter-spacing:-.045em}
@@ -173,6 +173,13 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .contact-copy>p{margin-bottom:22px;font-size:16px;color:var(--muted)}
 .email-row{display:flex;align-items:center;gap:10px;margin-top:22px;font:13px var(--mono);color:var(--muted)}
 .email-row a:hover{color:var(--accent-soft)}
+.contact-light{position:absolute;z-index:-1;left:62%;bottom:-440px;width:max(1100px,120%);height:520px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,#07060e 0 94%,rgba(7,6,14,0) 100%);box-shadow:0 -1px 0 0 rgba(216,201,255,.5),0 -16px 54px -8px rgba(141,106,240,.6),0 -70px 170px 0 rgba(86,58,190,.32);pointer-events:none}
+.contact-links{margin:28px 0 0;padding:0;list-style:none;border-top:1px solid var(--line-soft)}
+.contact-links a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;min-height:54px;border-bottom:1px solid var(--line-soft)}
+.contact-link-name{font-size:15px;font-weight:650;transition:color .2s}
+.contact-link-detail{font-size:12px;color:var(--faint);overflow-wrap:anywhere}
+.contact-arrow{color:var(--accent)}
+.contact-links a:hover .contact-link-name{color:var(--accent-soft)}
 #copy-email{display:flex;padding:10px;border:0;background:transparent;color:var(--faint);border-radius:8px}
 #copy-email:hover{color:var(--accent-soft)}
 .copy-status{display:block;min-height:17px;margin-top:4px;font-size:12px;color:var(--accent)}
@@ -318,7 +325,7 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
 #main:focus-visible,section[tabindex="-1"]:focus-visible{outline:none}
 
 /* Responsive */
-@media(max-width:1100px){.wrap{width:calc(100% - 48px)}.about-facts{gap:24px}}
+@media(max-width:1100px){.wrap{width:calc(100% - 48px)}.about-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px}}
 @media(max-width:960px){
   .hero{grid-template-columns:minmax(0,1fr);gap:48px;padding-bottom:84px}
   .hero:before{inset:34% -30% -4% -20%}
@@ -329,7 +336,7 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
   .toolkit{grid-template-columns:minmax(0,1fr)}
   .toolkit-section{padding-block:68px 76px}
   .about-grid,.contact-grid{grid-template-columns:minmax(0,1fr)}
-  .about-section{padding-block:72px 76px}.contact-section{padding-block:64px 72px}
+  .about-section{padding-block:72px 76px}.contact-section{padding-block:64px 130px}
 }
 @media(max-width:700px){
   .wrap{width:calc(100% - 40px)}

@@ -3,7 +3,7 @@
 | File | Use |
 |---|---|
 | `frame.txt` | The raw 120 × 40 characters, exactly as read from the console |
-| `raycaster-frame.webp` (1440 × 1032) | Project card and case-study hero |
+| `raycaster-frame.webp` (1200 × 860) | Project card and case-study hero |
 
 ## Origin
 
