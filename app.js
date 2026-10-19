@@ -2,7 +2,6 @@ import { drawProjectArt } from './blackhole.js';
 import { createMotionPolicy } from './motion.js';
 import { classifyProjectRoute } from './route.js';
 import { createEntrySession } from './session.js';
-import { createToolkit } from './toolkit.js?v=2';
 
 const kinds = { job: 'server' }; // the other cards show genuine captures; the Job card keeps its illustrative cover
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
@@ -807,11 +806,26 @@ const coordinator = (() => {
   setPhase('portfolio');
   return { open, close, sync, motion, get phase() { return phase; } };
 })();
-// The Toolkit's View case study controls open the same presentation through the coordinator (A-V2.4). It is created
-// outside the coordinator so a Toolkit failure can never take project navigation down with it.
-try {
-  toolkit = createToolkit({ root: document.querySelector('[data-toolkit]'), projects, motion, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
-} catch { toolkit = null; }
+// The Toolkit's View case study controls open the same presentation through the coordinator (A-V2.4). Like the gateway,
+// toolkit.js is imported dynamically and started outside the coordinator, so a missing or broken module, or a failed
+// start, can never take project navigation down with it. Starting it touches no history, focus or scroll.
+const toolkitRoot = document.querySelector('[data-toolkit]');
+import('./toolkit.js?v=2').then(({ createToolkit }) => {
+  const instance = createToolkit({ root: toolkitRoot, projects, motion, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
+  if (typeof instance?.fallbackFocus !== 'function') throw new TypeError('toolkit: unexpected interface');
+  toolkit = instance;
+}).catch(() => {
+  // No half-built picker is left behind: the section stays as a #toolkit destination with a plain note.
+  toolkit = null;
+  const picker = toolkitRoot.querySelector('[data-toolkit-picker]');
+  picker.replaceChildren();
+  picker.hidden = true;
+  const note = document.createElement('p');
+  note.className = 'toolkit-text';
+  note.textContent = 'The technology picker could not load. Each project above lists the technologies it uses.';
+  toolkitRoot.querySelector('[data-toolkit-panel]').replaceChildren(note);
+  toolkitRoot.querySelector('[data-toolkit-status]').textContent = '';
+});
 
 // Entry is recorded for supported and invalid project URLs (here) and for card-origin opens (in the coordinator).
 // Ordinary page loads establish nothing until the visitor enters or skips.
