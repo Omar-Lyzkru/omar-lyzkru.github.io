@@ -1,32 +1,28 @@
 import { mountBlackHole, drawProjectArt } from './blackhole.js';
+import { createMotionPolicy } from './motion.js';
+import { classifyProjectRoute } from './route.js';
+import { createEntrySession } from './session.js';
 
 const hole = mountBlackHole(document.querySelector('#black-hole'), { fps: 18 });
 document.querySelector('.black-hole-art').classList.add('art-ready');
 const kinds = { raycaster: 'network', tracker: 'terminal', job: 'server' };
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-let paused = false;
-// One effective motion policy: manual Pause OR system reduced motion. Task 03 reads this; it is not a second preference.
-const motion = {
-  listeners: new Set(),
-  get reduced() { return paused || reducedMotion.matches; },
-  subscribe(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
-};
-function updateMotion() {
-  const effectivePaused = motion.reduced;
+// One effective motion policy (manual Pause OR system reduced motion) lives in motion.js; the renderer only consumes it.
+const motion = createMotionPolicy();
+const systemReduced = () => motion.systemReduced;
+function updateMotion(effectivePaused = motion.reduced) {
   document.documentElement.dataset.motion = effectivePaused ? 'reduced' : 'full';
-  motion.listeners.forEach(fn => fn(effectivePaused));
   hole.setPaused(effectivePaused);
   const button = document.querySelector('#motion-toggle');
-  button.disabled = reducedMotion.matches;
+  button.disabled = systemReduced();
   button.setAttribute('aria-pressed', String(effectivePaused));
-  button.setAttribute('aria-label', reducedMotion.matches ? 'Animation paused for your reduced motion preference' : paused ? 'Resume black hole animation' : 'Pause black hole animation');
-  document.querySelector('#motion-label').textContent = reducedMotion.matches ? 'Reduced motion' : paused ? 'Resume motion' : 'Pause motion';
+  button.setAttribute('aria-label', systemReduced() ? 'Animation paused for your reduced motion preference' : motion.manualPaused ? 'Resume black hole animation' : 'Pause black hole animation');
+  document.querySelector('#motion-label').textContent = systemReduced() ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion';
   document.querySelector('#motion-icon').textContent = effectivePaused ? '▷' : 'Ⅱ';
   document.querySelector('.art-mode').textContent = effectivePaused ? 'ASCII / STILL' : 'ASCII / LIVE';
 }
-document.querySelector('#motion-toggle').addEventListener('click', () => { paused = !paused; updateMotion(); });
-reducedMotion.addEventListener('change', updateMotion);
+motion.subscribe(updateMotion);
+document.querySelector('#motion-toggle').addEventListener('click', () => motion.toggleManualPaused());
 updateMotion();
 
 const projects = {
@@ -404,10 +400,7 @@ function renderProject(id) {
 // every run has a single completion step that also runs when the run is cut short, so dismissal never depends on it.
 const routes = { permitwatch: 'permit' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
-const routeFromLocation = () => {
-  const slug = new URL(location.href).searchParams.get('project');
-  return slug && Object.hasOwn(routes, slug) ? routes[slug] : null;
-};
+const routeFromLocation = () => classifyProjectRoute(location.href, routes).id;
 const urlFor = slug => {
   const url = new URL(location.href);
   if (slug) url.searchParams.set('project', slug); else url.searchParams.delete('project');
@@ -618,6 +611,10 @@ const coordinator = (() => {
   setPhase('portfolio');
   return { open, close, sync, motion };
 })();
+// Session foundation for the later entrance: supported and invalid project URLs both count as entry.
+// Ordinary URLs establish nothing here. No gateway exists yet, so this has no visible effect.
+const entrySession = createEntrySession();
+if (classifyProjectRoute(location.href, routes).kind !== 'none') entrySession.markEntered();
 coordinator.sync();
 
 document.querySelector('#copy-email').addEventListener('click', async () => {
