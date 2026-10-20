@@ -38,7 +38,7 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
     const system = motion.systemReduced;
     pauseButton.disabled = system;
     pauseButton.setAttribute('aria-pressed', String(motion.reduced));
-    pauseButton.setAttribute('aria-label', system ? 'Animation paused for your reduced motion preference' : motion.manualPaused ? 'Resume animation' : 'Pause animation');
+    pauseButton.setAttribute('aria-label', system ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion');
     pauseLabel.textContent = system ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion';
   }
 

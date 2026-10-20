@@ -4,7 +4,7 @@
 
 ## Selected projects
 
-1. **PermitWatch Houston**: four-person CodeRED Orion team project and Environmental Track winner. The case study describes Omar’s data integration and React/TypeScript frontend work. [Team repository](https://github.com/Abbas9x/permitwatch-houston).
+1. **PermitWatch Houston**: four-person CodeRED Orion team project and Environmental Track Winner. The case study describes Omar’s data integration and React/TypeScript frontend work. [Team repository](https://github.com/Abbas9x/permitwatch-houston).
 2. **Job Application Automation Platform**: AI-assisted Node.js/Playwright application, with product requirements, workflow safeguards, and review contribution explained.
 3. **C++ Console Raycaster**: tutorial-guided Windows console project, with CMake and portable calculation tests. Its image is a real frame read from the running program (see `assets/raycaster/PROVENANCE.md`).
 4. **Persistent Task Tracker**: supporting JavaScript, HTML, and CSS project, with screenshots of the live app (see `assets/tracker/PROVENANCE.md`).

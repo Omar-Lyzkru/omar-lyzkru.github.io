@@ -14,7 +14,7 @@ function updateMotion(effectivePaused = motion.reduced) {
   const button = document.querySelector('#motion-toggle');
   button.disabled = systemReduced();
   button.setAttribute('aria-pressed', String(effectivePaused));
-  button.setAttribute('aria-label', systemReduced() ? 'Animation paused for your reduced motion preference' : motion.manualPaused ? 'Resume animation' : 'Pause animation');
+  button.setAttribute('aria-label', systemReduced() ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion');
   document.querySelector('#motion-label').textContent = systemReduced() ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion';
   document.querySelector('#motion-icon').textContent = effectivePaused ? '▷' : 'Ⅱ';
 }
@@ -51,7 +51,7 @@ const projects = {
       ]
     ],
     "showcase": {
-      "recognition": ["Team achievement", "Best Environment Hack winner · CodeRED Orion"],
+      "recognition": ["Team achievement", "Environmental Track Winner · CodeRED Orion"],
       "hero": {
         "src": "assets/permitwatch-results.jpg",
         "width": 1440,
@@ -118,7 +118,7 @@ const projects = {
           "id": "outcome",
           "title": "Outcome & Lessons",
           "outcomes": [
-            "The team won Best Environment Hack at CodeRED Orion, University of Houston.",
+            "The team received the Environmental Track Winner award at CodeRED Orion, University of Houston.",
             "The public demo and the source repository are both live.",
             "The published snapshot holds 807 validated permits across four categories, each with an official source link.",
             "For the documented demo location, 5303 S Lake Houston Pkwy at 3 miles, the app returns 18 permits across all four categories.",
@@ -138,7 +138,7 @@ const projects = {
     "repo": "https://github.com/Abbas9x/permitwatch-houston",
     "repoLabel": "View team source on GitHub",
     "demo":"https://permitwatch-houston.onrender.com/",
-    "source": "TEAM PROJECT · BEST ENVIRONMENT HACK WINNER"
+    "source": "TEAM PROJECT · Environmental Track Winner"
   },
   "job": {
     "number": "02",
@@ -836,7 +836,7 @@ coordinator.sync();
 // Entrance gateway. The early bootstrap in index.html only prevents a flash; the real route and session modules decide here.
 // Route precedence: any project route bypasses it, otherwise the entered-session cookie does. gateway.js is imported
 // dynamically so the portfolio never depends on it: if it fails to load or start, the portfolio is simply revealed.
-import('./gateway.js?v=3').then(({ createGateway }) => {
+import('./gateway.js?v=4').then(({ createGateway }) => {
   gateway = createGateway({ dialog: document.querySelector('#gateway-dialog'), motion, session: entrySession, canReplay: () => coordinator.phase === 'portfolio' });
   const replayButton = document.querySelector('#replay-intro');
   replayButton.addEventListener('click', event => gateway.replay(event.currentTarget));
