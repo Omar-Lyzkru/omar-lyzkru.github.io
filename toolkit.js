@@ -109,6 +109,7 @@ export function createToolkit({ root, projects, motion, onView, initial = 'javas
       const button = el('button', 'toolkit-tech', tech.name);
       button.type = 'button';
       button.dataset.tech = tech.id;
+      button.dataset.label = tech.name; // reserves the bold width (styles.css), so selection never reflows the picker
       button.setAttribute('aria-pressed', 'false');
       button.setAttribute('aria-controls', panel.id);
       button.addEventListener('click', () => select(tech.id, true));

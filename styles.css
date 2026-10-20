@@ -125,10 +125,12 @@ h2{margin-bottom:0;font-size:clamp(32px,4vw,52px);font-weight:750;line-height:1.
 .toolkit-picker[hidden]+.toolkit-panel{grid-column:1/-1} /* toolkit.js failed: the panel holds a plain note instead */
 .toolkit-group-title{margin:0 0 12px;font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
 .toolkit-techs{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
-.toolkit-tech{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 17px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font:500 14px var(--sans);transition:color .2s,border-color .2s,background .2s}
+.toolkit-tech{position:relative;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-height:44px;padding:0 23px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font:500 14px var(--sans);transition:color .2s,border-color .2s,background .2s}
+/* Selecting never resizes a button or reflows its row: an invisible bold copy of the label sets the width in both states, and the dot sits in the padding. */
+.toolkit-tech:after{content:attr(data-label);content:attr(data-label) / "";height:0;overflow:hidden;visibility:hidden;font-weight:700;pointer-events:none}
 .toolkit-tech:hover{color:var(--ink);border-color:var(--accent-2)}
 .toolkit-tech[aria-pressed="true"]{background:#e9e0ff;border-color:#e9e0ff;color:var(--accent-ink);font-weight:700}
-.toolkit-tech[aria-pressed="true"]:before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--accent-2)} /* a shape cue, so selection is not shown by color alone */
+.toolkit-tech[aria-pressed="true"]:before{content:"";position:absolute;left:10px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--accent-2)} /* a shape cue, so selection is not shown by color alone */
 .toolkit-panel{min-width:0;padding:clamp(22px,3vw,34px);border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,rgba(29,26,51,.92),rgba(17,15,31,.92));box-shadow:0 30px 70px -44px rgba(141,106,240,.7)}
 .toolkit-kicker{margin:0 0 6px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .toolkit-panel-title{margin:0 0 4px;font-size:clamp(26px,3vw,34px);font-weight:700;line-height:1.15;letter-spacing:-.02em}

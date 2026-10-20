@@ -810,7 +810,7 @@ const coordinator = (() => {
 // toolkit.js is imported dynamically and started outside the coordinator, so a missing or broken module, or a failed
 // start, can never take project navigation down with it. Starting it touches no history, focus or scroll.
 const toolkitRoot = document.querySelector('[data-toolkit]');
-import('./toolkit.js?v=2').then(({ createToolkit }) => {
+import('./toolkit.js?v=3').then(({ createToolkit }) => {
   const instance = createToolkit({ root: toolkitRoot, projects, motion, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
   if (typeof instance?.fallbackFocus !== 'function') throw new TypeError('toolkit: unexpected interface');
   toolkit = instance;
