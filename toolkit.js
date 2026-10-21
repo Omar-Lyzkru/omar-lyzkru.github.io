@@ -10,12 +10,14 @@
 // toolkit.fallbackFocus(id)     // where focus should return when the invoking control is gone
 const gh = 'https://github.com/';
 const pw = `${gh}Abbas9x/permitwatch-houston/`;
+const dkv = `${gh}Omar-Lyzkru/DurableKV/blob/main/`;
+const cih = `${gh}Omar-Lyzkru/calendar-intelligence-hub/blob/main/`;
 const job = `${gh}Omar-Lyzkru/job-applier/blob/main/`;
 const ray = `${gh}Omar-Lyzkru/raycaster/blob/main/`;
 const tracker = `${gh}Omar-Lyzkru/tiny-task-tracker/blob/main/`;
 
 // How each project was built, repeated beside every association so no claim reads as solo work by accident.
-const projectContext = { permit: 'Team project', job: 'AI-assisted', raycaster: 'Tutorial-guided', tracker: 'Personal project' };
+const projectContext = { permit: 'Team project', durablekv: 'AI-assisted', calendar: 'AI-assisted', job: 'AI-assisted', raycaster: 'Tutorial-guided', tracker: 'Personal project' };
 
 export const toolkitGroups = [
   {
@@ -26,9 +28,11 @@ export const toolkitGroups = [
         { project: 'tracker', text: 'All of the app’s behavior is one vanilla JavaScript file: task state, rendering, inline editing, filtering, and saving.', evidence: [['script.js', `${tracker}script.js`]] }
       ] },
       { id: 'typescript', name: 'TypeScript', uses: [
-        { project: 'permit', text: 'The team app is TypeScript throughout. My changes include the radius-slider React component and the TypeScript collectors and normalizers that expanded the dataset.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`], ['c27bc23', `${pw}commit/c27bc23`]] }
+        { project: 'permit', text: 'The team app is TypeScript throughout. My changes include the radius-slider React component and the TypeScript collectors and normalizers that expanded the dataset.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`], ['c27bc23', `${pw}commit/c27bc23`]] },
+        { project: 'calendar', text: 'The API, the React frontend, and a shared contracts package of typed schemas for messages, events, reviews, and automation policy are all TypeScript, written by AI coding agents under my requirements and design approval.', evidence: [['messages.ts', `${cih}packages/contracts/src/messages.ts`], ['app.ts', `${cih}apps/api/src/app.ts`], ['App.tsx', `${cih}apps/web/src/App.tsx`]] }
       ] },
       { id: 'cpp', name: 'C++', uses: [
+        { project: 'durablekv', text: 'The storage engine is C++20: a binary record codec with CRC32C, an append-only log writer, a scanner, index reconstruction, and the public Storage API. AI coding agents wrote it under my requirements and design approval.', evidence: [['storage.h', `${dkv}include/durablekv/storage.h`], ['record_codec.cpp', `${dkv}src/record_codec.cpp`], ['storage.cpp', `${dkv}src/storage.cpp`]] },
         { project: 'raycaster', text: 'The renderer and its calculations are C++17: ray casting, movement, and collision in a portable header, and console output in the Windows program.', evidence: [['raycaster_core.h', `${ray}1st%20project/raycaster_core.h`], ['confpsbutbetter.cpp', `${ray}1st%20project/confpsbutbetter.cpp`]] }
       ] },
       { id: 'html-css', name: 'HTML & CSS', uses: [
@@ -41,11 +45,17 @@ export const toolkitGroups = [
     name: 'Frameworks & runtimes',
     technologies: [
       { id: 'react', name: 'React', uses: [
-        { project: 'permit', text: 'The frontend is a React app. I implemented the 1–10 mile radius slider, persistent dark and light appearances, and the restored concerns drafting in its components.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`], ['1ac7082', `${pw}commit/1ac7082`], ['c734368', `${pw}commit/c734368`]] }
+        { project: 'permit', text: 'The frontend is a React app. I implemented the 1–10 mile radius slider, persistent dark and light appearances, and the restored concerns drafting in its components.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`], ['1ac7082', `${pw}commit/1ac7082`], ['c734368', `${pw}commit/c734368`]] },
+        { project: 'calendar', text: 'A React and Vite frontend provides the review screen for editing, approving, or ignoring each candidate, with duplicate and conflict panels, plus automation settings and an activity feed. AI-assisted code.', evidence: [['ReviewDetail.tsx', `${cih}apps/web/src/features/reviews/ReviewDetail.tsx`], ['AutomationSettings.tsx', `${cih}apps/web/src/features/automation/AutomationSettings.tsx`], ['vite.config.ts', `${cih}apps/web/vite.config.ts`]] }
       ] },
       { id: 'nodejs', name: 'Node.js', uses: [
         { project: 'job', text: 'A local Node.js HTTP server serves the dashboard and its API, schedules application runs, and stores data as JSON files.', evidence: [['server.mjs', `${job}src/server.mjs`], ['runner.mjs', `${job}src/runner.mjs`]] },
-        { project: 'permit', text: 'The team’s API runs on Node.js with Express. I updated the search route and service so the API and the map share one search radius.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`]] }
+        { project: 'permit', text: 'The team’s API runs on Node.js with Express. I updated the search route and service so the API and the map share one search radius.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`]] },
+        { project: 'calendar', text: 'A Node.js 24 API handles sign-in sessions, message imports, review actions, automation, and the Calendar writer, and a local scheduler polls and evaluates candidates. AI-assisted code.', evidence: [['server.ts', `${cih}apps/api/src/server.ts`], ['scheduler.ts', `${cih}apps/api/src/application/automation/scheduler.ts`]] }
+      ] },
+      { id: 'express', name: 'Express', uses: [
+        { project: 'permit', text: 'The team’s API is an Express app. I updated its search route and service so the API and the map share one search radius.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`]] },
+        { project: 'calendar', text: 'Express 5 serves the JSON API, with cookie sessions and CSRF protection, for the review, import, and automation routes. AI-assisted code.', evidence: [['app.ts', `${cih}apps/api/src/app.ts`], ['routes/reviews.ts', `${cih}apps/api/src/routes/reviews.ts`]] }
       ] },
       { id: 'maplibre', name: 'MapLibre GL', uses: [
         { project: 'permit', text: 'The map is built on MapLibre GL. I implemented separate selectable markers for permits at shared coordinates and the map side of the adjustable search radius.', evidence: [['c734368', `${pw}commit/c734368`], ['0c5cd72', `${pw}commit/0c5cd72`]] }
@@ -61,13 +71,26 @@ export const toolkitGroups = [
       { id: 'sqlite', name: 'SQLite', uses: [
         { project: 'permit', text: 'The team’s API reads permits from SQLite. Expanding the published dataset from 213 to 807 records included my migration and repository changes for the new permit categories.', evidence: [['c27bc23', `${pw}commit/c27bc23`], ['Verification report', `${pw}blob/main/docs/multi-permit-verification.md`]] }
       ] },
+      { id: 'postgresql', name: 'PostgreSQL', uses: [
+        { project: 'calendar', text: 'PostgreSQL stores messages, reviews, write intents, and automation decisions. A per-user advisory lock serializes Calendar actions across processes, and the integration suite runs against a real disposable database. AI-assisted code.', evidence: [['schema.prisma', `${cih}prisma/schema.prisma`], ['actionLock.ts', `${cih}apps/api/src/application/automation/actionLock.ts`], ['calendarWrites.test.ts', `${cih}tests/integration/calendarWrites.test.ts`]] }
+      ] },
+      { id: 'prisma', name: 'Prisma', uses: [
+        { project: 'calendar', text: 'The Prisma schema and five migrations define the database, and the Calendar write path claims a write intent inside a transaction that locks the review row. AI-assisted code.', evidence: [['schema.prisma', `${cih}prisma/schema.prisma`], ['calendarWrites.ts', `${cih}apps/api/src/infrastructure/persistence/calendarWrites.ts`]] }
+      ] },
       { id: 'localstorage', name: 'localStorage', uses: [
         { project: 'tracker', text: 'Tasks are saved to localStorage as JSON after every change and restored on the next visit, with malformed entries filtered out.', evidence: [['script.js', `${tracker}script.js`]] },
         { project: 'permit', text: 'The dark and light appearance I added is remembered in localStorage, with an in-memory fallback when storage is unavailable.', evidence: [['1ac7082', `${pw}commit/1ac7082`]] }
       ] },
       { id: 'playwright', name: 'Playwright', uses: [
         { project: 'job', text: 'Playwright drives a separate Chromium session for applications, and a Playwright suite tests the dashboard against local fixture forms.', evidence: [['session.mjs', `${job}src/browser/session.mjs`], ['test-browser.mjs', `${job}scripts/test-browser.mjs`]] },
-        { project: 'permit', text: 'I added Playwright browser regression tests for markers at shared coordinates and for concerns drafts that survive responsive layout changes.', evidence: [['c734368', `${pw}commit/c734368`], ['8e9438b', `${pw}commit/8e9438b`]] }
+        { project: 'permit', text: 'I added Playwright browser regression tests for markers at shared coordinates and for concerns drafts that survive responsive layout changes.', evidence: [['c734368', `${pw}commit/c734368`], ['8e9438b', `${pw}commit/8e9438b`]] },
+        { project: 'calendar', text: 'A Playwright suite drives the real browser against a local server with synthetic providers and a disposable database; 29 tests are recorded as passing in the repository’s project-state document.', evidence: [['playwright.config.ts', `${cih}playwright.config.ts`], ['review.spec.ts', `${cih}tests/e2e/review.spec.ts`], ['PROJECT_STATE.md', `${cih}docs/PROJECT_STATE.md`]] }
+      ] },
+      { id: 'vitest', name: 'Vitest', uses: [
+        { project: 'calendar', text: 'Vitest runs the unit, API, and UI tests (443 recorded as passing) and, with a separate config, the PostgreSQL integration suite (227 recorded). The counts come from the repository’s project-state document.', evidence: [['vitest.config.ts', `${cih}vitest.config.ts`], ['vitest.integration.config.ts', `${cih}vitest.integration.config.ts`], ['PROJECT_STATE.md', `${cih}docs/PROJECT_STATE.md`]] }
+      ] },
+      { id: 'make', name: 'GNU Make', uses: [
+        { project: 'durablekv', text: 'One Makefile is the single build entry point: C++20 builds with -Werror, 13 test executables, a strict verify target, and a static-library target with an independent consumer. It picks Windows or POSIX settings automatically.', evidence: [['Makefile', `${dkv}Makefile`], ['README.md', `${dkv}README.md`]] }
       ] },
       { id: 'cmake', name: 'CMake & CTest', uses: [
         { project: 'raycaster', text: 'CMake builds the Windows program and a portable test executable. CTest runs five calculation test groups, which also run on Linux and macOS.', evidence: [['CMakeLists.txt', `${ray}CMakeLists.txt`], ['raycaster_tests.cpp', `${ray}tests/raycaster_tests.cpp`]] }
@@ -77,6 +100,7 @@ export const toolkitGroups = [
         { project: 'tracker', text: 'A GitHub Actions workflow deploys the app to GitHub Pages on every push to main.', evidence: [['pages.yml', `${tracker}.github/workflows/pages.yml`]] }
       ] },
       { id: 'linux', name: 'Linux', uses: [
+        { project: 'durablekv', text: 'The documented Linux build and test run is on Ubuntu 24.04 under WSL2 (ext4). Compaction swaps files with rename there and refuses filesystems and file metadata it cannot verify.', evidence: [['README.md', `${dkv}README.md`], ['storage.cpp', `${dkv}src/storage.cpp`]] },
         { project: 'job', text: 'The app runs on Linux (on Windows, through WSL2). A Linux-only ownership lock keeps two app processes from using the same data folder.', evidence: [['data-ownership.mjs', `${job}src/data-ownership.mjs`]] },
         { project: 'raycaster', text: 'The portable calculation tests also build and run on Linux. Only the interactive renderer needs Windows.', evidence: [['CMakeLists.txt', `${ray}CMakeLists.txt`]] }
       ] }

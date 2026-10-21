@@ -3,7 +3,7 @@ import { createMotionPolicy } from './motion.js';
 import { classifyProjectRoute } from './route.js';
 import { createEntrySession } from './session.js';
 
-const kinds = { job: 'server' }; // the other cards show genuine captures; the Job card keeps its illustrative cover
+const kinds = { job: 'server', calendar: 'constellation' }; // the other cards show genuine captures; the Job and Calendar cards keep illustrative covers
 document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
 // One effective motion policy (manual Pause OR system reduced motion) lives in motion.js. The header Pause control and the
 // data-motion attribute (which scopes decorative CSS motion) only consume it; nothing in the homepage owns preference state.
@@ -26,7 +26,7 @@ const projects = {
   "permit": {
     "number": "01",
     "category": "ENVIRONMENTAL DATA / FOUR-PERSON TEAM PROJECT",
-    "title": "PermitWatch Houston",
+    "title": "PermitWatch",
     "summary": "A bilingual English/Spanish web app for exploring TCEQ and EPA environmental permits near a Houston address or ZIP code, built by a four-person team for CodeRED Orion at the University of Houston.",
     "tags": [
       "React",
@@ -56,7 +56,7 @@ const projects = {
         "src": "assets/permitwatch-results.jpg",
         "width": 1440,
         "height": 900,
-        "alt": "PermitWatch Houston results for 5303 S Lake Houston Pkwy: a dark map with a three-mile boundary and colored permit markers, a search-distance slider, category and status filters, and counts of 18 permits across four categories.",
+        "alt": "PermitWatch results for 5303 S Lake Houston Pkwy: a dark map with a three-mile boundary and colored permit markers, a search-distance slider, category and status filters, and counts of 18 permits across four categories.",
         "caption": "Results for 5303 S Lake Houston Pkwy within 3 miles: 18 permits across all four categories. Screenshot of the public demo, captured October 17, 2026."
       },
       "sections": [
@@ -82,7 +82,7 @@ const projects = {
             "src": "assets/permitwatch-preview.jpg",
             "width": 1265,
             "height": 712,
-            "alt": "PermitWatch Houston landing page with an address or ZIP code search field, example searches, and a note that permit limits are not measured pollution.",
+            "alt": "PermitWatch landing page with an address or ZIP code search field, example searches, and a note that permit limits are not measured pollution.",
             "caption": "Landing page: search by address or ZIP code. Screenshot of the public demo, captured October 14, 2026."
           }
         },
@@ -140,8 +140,474 @@ const projects = {
     "demo":"https://permitwatch-houston.onrender.com/",
     "source": "TEAM PROJECT · Environmental Track Winner"
   },
-  "job": {
+  "durablekv": {
     "number": "02",
+    "category": "SYSTEMS ENGINEERING / AI-ASSISTED PROJECT",
+    "title": "DurableKV",
+    "summary": "A C++20 persistent key-value storage engine built on an append-only, CRC32C-checked binary log. It rebuilds its index when a database is opened, recovers from an incomplete final write, and compacts the log on request.",
+    "tags": [
+      "C++20",
+      "GNU Make",
+      "Append-only log",
+      "CRC32C",
+      "Failure-injection tests"
+    ],
+    "metrics": [
+      [
+        "13",
+        "test suites"
+      ],
+      [
+        "254 / 247",
+        "recorded Linux / Windows cases"
+      ],
+      [
+        "CRC32C",
+        "checksummed records"
+      ]
+    ],
+    "showcase": {
+      "recognition": [
+        "How it was built",
+        "AI coding agents · my requirements, design approval & testing"
+      ],
+      "hero": {
+        "src": "assets/durablekv/persistence-demo.gif",
+        "still": "assets/durablekv/persistence-demo-final.webp",
+        "width": 790,
+        "height": 448,
+        "alt": "Terminal recording: one process creates a DurableKV database, stores a greeting, reads it back, and exits. A separately launched second process, with a different process ID, opens the same file and reads the same value. The final frame shows both processes reporting that the value matches and an exit status of 0.",
+        "caption": "Real terminal recording from the DurableKV repository (Ubuntu 24.04 under WSL2). A second process reads a value the first process wrote, which shows data surviving process exit, not power-loss or crash durability. It appears as a still frame when motion is paused or reduced."
+      },
+      "sections": [
+        {
+          "id": "goal",
+          "title": "The Goal",
+          "paragraphs": [
+            "A key-value store is a good place to study what “saved” really means. DurableKV is a C++20 library that keeps binary keys and values in one append-only file and comes back with the same data when a new process opens that file.",
+            "Its public surface is one small type, durablekv::Storage, with put, get, erase, and a manual compact. Keys and values are arbitrary bytes, including empty ones and embedded NUL bytes. The repository packages the engine as a static library and checks it with a separate consumer program that uses only the public header."
+          ]
+        },
+        {
+          "id": "design",
+          "title": "How It Works",
+          "steps": [
+            [
+              "Append a checksummed record",
+              "Each put or erase is encoded as a binary record protected by CRC32C, appended to the log, and flushed before the in-memory index changes."
+            ],
+            [
+              "Rebuild the index on open",
+              "Opening a database replays the log in order and rebuilds an index from each key to the offset of its latest value. A get reads that one record from disk, and an erase removes the key."
+            ],
+            [
+              "Recover only what is provably incomplete",
+              "If the log ends in a short record whose available bytes are still valid, opening truncates it to the last complete record. Real corruption is reported and never silently repaired."
+            ],
+            [
+              "Compact on request",
+              "compact() writes one record per live key to a candidate file, validates it against the live data, then swaps it in with rename on Linux or ReplaceFileW on Windows. Nothing compacts automatically."
+            ]
+          ]
+        },
+        {
+          "id": "engineering",
+          "title": "Engineering & My Role",
+          "paragraphs": [
+            "The items below describe what the AI-assisted code does. My own role is stated once, after them, rather than claimed item by item."
+          ],
+          "items": [
+            {
+              "title": "Telling an unfinished write from corruption",
+              "challenge": "A crash can leave half a record at the end of the file, and disk damage can look similar. Truncating the wrong one would destroy data.",
+              "body": "The scanner treats a short final header as an incomplete tail only when its available bytes are still consistent with a valid header. Provably invalid bytes are corruption, and scanning stops at the first invalid record. Recovery truncates only a positively identified tail and verifies the resulting length, while corruption makes opening fail.",
+              "evidence": [
+                [
+                  "log_scanner.cpp",
+                  "blob/main/src/log_scanner.cpp"
+                ],
+                [
+                  "log_recovery.cpp",
+                  "blob/main/src/log_recovery.cpp"
+                ],
+                [
+                  "record_codec.cpp",
+                  "blob/main/src/record_codec.cpp"
+                ]
+              ]
+            },
+            {
+              "title": "Compaction that checks its own work",
+              "challenge": "Rewriting the only copy of the data is the riskiest step in a log-structured store.",
+              "body": "compact() builds a candidate file beside the database, scans it, rebuilds its index, and compares every live value with the live store before replacing the database. If preparation fails and the store is still healthy, it tries to remove the candidate and stays usable. Once replacement begins, any failure makes the object unusable, and leftover files are left for manual inspection instead of being restored automatically.",
+              "evidence": [
+                [
+                  "storage.cpp",
+                  "blob/main/src/storage.cpp"
+                ],
+                [
+                  "storage.h",
+                  "blob/main/include/durablekv/storage.h"
+                ]
+              ]
+            },
+            {
+              "title": "Failure is tested, not assumed",
+              "challenge": "Failure paths rarely run by accident, so a store can look correct until the first bad write.",
+              "body": "The 13 test executables include a model-based suite that compares the public API with a std::map reference over fixed scenarios and four fixed-seed randomized runs. A separate failure-lifecycle suite injects append, flush, index-commit, and compaction-replacement failures, then checks exactly what a fresh reopen is allowed to show. The tests never assume a failed mutation was atomic.",
+              "evidence": [
+                [
+                  "storage_lifecycle_test.cpp",
+                  "blob/main/tests/storage_lifecycle_test.cpp"
+                ],
+                [
+                  "storage_failure_lifecycle_test.cpp",
+                  "blob/main/tests/storage_failure_lifecycle_test.cpp"
+                ],
+                [
+                  "Makefile",
+                  "blob/main/Makefile"
+                ]
+              ]
+            }
+          ],
+          "note": [
+            "MY ROLE",
+            "Development used AI coding agents. My role was the requirements, design approval, and testing; the agents wrote the implementation. The repository does not show that I wrote every subsystem or test."
+          ],
+          "code": [
+            "Excerpt from src/storage.cpp: validating the compaction candidate before the database is replaced",
+            "const auto verified = scan_log(candidate);\nif (verified.ending != ScanEnding::clean ||\n    verified.record_count != live_count ||\n    verified.last_valid_offset != std::filesystem::file_size(candidate))\n  throw std::runtime_error(\"DurableKV compacted candidate failed validation\");\nconst auto candidate_index = reconstruct_index(candidate);\nif (candidate_index.size() != live_count)\n  throw std::runtime_error(\"DurableKV compacted candidate has duplicate keys\");\nsession_->for_each_live([&](const std::string& key,\n                            const std::string& value) {\n  if (lookup_indexed_value(candidate, candidate_index, key) != value)\n    throw std::runtime_error(\"DurableKV compacted candidate changed live state\");\n});"
+          ]
+        },
+        {
+          "id": "outcome",
+          "title": "Outcome & Limits",
+          "outcomes": [
+            "A second process opens an existing database and reads the value the first process wrote. The repository’s recorded terminal demo shows exactly this.",
+            "The repository’s v1 release-readiness audit (October 19, 2026) records all 13 suites passing: 254 cases on Linux and 247 on Windows, with strict compaction runs and static-library consumer checks on both. These are recorded results; this portfolio update did not rerun them.",
+            "The engine builds as a static library, and an independent consumer program exercises only its public API."
+          ],
+          "limits": [
+            "Records are flushed from the process, but survival across power loss or an operating-system crash is not guaranteed. The demo shows data surviving process exit only.",
+            "There is no transactional rollback. A put or erase that reports failure may still appear after the database is reopened.",
+            "One process and one thread own a database, and external modification while it is open is unsupported.",
+            "Compaction is manual and synchronous, and it runs only on a local NTFS volume (Windows) or verified ext4 (Linux). Other environments throw an error.",
+            "It has been built and tested only with MSYS2 g++ on Windows and Ubuntu 24.04 g++ under WSL2. No portability, production-readiness, or performance claim is made.",
+            "Because AI coding agents wrote the implementation, the repository does not show that I wrote every subsystem or test."
+          ],
+          "lessonsTitle": "What I’m learning",
+          "lessons": "This project gave me practice specifying storage behavior precisely: what a successful write promises, what a failed one can leave behind, and which guarantees are deliberately not made. Reviewing the failure tests showed me how much of a storage engine’s design is about its unhappy paths."
+        }
+      ]
+    },
+    "repo": "https://github.com/Omar-Lyzkru/DurableKV",
+    "repoLabel": "View source on GitHub",
+    "source": "AI CODING AGENTS · REQUIREMENTS, DESIGN APPROVAL & TESTING"
+  },
+  "calendar": {
+    "number": "03",
+    "category": "FULL-STACK TYPESCRIPT / AI-ASSISTED PROJECT",
+    "title": "Calendar Intelligence Hub",
+    "summary": "A local full-stack TypeScript application that turns selected Gmail, Outlook, and Discord messages into reviewed Google Calendar events. Extraction is deterministic (no LLM), uncertain facts stay unresolved, and Calendar writes are built to avoid duplicates.",
+    "tags": [
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Prisma",
+      "Vitest",
+      "Playwright"
+    ],
+    "metrics": [
+      [
+        "443",
+        "unit/API/UI tests · recorded"
+      ],
+      [
+        "227",
+        "PostgreSQL integration · recorded"
+      ],
+      [
+        "29",
+        "Playwright browser · recorded"
+      ]
+    ],
+    "showcase": {
+      "recognition": [
+        "How it was built",
+        "AI coding agents · my requirements, design approval & workflow testing"
+      ],
+      "hero": {
+        "flow": [
+          [
+            "Gmail, Outlook, and Discord adapters",
+            "Each message becomes one provider-neutral record"
+          ],
+          [
+            "Deterministic extraction",
+            "Dates, times, timezones, and categories, with no LLM"
+          ],
+          [
+            "Unknown facts stay unresolved",
+            "Missing year, assumed zone, or a repeated daylight-saving time → a focused question"
+          ],
+          [
+            "Duplicate and conflict advisories",
+            "Checked against local records and the Google primary calendar"
+          ],
+          [
+            "Review, or an explicit automation rule",
+            "Automation is off by default: Auto, Ask, or Skip"
+          ],
+          [
+            "Immutable approved snapshot",
+            "Later edits cannot change what was approved"
+          ],
+          [
+            "Durable write intent",
+            "Stable event ID, payload hash, lease, and claim token"
+          ],
+          [
+            "Create-only Calendar write",
+            "A lost response is “unknown”, then reconciled, never assumed added"
+          ]
+        ],
+        "label": "Message to Calendar event",
+        "caption": "Workflow diagram based on the repository README and source. It is an illustration, not a screenshot of the app."
+      },
+      "sections": [
+        {
+          "id": "problem",
+          "title": "The Problem",
+          "paragraphs": [
+            "Deadlines and events arrive scattered across mailboxes and community announcements, in inconsistent formats. Copying them into a calendar by hand is tedious, but automating it is risky: a guessed timezone or a duplicated event is worse than a missed one.",
+            "This project explores how far deterministic extraction and careful write safety can go, and where a person has to stay in the loop. It runs locally for development and is not deployed."
+          ]
+        },
+        {
+          "id": "workflow",
+          "title": "How It Works",
+          "steps": [
+            [
+              "Bring messages in",
+              "Selected Gmail and Outlook messages are imported, and an allowlisted Discord Follow relay is read through a read-only Gateway bot. Provider adapters turn each source into one message shape."
+            ],
+            [
+              "Extract facts, not guesses",
+              "Rule-based code finds the date, time, timezone, and category. Timed, all-day, date-only, and unresolved events are separate cases, and anything missing is left empty and flagged."
+            ],
+            [
+              "Review and correct",
+              "A review screen lets the user edit, approve, or ignore each candidate. It shows duplicate and scheduling-conflict advisories and explains the extraction confidence, and approval stays blocked until the required facts are confirmed."
+            ],
+            [
+              "Create the event once",
+              "Only an approved snapshot is written, create-only, to the primary Google Calendar, with a stable ID and a payload hash that is verified afterward."
+            ]
+          ]
+        },
+        {
+          "id": "engineering",
+          "title": "Engineering & My Role",
+          "paragraphs": [
+            "The items below describe what the AI-assisted code does. My own role is stated once, after them, rather than claimed item by item."
+          ],
+          "items": [
+            {
+              "title": "Duplicate-safe Calendar writes",
+              "challenge": "A retry, a double click, a crash, or a lost response must not create a second event.",
+              "body": "Each approved review gets one saved write intent: a stable provider event ID, the payload hash, a lease, and a claim token. Retries reuse it. A lost response is recorded as unknown, not added, and the next attempt looks up the saved ID and verifies the payload hash before accepting the event. Expired leases recover without another insert, and a stale claim token cannot finish a newer claim. A per-user PostgreSQL advisory lock serializes manual and automatic writes.",
+              "evidence": [
+                [
+                  "createCalendarEvent.ts",
+                  "blob/main/apps/api/src/application/createCalendarEvent.ts"
+                ],
+                [
+                  "calendarWrites.ts",
+                  "blob/main/apps/api/src/infrastructure/persistence/calendarWrites.ts"
+                ],
+                [
+                  "actionLock.ts",
+                  "blob/main/apps/api/src/application/automation/actionLock.ts"
+                ]
+              ]
+            },
+            {
+              "title": "Extraction confidence is not permission",
+              "challenge": "A confident extraction can still be wrong, and a wrong automatic write is worse than a missed one.",
+              "body": "Automation is off by default and uses explicit Auto, Ask, and Skip rules, where Skip wins. The engine writes automatically only with complete facts, an allowing rule, fresh duplicate and conflict checks, and unchanged policy, source, and review versions. Otherwise it asks. An operator-only live-write gate stays off until a first real write is explicitly authorized.",
+              "evidence": [
+                [
+                  "engine.ts",
+                  "blob/main/apps/api/src/application/automation/engine.ts"
+                ],
+                [
+                  "automation.ts",
+                  "blob/main/packages/contracts/src/automation.ts"
+                ],
+                [
+                  "automation-safety.md",
+                  "blob/main/docs/automation-safety.md"
+                ]
+              ]
+            },
+            {
+              "title": "Time zones and daylight saving",
+              "challenge": "A local time can be skipped or repeated when clocks change, and a wrong guess moves the event by an hour.",
+              "body": "Local times are resolved against an IANA timezone. A time that does not exist is rejected, and a repeated time requires choosing the earlier or later occurrence. Missing years, assumed zones, and date-only interpretations also need confirmation instead of a guess.",
+              "evidence": [
+                [
+                  "temporal.ts",
+                  "blob/main/packages/contracts/src/temporal.ts"
+                ],
+                [
+                  "temporal.test.ts",
+                  "blob/main/packages/contracts/src/temporal.test.ts"
+                ],
+                [
+                  "parseTimezones.ts",
+                  "blob/main/apps/api/src/domain/events/parseTimezones.ts"
+                ]
+              ]
+            },
+            {
+              "title": "Credentials stay on the server",
+              "challenge": "Provider tokens are the most sensitive data the application holds.",
+              "body": "Google and Microsoft OAuth tokens live only in the backend, encrypted at rest with AES-256-GCM. Source message content expires after 30 days, and review explanations avoid copying private message bodies into history.",
+              "evidence": [
+                [
+                  "tokenVault.ts",
+                  "blob/main/apps/api/src/infrastructure/google/tokenVault.ts"
+                ],
+                [
+                  "retention.ts",
+                  "blob/main/apps/api/src/infrastructure/persistence/retention.ts"
+                ]
+              ]
+            },
+            {
+              "title": "Verification without real accounts",
+              "challenge": "Tests must not touch real mailboxes or calendars.",
+              "body": "Automated tests use synthetic Google, Microsoft, and Discord responses with a real local PostgreSQL database, HTTP server, and browser. They include 100 concurrent evaluations of one review that produce a single insert, lost-response recovery, and expired-lease recovery.",
+              "evidence": [
+                [
+                  "automationActions.test.ts",
+                  "blob/main/tests/integration/automationActions.test.ts"
+                ],
+                [
+                  "calendarWrites.test.ts",
+                  "blob/main/tests/integration/calendarWrites.test.ts"
+                ],
+                [
+                  "review.spec.ts",
+                  "blob/main/tests/e2e/review.spec.ts"
+                ]
+              ]
+            }
+          ],
+          "note": [
+            "MY ROLE",
+            "Development used AI coding agents for implementation, automated tests, and review. My role was the requirements, design approval, and workflow testing. The repository does not show that I wrote every subsystem or test."
+          ],
+          "code": [
+            "Excerpt from createCalendarEvent.ts: look up the saved event ID, insert only if it is missing, and accept the result only if it matches",
+            "let receipt = await gateway.get(actor, intent.providerEventId);\nif (!receipt) {\n  try {\n    await assertActionLock(actor);\n    receipt = await gateway.insert(\n      actor,\n      intent.providerEventId,\n      event,\n      intent.payloadHash,\n    );\n  } catch (error) {\n    if (error instanceof AppError && error.code === \"provider_collision\")\n      receipt = await gateway.get(actor, intent.providerEventId);\n    else throw error;\n  }\n}\noutcome =\n  receipt && matches(receipt)\n    ? { status: \"added\", receipt }\n    : { status: \"failed\", reason: \"event_mismatch\" };"
+          ]
+        },
+        {
+          "id": "verification",
+          "title": "What Is Verified",
+          "paragraphs": [
+            "These labels keep four different kinds of evidence apart. The test counts and live-check notes come from the repository’s own project-state document; this portfolio update did not rerun any of them."
+          ],
+          "items": [
+            {
+              "title": "Implemented",
+              "body": "Source code for Gmail selected import and optional polling, Outlook selected import, Discord Follow-relay ingestion, deterministic extraction, review, duplicate and conflict advisories, immutable approval, durable Calendar writes, and conservative automation.",
+              "evidence": [
+                [
+                  "README.md",
+                  "blob/main/README.md"
+                ],
+                [
+                  "PROJECT_STATE.md",
+                  "blob/main/docs/PROJECT_STATE.md"
+                ]
+              ]
+            },
+            {
+              "title": "Synthetic-tested",
+              "body": "Recorded as passing: 443 unit, API, and UI tests, 227 PostgreSQL integration tests, and 29 Playwright browser tests. Providers are simulated; the database, HTTP server, and browser are real.",
+              "evidence": [
+                [
+                  "PROJECT_STATE.md",
+                  "blob/main/docs/PROJECT_STATE.md"
+                ],
+                [
+                  "tests/integration",
+                  "tree/main/tests/integration"
+                ],
+                [
+                  "tests/e2e",
+                  "tree/main/tests/e2e"
+                ]
+              ]
+            },
+            {
+              "title": "Live-verified, in a bounded way",
+              "body": "The project-state document records that Google sign-in, Gmail selected import, review, and manual Calendar creation were accepted against a real Google account, including repeat-write protection. One bounded real read each confirmed duplicate and conflict matching, and Discord permission, manual-channel, and Gateway-handshake checks passed.",
+              "evidence": [
+                [
+                  "PROJECT_STATE.md",
+                  "blob/main/docs/PROJECT_STATE.md"
+                ]
+              ]
+            },
+            {
+              "title": "Not verified",
+              "body": "Outlook sign-in (a real organizational tenant stopped at administrator consent), real Discord Follow delivery, live Gmail polling, and live automatic Calendar creation. No real automatic write has been performed.",
+              "evidence": [
+                [
+                  "PROJECT_STATE.md",
+                  "blob/main/docs/PROJECT_STATE.md"
+                ],
+                [
+                  "automation-safety.md",
+                  "blob/main/docs/automation-safety.md"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "id": "outcome",
+          "title": "Outcome & Limits",
+          "outcomes": [
+            "All three sources share one path: provider adapters feed shared deterministic extraction, a separate policy engine decides what may happen, and one shared writer creates events.",
+            "Duplicate prevention is tested for this application’s own writes: 100 concurrent evaluations of one review produced one insert against a simulated Calendar.",
+            "Unknown facts are surfaced instead of guessed, including timezones, date-only events, and daylight-saving edge cases."
+          ],
+          "limits": [
+            "It is a local development project, not deployed, not production-ready, and not a hosted service.",
+            "Extraction accuracy has not been measured, and an LLM fallback is not implemented.",
+            "Duplicate protection covers this application’s writes. It cannot lock unrelated Calendar clients, so it is not an exactly-once guarantee across external systems.",
+            "Calendar writes are create-only, to the primary calendar: no updates, deletions, or rescheduling.",
+            "Gmail polling can miss late-indexed messages outside completed windows, and Outlook has no automatic polling.",
+            "Because AI coding agents wrote the implementation, the repository does not show that I wrote every subsystem or test."
+          ],
+          "lessonsTitle": "What I’m learning",
+          "lessons": "This project gave me practice turning a risky automation into explicit states: what is known, what is unresolved, what a person approved, and what the system may do alone. Specifying failure cases such as lost responses, expired leases, and repeated clock times, and then testing the workflows, showed me how much correctness depends on them."
+        }
+      ]
+    },
+    "repo": "https://github.com/Omar-Lyzkru/calendar-intelligence-hub",
+    "repoLabel": "View source on GitHub",
+    "source": "AI CODING AGENTS · REQUIREMENTS, DESIGN APPROVAL & TESTING"
+  },
+  "job": {
+    "number": "04",
     "category": "AUTOMATION & TOOLING / AI-ASSISTED PROJECT",
     "title": "Job Application Automation Platform",
     "summary": "A local application for job filtering, supported application-form automation, saved answers, and application history.",
@@ -251,7 +717,7 @@ const projects = {
     "source": "AI-ASSISTED · PRODUCT DIRECTION & REVIEW"
   },
   "raycaster": {
-    "number": "03",
+    "number": "05",
     "category": "CONSOLE RENDERING / TUTORIAL-GUIDED PROJECT",
     "title": "C++ Console Raycaster",
     "summary": "A first-person C++ raycaster that renders a character-based scene using the Windows Console API.",
@@ -344,7 +810,7 @@ const projects = {
     "source": "TUTORIAL-GUIDED · C++ PRACTICE"
   },
   "tracker": {
-    "number": "04",
+    "number": "06",
     "category": "FRONTEND DEVELOPMENT / SUPPORTING PROJECT",
     "title": "Persistent Task Tracker",
     "summary": "A small browser task manager with filtering, inline editing, keyboard interactions, and saved state.",
@@ -447,9 +913,18 @@ function showcaseImage(image, className) {
   const figure = el('figure', className);
   const img = el('img');
   img.src = image.src; img.alt = image.alt; img.width = image.width; img.height = image.height; img.decoding = 'async';
+  // An animated capture follows the motion policy: it shows its still frame while motion is paused or reduced.
+  if (image.still) {
+    img.dataset.animated = image.src; img.dataset.still = image.still;
+    if (motion.reduced) img.src = image.still;
+  }
   figure.append(img, el('figcaption', 'mono quiet', image.caption));
   return figure;
 }
+motion.subscribe(reduced => document.querySelectorAll('img[data-animated]').forEach(img => {
+  const next = reduced ? img.dataset.still : img.dataset.animated;
+  if (img.getAttribute('src') !== next) img.src = next;
+}));
 // An illustrative workflow, drawn as an ordered list so it reads correctly without the visual styling.
 function showcaseFlow(media, className) {
   const figure = el('figure', `${className} showcase-flow`);
@@ -585,7 +1060,7 @@ function renderProject(id) {
 const entrySession = createEntrySession();
 let gateway = null; // the entrance gateway (gateway.js); it and the showcase never hold a modal at the same time
 let toolkit = null; // the Technical Toolkit (toolkit.js); it owns its selection, the coordinator owns navigation
-const routes = { permitwatch: 'permit', 'job-automation': 'job', raycaster: 'raycaster', 'task-tracker': 'tracker' };
+const routes = { permitwatch: 'permit', durablekv: 'durablekv', 'calendar-intelligence-hub': 'calendar', 'job-automation': 'job', raycaster: 'raycaster', 'task-tracker': 'tracker' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
 const routeFromLocation = () => classifyProjectRoute(location.href, routes).id;
 const urlFor = slug => {
@@ -810,7 +1285,7 @@ const coordinator = (() => {
 // toolkit.js is imported dynamically and started outside the coordinator, so a missing or broken module, or a failed
 // start, can never take project navigation down with it. Starting it touches no history, focus or scroll.
 const toolkitRoot = document.querySelector('[data-toolkit]');
-import('./toolkit.js?v=3').then(({ createToolkit }) => {
+import('./toolkit.js?v=4').then(({ createToolkit }) => {
   const instance = createToolkit({ root: toolkitRoot, projects, motion, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
   if (typeof instance?.fallbackFocus !== 'function') throw new TypeError('toolkit: unexpected interface');
   toolkit = instance;
