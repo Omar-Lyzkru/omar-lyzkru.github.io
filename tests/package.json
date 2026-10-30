@@ -1,0 +1,12 @@
+{
+  "name": "portfolio-tests",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only regression tests for the static portfolio. The site itself has no build step or runtime dependencies.",
+  "scripts": {
+    "test": "node --test --test-concurrency=1"
+  },
+  "devDependencies": {
+    "playwright": "^1.57.0"
+  }
+}

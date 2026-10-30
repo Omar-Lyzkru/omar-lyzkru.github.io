@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07060e">
-  <meta name="description" content="Omar Aguilar, Computer Science student at the University of Houston, graduating May 2028. Seeking Summer 2027 software engineering internships and student developer or research roles. Selected work includes PermitWatch, DurableKV, and Calendar Intelligence Hub.">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Omar Aguilar, Computer Science student at the University of Houston, graduating May 2028. Seeking Summer 2027 software engineering internships and student developer or research roles. Lead projects: PermitWatch, DurableKV, Calendar Intelligence Hub, and Job Applier.">
   <title>Omar Aguilar | Computer Science student and software developer</title>
   <script>
     // Early gateway eligibility, resolved before first paint so a bypass route never flashes the gateway.
@@ -23,23 +23,24 @@
       } catch (error) { /* unreadable URL: show the portfolio */ }
     })();
   </script>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2307060e'/%3E%3Cellipse cx='20' cy='20' rx='17' ry='6' fill='none' stroke='%23b79cff' stroke-width='2' transform='rotate(-25 20 20)'/%3E%3Ccircle cx='20' cy='20' r='8' fill='%2307060e' stroke='%23f1eefa' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Cellipse cx='20' cy='20' rx='17' ry='6' fill='none' stroke='%23aaa' stroke-width='2' transform='rotate(-25 20 20)'/%3E%3Ccircle cx='20' cy='20' r='8' fill='%23000' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=34">
-  <script type="module" src="app.js?v=35"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=35">
+  <script type="module" src="app.js?v=36"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="site">
   <header class="site-header">
     <div class="header-inner wrap">
-      <a href="#" class="brand" aria-label="Omar Aguilar, home">omar<span class="brand-dot">.</span></a>
+      <a href="#" class="brand" aria-label="Omar Aguilar, home">omar<span class="brand-dot" aria-hidden="true">_</span></a>
       <nav aria-label="Main navigation"><a href="#work">Projects</a><a href="#toolkit">Toolkit</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
       <div class="header-tools">
         <button id="motion-toggle" class="motion-toggle" type="button" aria-label="Pause motion" aria-pressed="false"><span id="motion-icon" aria-hidden="true">Ⅱ</span><span id="motion-label">Pause motion</span></button>
         <a class="resume-link" href="Omar-Aguilar-Resume.pdf?v=16.3" title="Resume 16.3" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↗</span><span class="visually-hidden"> 16.3 (PDF, opens in a new tab)</span></a>
+        <button id="sound-toggle" class="sound-toggle" type="button" data-sound-toggle aria-label="Mute sound effects" aria-pressed="false" hidden><span class="sound-glyph" data-sound-glyph aria-hidden="true">♪</span><span class="sound-text">Sound</span></button>
       </div>
     </div>
   </header>
@@ -63,14 +64,14 @@
           <p class="mono feature-kicker">Featured project · 2026</p>
           <h2 id="feature-title">PermitWatch</h2>
           <p id="feature-desc" class="feature-desc">A bilingual English/Spanish web app for exploring TCEQ and EPA environmental permits near a Houston address or ZIP code.</p>
-          <p class="feature-award"><span aria-hidden="true">✦</span> Environmental Track Winner <span class="mono">CodeRED Orion · Team project</span></p>
+          <p class="feature-award"><span aria-hidden="true">*</span> Environmental Track Winner <span class="mono">CodeRED Orion · Team project</span></p>
           <p class="feature-links"><a class="text-link" href="https://permitwatch-houston.onrender.com/" target="_blank" rel="noopener noreferrer">Live demo ↗</a><a class="text-link" href="https://github.com/Abbas9x/permitwatch-houston" target="_blank" rel="noopener noreferrer"><span>Team GitHub <span aria-hidden="true">↗</span></span><span class="visually-hidden"> (PermitWatch team source on GitHub, opens in a new tab)</span></a></p>
         </div>
       </aside>
     </section>
     <section id="work" class="work-section wrap" aria-labelledby="work-title">
-      <div class="section-top reveal"><p class="eyebrow">01 / Projects</p><span class="mono quiet">Six projects, one at a time</span></div>
-      <div class="section-heading reveal"><h2 id="work-title">Selected projects<span class="accent">.</span></h2><p>Environmental data, storage, calendar<br>workflows, automation, and rendering.</p></div>
+      <div class="section-top reveal"><p class="eyebrow">01 / Projects</p><span class="mono quiet">Four lead projects, one at a time</span></div>
+      <div class="section-heading reveal"><h2 id="work-title">Lead projects<span class="accent">_</span></h2><p>Environmental data, storage, calendar<br>workflows, and automation.</p></div>
       <div class="projects-grid">
         <article class="project-card reveal">
           <button class="project-open" type="button" data-project="permit" aria-label="Read the PermitWatch case study">
@@ -100,50 +101,39 @@
           <p class="project-context">AI-assisted development · Local, not deployed</p>
         </article>
         <article class="project-card reveal">
-          <button class="project-open" type="button" data-project="job" aria-label="Read the Job Application Automation Platform case study">
+          <button class="project-open" type="button" data-project="job" aria-label="Read the Job Applier case study">
             <div class="project-art art-job"><canvas data-art="job" aria-hidden="true"></canvas><span class="art-caption">SAVED ANSWERS · EXPLICIT RETRIES</span><span class="project-plus" aria-hidden="true">+</span></div>
-            <div class="project-info"><div><p class="project-kicker">04 / Automation &amp; tooling</p><h3>Job Application Automation Platform</h3><p>Local job filtering, supported forms, and application history.</p></div><span class="project-year">2026</span></div>
+            <div class="project-info"><div><p class="project-kicker">04 / Automation &amp; tooling</p><h3>Job Applier</h3><p>Local job filtering, supported forms, and application history.</p></div><span class="project-year">2026</span></div>
             <div class="tags"><span>JavaScript</span><span>Node.js</span><span>Playwright</span><span>HTML / CSS</span></div>
           </button>
-          <div class="project-links"><a class="text-link" href="https://github.com/Omar-Lyzkru/job-applier" target="_blank" rel="noopener noreferrer"><span>GitHub source <span aria-hidden="true">↗</span></span><span class="visually-hidden"> (Job Application Automation Platform source on GitHub, opens in a new tab)</span></a></div>
+          <div class="project-links"><a class="text-link" href="https://github.com/Omar-Lyzkru/job-applier" target="_blank" rel="noopener noreferrer"><span>GitHub source <span aria-hidden="true">↗</span></span><span class="visually-hidden"> (Job Applier source on GitHub, opens in a new tab)</span></a></div>
           <p class="project-context">AI-assisted development</p>
         </article>
-        <article class="project-card reveal">
-          <button class="project-open" type="button" data-project="raycaster" aria-label="Read the C++ Console Raycaster case study">
-            <div class="project-art art-raycaster"><img src="assets/raycaster/raycaster-frame.webp" alt="A frame of the raycaster's real console output: block-character walls, a shaded floor, and a map overlay with the player marked P" loading="lazy" decoding="async" width="1200" height="860"><span class="project-plus" aria-hidden="true">+</span></div>
-            <div class="project-info"><div><p class="project-kicker">05 / Console rendering</p><h3>C++ Console Raycaster</h3><p>A first-person scene in character-based console output.</p></div><span class="project-year">2025</span></div>
-            <div class="tags"><span>C++</span><span>Windows Console API</span><span>Ray stepping</span></div>
-          </button>
-          <div class="project-links"><a class="text-link" href="https://github.com/Omar-Lyzkru/raycaster" target="_blank" rel="noopener noreferrer"><span>GitHub source <span aria-hidden="true">↗</span></span><span class="visually-hidden"> (C++ Console Raycaster source on GitHub, opens in a new tab)</span></a></div>
-          <p class="project-context">Tutorial-guided project</p>
-        </article>
-        <article class="project-card reveal">
-          <button class="project-open" type="button" data-project="tracker" aria-label="Read the Persistent Task Tracker case study">
-            <div class="project-art art-tracker"><img src="assets/tracker/tracker-tasks.webp" alt="Tiny Task Tracker with four sample tasks, two of them completed, and a counter reading 2 tasks left" loading="lazy" decoding="async" width="1440" height="900"><span class="project-plus" aria-hidden="true">+</span></div>
-            <div class="project-info"><div><p class="project-kicker">06 / Frontend development</p><h3>Persistent Task Tracker</h3><p>Tasks, inline edits, and saved state in the browser.</p></div><span class="project-year">2026</span></div>
-            <div class="tags"><span>JavaScript</span><span>HTML / CSS</span><span>localStorage</span></div>
-          </button>
-          <div class="project-links"><a class="text-link" href="https://github.com/Omar-Lyzkru/tiny-task-tracker" target="_blank" rel="noopener noreferrer"><span>GitHub source <span aria-hidden="true">↗</span></span><span class="visually-hidden"> (Persistent Task Tracker source on GitHub, opens in a new tab)</span></a><a class="text-link" href="https://omar-lyzkru.github.io/tiny-task-tracker/" target="_blank" rel="noopener noreferrer"><span>Live demo <span aria-hidden="true">↗</span></span><span class="visually-hidden"> (Persistent Task Tracker, opens in a new tab)</span></a></div>
-          <p class="project-context">Supporting project</p>
-        </article>
       </div>
-      <div class="work-footer reveal"><span class="mono quiet">EVERY PROJECT STARTS WITH A QUESTION.</span><a class="text-link" href="https://github.com/Omar-Lyzkru?tab=repositories" target="_blank" rel="noopener noreferrer">More on GitHub <span class="link-line" aria-hidden="true"></span></a></div>
+      <div class="support reveal" aria-labelledby="support-title">
+        <p id="support-title" class="support-title mono">Supporting projects <span class="quiet">/ smaller practice work, each with a full case study</span></p>
+        <ul class="support-list">
+          <li><button class="support-open" type="button" data-project="raycaster" aria-label="Read the C++ Console Raycaster case study"><span class="support-name">C++ Console Raycaster</span><span class="support-meta mono">2025 · Tutorial-guided · C++, Windows Console API</span><span class="support-go" aria-hidden="true">&gt;</span></button></li>
+          <li><button class="support-open" type="button" data-project="tracker" aria-label="Read the Persistent Task Tracker case study"><span class="support-name">Persistent Task Tracker</span><span class="support-meta mono">2026 · Personal project · JavaScript, localStorage</span><span class="support-go" aria-hidden="true">&gt;</span></button></li>
+        </ul>
+      </div>
+      <div class="work-footer reveal"><span class="mono quiet">EVERY PROJECT STARTS WITH A QUESTION_</span><a class="text-link" href="https://github.com/Omar-Lyzkru?tab=repositories" target="_blank" rel="noopener noreferrer">More on GitHub <span class="link-line" aria-hidden="true"></span></a></div>
     </section>
     <section id="toolkit" class="toolkit-section wrap" aria-labelledby="toolkit-title">
       <div class="section-top reveal"><p class="eyebrow">02 / Technical toolkit</p><span class="mono quiet">Evidence, not ratings</span></div>
-      <div class="section-heading reveal"><h2 id="toolkit-title">Technical toolkit<span class="accent">.</span></h2><p>Choose a technology to see which projects use it, what it does there, and the source that shows it.</p></div>
+      <div class="section-heading reveal"><h2 id="toolkit-title">Technical toolkit<span class="accent">_</span></h2><p>Choose a technology to see which projects use it (lead and supporting), what it does there, and the source that shows it.</p></div>
       <div class="toolkit" data-toolkit>
         <div class="toolkit-picker" data-toolkit-picker></div>
         <div class="toolkit-panel" id="toolkit-panel" data-toolkit-panel></div>
         <p class="visually-hidden" role="status" data-toolkit-status></p>
       </div>
-      <p class="toolkit-note">Python is also on my résumé, but none of these six projects uses it, so it has no entry here.</p>
+      <p class="toolkit-note">Python is also on my résumé, but none of my lead or supporting projects uses it, so it has no entry here.</p>
     </section>
     <section id="about" class="about-section wrap" aria-labelledby="about-title">
       <div class="section-top reveal"><p class="eyebrow">03 / THE PERSON BEHIND THE PIXELS</p><span class="mono quiet">HELLO, WORLD.</span></div>
       <div class="about-grid">
         <div class="about-copy">
-          <h2 id="about-title">Learning by building<span class="accent">.</span></h2>
+          <h2 id="about-title">Learning by building<span class="accent">_</span></h2>
           <p>I’m a Computer Science student at the University of Houston, graduating in May 2028. Before UH, I earned an Associate of Arts on Lone Star College’s Computer Science Pathway in December 2025. I’m seeking Summer 2027 software engineering internships and student developer or research programming roles.</p>
           <p>Most of what I know comes from building things: a hackathon project with a four-person team that received the Environmental Track Winner award at CodeRED Orion; a C++ storage engine, a full-stack calendar tool, and a local automation app, all built with AI coding agents under my direction; a C++ raycaster I built by following a tutorial; and a small JavaScript task tracker. Each case study says plainly which parts were mine.</p>
           <p>Since September 2026, I’ve been a CodePathways peer mentor, meeting one-on-one each week with a UH student. Before that, I worked as a digital personal shopper at Walmart, fulfilling online orders through busy shifts.</p>
@@ -166,8 +156,8 @@
     <span class="code-value">"video games"</span>
   <span class="code-bracket">]</span>
 <span class="code-bracket">}</span>
-<span class="code-comment">// the cosmic look is this site’s theme, not a hobby</span></pre>
-          <figcaption class="terminal-foot"><span class="accent" aria-hidden="true">✳</span> ALWAYS LEARNING, ALWAYS EXPLORING</figcaption>
+<span class="code-comment">// the monochrome ASCII look is this site’s theme, not a hobby</span></pre>
+          <figcaption class="terminal-foot"><span class="accent" aria-hidden="true">*</span> ALWAYS LEARNING, ALWAYS EXPLORING</figcaption>
         </figure>
       </div>
       <div class="about-facts">
@@ -182,7 +172,7 @@
       <div class="wrap">
         <div class="section-top reveal"><p class="eyebrow">04 / OPEN A CHANNEL</p><span class="mono quiet">GOOD THINGS START WITH HELLO.</span></div>
         <div class="contact-grid">
-          <h2 id="contact-title">Let’s create<br>some <em>gravity.</em></h2>
+          <h2 id="contact-title">Let’s create<br>some <em>gravity_</em></h2>
           <div class="contact-copy">
             <p>Open to software engineering internships, student developer roles, and technical research or campus opportunities. Email is the quickest way to reach me.</p>
             <a class="button button-primary" href="mailto:o9086498@gmail.com">Email me <span aria-hidden="true">+</span></a>
@@ -198,20 +188,37 @@
       </div>
     </section>
   </main>
-  <footer class="site-footer wrap"><a class="brand" href="#"><span>omar<span class="brand-dot">.</span></span><span class="visually-hidden"> Back to top</span></a><span class="footer-note">Built with HTML, CSS, and JavaScript.</span><div><a href="https://github.com/Omar-Lyzkru" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/omar-aguilar-b590b4277" target="_blank" rel="noopener noreferrer">LinkedIn</a><button id="replay-intro" class="replay-intro" type="button" hidden>↻ Replay intro</button><span>© <span id="year">2026</span> Omar Aguilar</span></div></footer>
+  <footer class="site-footer wrap"><a class="brand" href="#"><span>omar<span class="brand-dot" aria-hidden="true">_</span></span><span class="visually-hidden"> Back to top</span></a><span class="footer-note">Built with HTML, CSS, and JavaScript.</span><div><a href="https://github.com/Omar-Lyzkru" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/omar-aguilar-b590b4277" target="_blank" rel="noopener noreferrer">LinkedIn</a><button id="replay-intro" class="replay-intro" type="button" hidden>↻ Replay intro</button><span>© <span id="year">2026</span> Omar Aguilar</span></div></footer>
   </div>
   <dialog id="gateway-dialog" class="gateway" aria-labelledby="gateway-title" aria-describedby="gateway-desc" data-state="closed" inert>
     <div class="gw-scene" aria-hidden="true">
-      <div class="gw-art" data-gateway-stage>
-        <picture>
-          <source media="(max-aspect-ratio: 4/5)" srcset="assets/gateway/gateway-tall.webp" type="image/webp">
-          <img src="assets/gateway/gateway-wide.webp" width="1920" height="1080" alt="" decoding="async" fetchpriority="high" onerror="this.hidden=true">
-        </picture>
-      </div>
+      <canvas class="gw-canvas" data-gateway-canvas></canvas>
+      <pre class="gw-fallback">
+
+                                   :  - :
+                              ====*%#%%%#+#+=-
+                           ==#@@@@@@@@@@@@@##%*=-
+                         -+*#@@*=          -*@@#*+    .
+                       ==%#@=*                **@#*=:             .
+                     .-#*@*:                     *@*#=.
+                    .=+#@--                      =:%**-
+                     #*@=                          -@++:
+                    =#** =                        =-=*---=-==--=---
+               .   ==*#=#                          ====--#=-=-----==-=---
+         =-#=#=#-=##=#%==                       +-=--%=-#=##==#==-=
+  :.-==#==-=##===#=-==####=#=#####=======#====#=##=-=+-- .
+       - =--######=--#=#==---                       -
+              .      :=+                            +-                    .
+                      -=*                          += :
+                      :- +-                    . ==- :
+                        .=+*--                --+=--:
+                         :-=-+*:             +=---
+                             -=-=++*+++**+=====:   .
+                               :--:- == -</pre>
     </div>
     <div class="gw-content">
       <div class="gw-copy" data-gateway-copy>
-        <p class="gw-eyebrow">PORTFOLIO</p>
+        <p class="gw-eyebrow">[ PORTFOLIO ]</p>
         <h2 id="gateway-title">Omar Aguilar</h2>
         <p id="gateway-desc" class="gw-lede">Computer Science student and software developer. Step through to see selected work, or skip straight to the portfolio.</p>
       </div>
@@ -223,6 +230,7 @@
       </div>
       <p class="gw-status" role="status" data-gateway-status></p>
     </div>
+    <button class="sound-toggle gw-sound" type="button" data-sound-toggle aria-label="Mute sound effects" aria-pressed="false" hidden><span class="sound-glyph" data-sound-glyph aria-hidden="true">♪</span><span class="sound-text">Sound</span></button>
   </dialog>
   <dialog id="project-dialog" data-layout="showcase" aria-labelledby="showcase-title"><div class="dialog-shell"><div class="dialog-top"><span id="dialog-number" class="mono quiet"></span><button id="dialog-close" type="button" aria-label="Close project case study">×</button></div><div id="dialog-showcase" class="showcase"></div></div></dialog>
 </body>
