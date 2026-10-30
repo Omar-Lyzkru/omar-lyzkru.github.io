@@ -17,8 +17,7 @@
 // gateway.replay(invoker) // voluntary replay from the normal portfolio; focus returns to invoker. False if it cannot open
 // gateway.yieldToShowcase() // a project showcase is about to open: leave without restoring focus or scroll
 // gateway.active          // true from show()/replay() until the gateway has fully concluded
-export const JOURNEY_MS = 3400;
-const IRIS_START = 0.64; // journey progress at which the far end of the tunnel opens onto the portfolio
+export const JOURNEY_MS = 4600;
 const SAFETY_MS = 700;    // the journey is force-finished this long after its nominal end, whatever the renderer does
 const FALLBACK_MS = 380;  // the short dissolve used when there is no scene to travel through
 const SECTION_IDS = new Set(['main', 'work', 'toolkit', 'about', 'contact']);
@@ -31,8 +30,45 @@ export function gatewayLayout(width, height) {
     : { cx: 0.66, cy: 0.5, radius: Math.min(width * 0.22, height * 0.33) };
 }
 
-// An expanding circular opening needs CSS masks; without them the journey ends in a plain dissolve instead.
-const supportsIris = win => Boolean(win.CSS?.supports?.('(mask-image: radial-gradient(#000, #000)) or (-webkit-mask-image: radial-gradient(#000, #000))'));
+// The page's own text, as characters with their on-screen positions, fonts and colors. The entrance flies these in out of the
+// digital stream, so the visitor arrives in a page whose words are already where they will be. Read-only; capped.
+export function collectPortfolioGlyphs(doc, win, limit = 1100) {
+  const site = doc.querySelector('.site');
+  if (!site) return [];
+  const out = [];
+  const vw = win.innerWidth;
+  const vh = win.innerHeight;
+  const REJECT = 2;
+  const ACCEPT = 1;
+  const walker = doc.createTreeWalker(site, 4 /* NodeFilter.SHOW_TEXT */, {
+    acceptNode(node) {
+      const el = node.parentElement;
+      if (!el || !node.nodeValue.trim()) return REJECT;
+      return el.closest('.visually-hidden, [aria-hidden="true"], [hidden], script, style, noscript') ? REJECT : ACCEPT;
+    }
+  });
+  const range = doc.createRange();
+  while (out.length < limit && walker.nextNode()) {
+    const node = walker.currentNode;
+    const el = node.parentElement;
+    const box = el.getBoundingClientRect();
+    if (box.width === 0 || box.bottom < 0 || box.top > vh) continue;
+    const style = win.getComputedStyle(el);
+    if (style.visibility === 'hidden' || style.display === 'none' || Number(style.opacity) === 0) continue;
+    const font = `${style.fontStyle === 'italic' ? 'italic ' : ''}${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const upper = style.textTransform === 'uppercase';
+    const text = node.nodeValue;
+    for (let i = 0; i < text.length && out.length < limit; i += 1) {
+      if (/\s/.test(text[i])) continue;
+      range.setStart(node, i);
+      range.setEnd(node, i + 1);
+      const r = range.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw) continue;
+      out.push({ ch: upper ? text[i].toUpperCase() : text[i], x: r.left + r.width / 2, y: r.top + r.height / 2, font, color: style.color });
+    }
+  }
+  return out;
+}
 
 const smoothstep = (a, b, value) => {
   const t = Math.max(0, Math.min(1, (value - a) / (b - a)));
@@ -66,15 +102,6 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     pauseButton.setAttribute('aria-pressed', String(motion.reduced));
     pauseButton.setAttribute('aria-label', system ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion');
     pauseLabel.textContent = system ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion';
-  }
-
-  // The arrival effects live on the document and dialog while a journey plays; this puts everything back.
-  function resetArrival() {
-    delete root.dataset.arrive;
-    root.style.removeProperty('--arrive');
-    root.style.removeProperty('--arrive-y');
-    delete dialog.dataset.iris;
-    dialog.style.removeProperty('--iris');
   }
 
   function unmountScene() {
@@ -132,7 +159,6 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     setState('closed');
     dialog.style.opacity = '';
     dialog.style.transition = '';
-    resetArrival();
     try { if (dialog.open) dialog.close(); } catch { /* the modal is gone either way */ }
     delete root.dataset.gateway;
     status.textContent = '';
@@ -158,7 +184,6 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     status.textContent = '';
     dialog.style.opacity = '';
     dialog.style.transition = '';
-    resetArrival();
     syncMotionControl();
     setState('idle');
     root.dataset.gateway = 'active';
@@ -187,24 +212,15 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     const complete = () => { current.finished = true; done(); }; // the scene reached its end
     current.timer = setTimeout(done, JOURNEY_MS + SAFETY_MS); // the renderer can stall or fail; entry never depends on it
     let started = false;
-    const iris = supportsIris(win);
-    // The far end of the tunnel opens onto the portfolio: a bright ring grows from the center of the hole with the page
-    // visible inside it, while the page itself rushes toward the visitor and settles. The ring ends larger than the screen.
-    const maxRadius = Math.hypot(dialog.clientWidth || win.innerWidth, dialog.clientHeight || win.innerHeight) / 2 + 40;
-    root.style.setProperty('--arrive-y', `${win.scrollY + win.innerHeight / 2}px`);
+    let targets = [];
+    try { targets = collectPortfolioGlyphs(doc, win); } catch { targets = []; } // the page's words; the journey works without them
     try {
       started = Boolean(scene?.travel({
         duration: JOURNEY_MS,
-        onProgress: progress => {
-          if (run !== current) return;
-          const open = smoothstep(IRIS_START, 1, progress);
-          if (!iris) { dialog.style.opacity = String(1 - smoothstep(0.86, 1, progress)); return; } // no masks: dissolve instead
-          if (open <= 0) return;
-          dialog.dataset.iris = 'on';
-          root.dataset.arrive = 'on';
-          dialog.style.setProperty('--iris', `${(maxRadius * Math.pow(open, 1.7)).toFixed(1)}px`);
-          root.style.setProperty('--arrive', open.toFixed(3));
-        },
+        targets,
+        // The scene falls in, stretches into digital noodles, and the page's own characters arrive out of the stream. Over
+        // the last stretch the dialog fades, handing over to the real page whose words are already in place beneath it.
+        onProgress: progress => { if (run === current) dialog.style.opacity = String(1 - smoothstep(0.9, 1, progress)); },
         onComplete: complete,
       }));
     } catch { started = false; }

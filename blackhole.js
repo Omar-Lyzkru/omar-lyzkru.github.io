@@ -6,8 +6,10 @@
  * drawProjectArt(canvas, kind)   Static illustrative covers (Job Applier, Calendar Intelligence Hub).
  *
  * The scene is recomputed every frame (differentially rotating disk, drifting rings, streaming stars), and the inward
- * journey changes the sampled geometry itself: the field is magnified toward the hole, twisted, and its glyphs stretch into
- * radial streaks. Nothing here is a CSS transform of a still image.
+ * journey changes the sampled geometry itself: the field is magnified toward the hole, twisted, and then spaghettified,
+ * pulled into long radial noodles whose glyphs turn into streams of 0s and 1s flowing into the hole. In the late journey the
+ * characters of the real portfolio page (supplied by the owner as `targets`) fly in out of that stream and unstretch into
+ * their exact on-screen positions. Nothing here is a CSS transform of a still image.
  *
  * Motion policy is not decided here: the owner calls setPaused(true) for system reduced motion or manual Pause, which
  * stops the loop and leaves one static frame.
@@ -18,10 +20,12 @@ export const SHADES = [
   "#1a1a1a", "#262626", "#343434", "#444444", "#575757", "#6b6b6b",
   "#808080", "#979797", "#afafaf", "#c9c9c9", "#e4e4e4", "#ffffff",
 ];
-// 0-8: density ramp. 9-12: oriented strokes used for radial streaks.
-export const GLYPHS = [".", ":", "-", "=", "+", "*", "#", "%", "@", "/", "\\", "|", "-"];
+// 0-8: density ramp. 9-12: oriented strokes used for radial streaks. 13-14: binary digits for the digital late journey.
+export const GLYPHS = [".", ":", "-", "=", "+", "*", "#", "%", "@", "/", "\\", "|", "-", "0", "1"];
 const STROKE = { slash: 9, backslash: 10, bar: 11, dash: 12 };
+const DIGIT = 13; // 13 is "0", 14 is "1"
 const TAU = Math.PI * 2;
+const GRAYS = ["#2a2a2a", "#3a3a3a", "#4e4e4e", "#666666", "#808080", "#9a9a9a", "#b4b4b4", "#cecece", "#e6e6e6", "#ffffff"];
 const IDLE_GLOW = 1.3; // resting brightness gain: the disk reads clearly against the dark horizon
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const gaussian = (distance, width) => Math.exp(-(distance * distance) / (width * width));
@@ -59,7 +63,7 @@ function sizeCanvas(canvas, context) {
 
 /**
  * Geometry for one canvas size. Static per-cell data is computed once; frame() only does the time-dependent work.
- * travel (optional): { zoom, twist, streak, glow, tunnel, stream, pan, lines } as produced by journeyState().
+ * travel (optional): { zoom, twist, streak, glow, tunnel, stream, pan, lines, stretch, digital, calm } from journeyState().
  */
 export function createBlackHoleField({ width, height, cellWidth, cellHeight, centerX, centerY, radius, seed = 42 }) {
   const columns = Math.max(1, Math.ceil(width / cellWidth));
@@ -121,12 +125,15 @@ export function createBlackHoleField({ width, height, cellWidth, cellHeight, cen
 
   function frame(clock, travel = null) {
     const zoom = travel ? travel.zoom : 1;
+    const calm = travel ? travel.calm : 0; // the late hand-off: the field settles so the arriving page text can read
     const twist = travel ? travel.twist : 0;
-    const streak = travel ? travel.streak : 0;
-    const glow = travel ? travel.glow : IDLE_GLOW;
+    const streak = (travel ? travel.streak : 0) * (1 - calm);
+    const glow = (travel ? travel.glow : IDLE_GLOW) * (1 - calm * 0.92);
     const tunnel = travel ? travel.tunnel : 0;
     const stream = travel ? travel.stream : 0;
-    const lines = travel ? travel.lines : 0;
+    const lines = (travel ? travel.lines : 0) * (1 - calm);
+    const stretch = travel ? travel.stretch : 0;
+    const digital = travel ? travel.digital : 0;
     const pan = travel ? travel.pan : 0;
     // As the camera falls in, the hole drifts from its resting place to the middle of the screen.
     const panX = (width / 2 - centerX) * pan;
@@ -140,6 +147,16 @@ export function createBlackHoleField({ width, height, cellWidth, cellHeight, cen
     for (let i = 0; i < count; i += 1) {
       let x = (X[i] - offX) * inv;
       let y = (Y[i] - offY) * inv;
+      if (stretch > 0) {
+        // Spaghettification: squeeze the sampled radius into a narrow band, so what is drawn depends almost only on the
+        // direction from the hole. Every feature of the scene is pulled into a long radial noodle across the screen.
+        const r = Math.hypot(x, y);
+        if (r > 1e-4) {
+          const k = ((1 - stretch) * r + stretch * (1.15 + 0.12 * r)) / r;
+          x *= k;
+          y *= k;
+        }
+      }
       if (twist > 0) {
         // Differential twist: the inner field is dragged around further than the outer, like frame dragging.
         const a = twist / (0.45 + Math.hypot(x, y));
@@ -210,12 +227,12 @@ export function createBlackHoleField({ width, height, cellWidth, cellHeight, cen
         // Empty space. Late in the journey it fills with speed lines rushing outward from the center, including from
         // inside the horizon: each angular bucket carries a pattern along the radius that moves with the stream.
         if (lines > 0 && (distance >= 1.019 || tunnel > 0.3)) {
-          let v = (LINE[i] + LOGR[i] * 1.7 - stream * 1.1) % 1;
+          let v = (LINE[i] + LOGR[i] * 1.7 + stream * 1.1) % 1; // + : the pattern flows inward, toward the hole
           if (v < 0) v += 1;
           const threshold = 0.9 - 0.07 * lines;
           if (v > threshold) {
             shade[i] = clamp(2 + Math.floor(((v - threshold) / (1 - threshold)) * lines * (levels - 3)), 1, levels);
-            glyph[i] = strokeFor(RADIAL[i]);
+            glyph[i] = G1[i] < digital ? DIGIT + (((G2[i] * 7919 + Math.floor(clock * 9) * 0.37) % 1) > 0.5 ? 1 : 0) : strokeFor(RADIAL[i]);
           }
         }
         continue;
@@ -225,7 +242,8 @@ export function createBlackHoleField({ width, height, cellWidth, cellHeight, cen
       const level = clamp(1 + Math.floor(intensity * (levels - 1) + 0.2), 1, levels);
       let index;
       if (streak > 0 && g2 < streak * 0.9) {
-        index = strokeFor(RADIAL[i]); // the character field is stretched along the direction of travel
+        // The character field is stretched along the direction of travel; as the fall goes digital the strokes become bits.
+        index = g1 < digital ? DIGIT + (((g2 * 7919 + Math.floor(clock * 7) * 0.37) % 1) > 0.5 ? 1 : 0) : strokeFor(RADIAL[i]);
       } else if (disk > arch && disk > 0.17) {
         index = intensity > 0.70 ? (g2 > 0.53 ? 3 : 6)
           : intensity > 0.38 ? (g2 > 0.4 ? 2 : 3) : (g2 > 0.45 ? 1 : 0);
@@ -239,12 +257,12 @@ export function createBlackHoleField({ width, height, cellWidth, cellHeight, cen
     // Stars: slow twinkling drift while idle; during the journey they rush outward in growing streaks. In the late
     // journey the horizon mask lifts, so streaks pour out of the dark center like a tunnel.
     const visibleShare = 0.38 + 0.62 * Math.max(streak, tunnel);
-    const drift = clock * 0.012 + stream;
+    const drift = clock * 0.012 - stream; // stars drift out slowly at rest and stream inward as the camera falls
     const horizon = zoom * 1.02 * (1 - tunnel);
     const starCenterX = centerX + panX;
     const starCenterY = centerY + panY;
     for (let s = 0; s < starCount; s += 1) {
-      if (starRank[s] > visibleShare) continue;
+      if (starRank[s] > visibleShare * (1 - calm)) continue;
       let l = (starLog[s] - LMIN + drift) % LSPAN;
       if (l < 0) l += LSPAN;
       const r = Math.exp(LMIN + l);
@@ -256,13 +274,15 @@ export function createBlackHoleField({ width, height, cellWidth, cellHeight, cen
       const twinkle = 0.75 + 0.25 * Math.sin(clock * 1.7 + starPhase[s]);
       const brightness = clamp(starBright[s] * twinkle * (1 + streak * 0.8), 0, 1);
       const level = clamp(2 + Math.floor(brightness * (levels - 3)), 1, levels);
-      const head = streak > 0.04 ? strokeFor(starAngle[s]) : (brightness > 0.8 ? 4 : 0);
+      const head = streak > 0.04
+        ? (starBright[s] < digital ? DIGIT + (starRank[s] > 0.5 ? 1 : 0) : strokeFor(starAngle[s]))
+        : (brightness > 0.8 ? 4 : 0);
       put(column, row, level, head);
       if (streak > 0.04) {
         const tail = Math.min(22, Math.floor(streak * r * radius * 0.17 / cellHeight));
         for (let k = 1; k <= tail; k += 1) {
-          const rr = r - (k * cellHeight) / radius;
-          if (rr < horizon || rr <= 0) break;
+          const rr = r + (k * cellHeight) / radius; // the trail lies behind the star, which is moving inward
+          if (rr > 5) break;
           put(
             Math.floor((starCenterX + cosA * rr * radius) / cellWidth),
             Math.floor((starCenterY + sinA * rr * radius) / cellHeight),
@@ -275,6 +295,23 @@ export function createBlackHoleField({ width, height, cellWidth, cellHeight, cen
   }
 
   return { columns, rows, count, cellWidth, cellHeight, PX, PY, shade, glyph, frame };
+}
+
+/**
+ * Where a page character is at journey arrival progress `arrive` (0 to 1). It starts somewhere on the ray from the hole through
+ * its final position (nearer or farther by t.k) and swirled by t.twist, and converges to (t.x, t.y) with an ease-out; t.delay
+ * staggers when each character sets off. Returns { x, y, local, e } where local is its own 0-1 progress and e the eased value.
+ */
+export function layoutTarget(t, arrive, hole) {
+  const local = clamp((arrive - t.delay * 0.5) / 0.5, 0, 1);
+  const e = 1 - Math.pow(1 - local, 3);
+  const ox = t.x - hole.x;
+  const oy = t.y - hole.y;
+  const scale = t.k + (1 - t.k) * e;
+  const angle = (1 - e) * t.twist;
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
+  return { x: hole.x + (ox * c - oy * s) * scale, y: hole.y + (ox * s + oy * c) * scale, local, e };
 }
 
 /**
@@ -292,8 +329,11 @@ export function journeyState(p) {
     streak: Math.pow(clamp((q - 0.1) / 0.5, 0, 1), 1.4),
     tunnel: smoothstep(0.45, 0.72, q),
     glow: IDLE_GLOW + 0.4 * smoothstep(0.05, 0.55, q),
-    pan: smoothstep(0.05, 0.8, q),
-    lines: smoothstep(0.3, 0.75, q),
+    pan: smoothstep(0.05, 0.75, q),
+    lines: smoothstep(0.25, 0.65, q),
+    stretch: smoothstep(0.12, 0.6, q),   // 0 to 1: how far the scene has been pulled into radial noodles
+    digital: smoothstep(0.3, 0.62, q),   // share of streaks that are 0s and 1s instead of strokes
+    calm: smoothstep(0.72, 0.94, q),     // the stream settles so the arriving page text can read
     rate: 1 + 9 * q * q,
   };
 }
@@ -308,7 +348,8 @@ const STILL_CLOCK = 6; // the phase shown while motion is paused or reduced
 /**
  * Mounts the animated scene on a canvas. Options:
  *   fps (1-24, idle frame rate), seed, parallax (default true), layout(width, height) -> { cx, cy, radius } (cx, cy as 0-1).
- * Returns { ready, setPaused(bool), travel({ duration, onProgress, onComplete }), cancelTravel(), destroy() }.
+ * Returns { ready, setPaused(bool), travel({ duration, onProgress, onComplete, targets }), cancelTravel(), destroy() }.
+ * targets (optional): [{ ch, x, y, font, color }] page characters, in viewport pixels, that arrive in the late journey.
  * If no 2D context exists, returns an inert controller with ready === false.
  */
 export function mountBlackHole(canvas, options = {}) {
@@ -340,6 +381,10 @@ export function mountBlackHole(canvas, options = {}) {
   let offsetY = 0;
   let slow = 0;
   let averageMs = 0;
+  let fieldFont = "";
+  let hole = { x: 0, y: 0 };
+  let layoutInfo = { cx: 0, cy: 0 };
+  let groups = []; // prepared page characters, grouped by font
 
   function build() {
     if (destroyed) return;
@@ -352,7 +397,9 @@ export function mountBlackHole(canvas, options = {}) {
     field = createBlackHoleField({
       width, height, cellWidth, cellHeight, centerX: width * lay.cx, centerY: height * lay.cy, radius: lay.radius, seed,
     });
-    ctx.font = `400 ${cellHeight * 0.98}px ${FONT}`;
+    layoutInfo = { cx: width * lay.cx, cy: height * lay.cy };
+    fieldFont = `400 ${cellHeight * 0.98}px ${FONT}`;
+    ctx.font = fieldFont;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     draw(null);
@@ -373,16 +420,66 @@ export function mountBlackHole(canvas, options = {}) {
       offsetY = 0;
     }
     const { shade, glyph, PX, PY, count } = field;
+    ctx.font = fieldFont;
     for (let level = 1; level <= SHADES.length; level += 1) {
       ctx.fillStyle = SHADES[level - 1];
       for (let i = 0; i < count; i += 1) {
         if (shade[i] === level) ctx.fillText(GLYPHS[glyph[i]], PX[i] + offsetX, PY[i] + offsetY);
       }
     }
+    if (travel && groups.length) drawTargets(travel);
     // Quality governor: a device that cannot keep up gets a coarser (cheaper) character grid, never a stuttering one.
     averageMs = averageMs ? averageMs * 0.9 + (performance.now() - started) * 0.1 : performance.now() - started;
     if (averageMs > 22 && quality < 1.6) slow += 1; else slow = 0;
     if (slow > 12) { quality = Math.min(1.6, quality * 1.25); slow = 0; averageMs = 0; build(); }
+  }
+
+  // The page's own characters: digits and streaks at first, flying in along rays from the hole and unstretching into their
+  // exact positions, switching from bits to the real character as they land.
+  function drawTargets(travel) {
+    const arrive = smoothstep(0.56, 0.95, travel.progress);
+    if (arrive <= 0) return;
+    const cx = layoutInfo.cx + (width / 2 - layoutInfo.cx) * travel.pan;
+    const cy = layoutInfo.cy + (height / 2 - layoutInfo.cy) * travel.pan;
+    hole.x = cx;
+    hole.y = cy;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const flicker = Math.floor(clock * 9);
+    for (const group of groups) {
+      ctx.font = group.font;
+      for (const t of group.items) {
+        const at = layoutTarget(t, arrive, hole);
+        const landed = at.local >= 1;
+        const bits = at.local < 0.82;
+        const digit = GLYPHS[DIGIT + (((t.seed + flicker * 0.37) % 1) > 0.5 ? 1 : 0)];
+        ctx.fillStyle = landed ? t.color : GRAYS[Math.min(GRAYS.length - 1, Math.floor(at.e * GRAYS.length))];
+        ctx.fillText(bits ? digit : t.ch, at.x, at.y);
+        const speed = (1 - at.local) * (1 - at.local);
+        const tail = bits ? Math.min(4, Math.floor(speed * 5)) : 0;
+        for (let j = 1; j <= tail; j += 1) {
+          const behind = layoutTarget(t, Math.max(0, arrive - j * 0.016), hole);
+          ctx.fillStyle = GRAYS[Math.max(0, Math.floor(at.e * GRAYS.length) - j * 2)];
+          ctx.fillText(GLYPHS[DIGIT + (((t.seed * 3 + j * 0.29 + flicker * 0.21) % 1) > 0.5 ? 1 : 0)], behind.x, behind.y);
+        }
+      }
+    }
+  }
+
+  function prepareTargets(list) {
+    const byFont = new Map();
+    const limited = Array.isArray(list) ? list.slice(0, 1400) : [];
+    limited.forEach((t, i) => {
+      if (!t || typeof t.ch !== "string" || !Number.isFinite(t.x) || !Number.isFinite(t.y)) return;
+      const item = {
+        ch: t.ch, x: t.x, y: t.y, color: t.color || "#fff",
+        k: 0.05 + noise(i, 1, seed) * 2.1, delay: noise(i, 2, seed), twist: (noise(i, 3, seed) - 0.5) * 3.2, seed: noise(i, 4, seed),
+      };
+      const key = t.font || `400 14px ${FONT}`;
+      if (!byFont.has(key)) byFont.set(key, []);
+      byFont.get(key).push(item);
+    });
+    return [...byFont].map(([font, items]) => ({ font, items }));
   }
 
   function finishRun(completed) {
@@ -405,6 +502,7 @@ export function mountBlackHole(canvas, options = {}) {
       if (run.start === null) run.start = time;
       progress = clamp((time - run.start) / run.duration, 0, 1);
       travel = journeyState(progress);
+      travel.progress = progress;
       rate = travel.rate;
     }
     clock += dt * rate;
@@ -447,20 +545,22 @@ export function mountBlackHole(canvas, options = {}) {
     ready: true,
     setPaused(value) {
       paused = Boolean(value);
-      if (paused) { run = null; draw(null); } // a paused scene is one static frame; the owner decides what happens to a journey
+      if (paused) { run = null; groups = []; draw(null); } // a paused scene is one static frame; the owner decides what happens to a journey
       synchronize();
     },
     /** Starts the inward journey. Returns false if it cannot run (paused or destroyed). Only one runs at a time. */
-    travel({ duration = 3400, onProgress, onComplete } = {}) {
+    travel({ duration = 4600, onProgress, onComplete, targets } = {}) {
       if (destroyed || paused) return false;
+      groups = prepareTargets(targets);
       run = { duration: Math.max(200, duration), start: null, onProgress, onComplete };
       synchronize();
       return true;
     },
-    cancelTravel() { run = null; },
+    cancelTravel() { run = null; groups = []; },
     destroy() {
       destroyed = true;
       run = null;
+      groups = [];
       if (frameId) win.cancelAnimationFrame(frameId);
       frameId = 0;
       resizeObserver?.disconnect();

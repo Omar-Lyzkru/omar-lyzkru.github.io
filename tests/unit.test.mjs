@@ -161,6 +161,26 @@ test('ASCII field: dark horizon, populated disk, real geometry change during the
   assert.ok(journeyState(1).rate > journeyState(0.2).rate);
 });
 
+test('page characters converge on their exact on-screen positions as the journey arrives', async () => {
+  const { layoutTarget, journeyState } = await load('blackhole.js');
+  const hole = { x: 720, y: 405 };
+  for (const t of [{ x: 700, y: 300, k: 2.1, delay: 0.2, twist: 1.2 }, { x: 1100, y: 600, k: 0.1, delay: 0.9, twist: -1.4 }, { x: 150, y: 80, k: 1.4, delay: 0, twist: 0.3 }]) {
+    const start = layoutTarget(t, 0, hole);
+    const end = layoutTarget(t, 1, hole);
+    assert.ok(Math.hypot(start.x - t.x, start.y - t.y) > 60, 'starts well away from its place');
+    assert.ok(Math.abs(end.x - t.x) < 1e-6 && Math.abs(end.y - t.y) < 1e-6 && end.local === 1, 'lands exactly');
+    let last = Infinity;
+    for (let a = 0; a <= 1.0001; a += 0.05) { const p = layoutTarget(t, Math.min(a, 1), hole); const d = Math.hypot(p.x - t.x, p.y - t.y); assert.ok(d <= last + 1e-6, 'never moves away'); last = d; }
+  }
+  // The journey's stages: stretch builds first, then bits, then the field settles for the arriving text.
+  const at = p => journeyState(p);
+  assert.equal(at(0).stretch, 0);
+  assert.equal(at(0.6).stretch, 1);
+  assert.ok(at(0.3).stretch > 0 && at(0.3).stretch < 1);
+  assert.ok(at(0.2).digital < at(0.5).digital && at(1).digital === 1);
+  assert.ok(at(0.5).calm < 0.05 && at(1).calm === 1);
+});
+
 test('site styling: grayscale only, with no violet, purple, or sepia accents left', () => {
   const files = ['styles.css', 'blackhole.js', 'fx.js', 'index.html'];
   const offenders = [];

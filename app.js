@@ -4,7 +4,7 @@ import { createEntrySession } from './session.js';
 
 // Everything decorative is loaded as an isolated enhancement (dynamic import, errors swallowed), so a missing or broken
 // module can never take project navigation, the Toolkit, or the portfolio itself down with it.
-const BLACKHOLE_URL = './blackhole.js?v=6';
+const BLACKHOLE_URL = './blackhole.js?v=7';
 const kinds = { job: 'server', calendar: 'constellation' }; // the other cards show genuine captures; the Job and Calendar cards keep illustrative covers
 import(BLACKHOLE_URL).then(({ drawProjectArt }) => {
   document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
@@ -27,7 +27,7 @@ motion.subscribe(updateMotion);
 // before a user gesture, and every call site below is a direct user action, never a load, route restore, or history sync.
 let soundEngine = null;
 const sound = { play: name => soundEngine?.play(name) ?? false, stop: name => soundEngine?.stop(name) };
-import('./audio.js?v=3').then(({ createSoundEffects, bindSoundToggles }) => {
+import('./audio.js?v=4').then(({ createSoundEffects, bindSoundToggles }) => {
   const engine = createSoundEffects();
   bindSoundToggles(engine, document.querySelectorAll('[data-sound-toggle]')); // header and gateway share one muted state
   soundEngine = engine;
@@ -1340,7 +1340,7 @@ coordinator.sync();
 // Entrance gateway. The early bootstrap in index.html only prevents a flash; the real route and session modules decide here.
 // Route precedence: any project route bypasses it, otherwise the entered-session cookie does. gateway.js is imported
 // dynamically so the portfolio never depends on it: if it fails to load or start, the portfolio is simply revealed.
-import('./gateway.js?v=6').then(({ createGateway }) => {
+import('./gateway.js?v=7').then(({ createGateway }) => {
   gateway = createGateway({
     dialog: document.querySelector('#gateway-dialog'), motion, session: entrySession, sound,
     loadScene: () => import(BLACKHOLE_URL), // the animated ASCII scene is an enhancement the gateway never depends on

@@ -10,10 +10,13 @@ animation loop, `journeyState()` for the inward journey). There are no image, vi
   front of the horizon, the far side is hidden behind it), thin lensing arcs and a photon ring, a Doppler-style brighter
   approaching side, and sparse stars. Shades are neutral grays from `#1a1a1a` to `#ffffff`.
 - **What moves:** the disk's arms rotate with a Keplerian-style shear (inner material faster), fine rings drift inward, the
-  lensing streams shimmer, and stars drift and twinkle. On **Enter Portfolio** a 3.4 s journey recomputes the field every
-  frame: magnification toward the hole accelerates, the field is twisted, glyphs stretch into radial strokes (`/ \ | -`),
-  the hole drifts to the center of the screen, speed lines and stars pour outward from the middle, the animation clock speeds
-  up, and finally a ring opens at the center with the portfolio visible inside it (a CSS radial mask on the gateway dialog) while the page behind scales down from close-up and de-blurs, so the visitor arrives through the hole.
+  lensing streams shimmer, and stars drift and twinkle. On **Enter Portfolio** a 4.6 s journey recomputes the field every
+  frame: magnification toward the hole accelerates and the field is twisted; then the field is *spaghettified* (the sampled
+  radius is squeezed into a narrow band, so what is drawn depends almost only on direction from the hole and every feature
+  becomes a long radial noodle), its glyphs turn from strokes into `0`/`1` characters, and speed lines and stars stream
+  inward. Finally the characters of the real portfolio page (read from the DOM by `collectPortfolioGlyphs()` in
+  `gateway.js`) fly in along rays from the hole, as bits at first, and land as the real letters in their exact on-screen
+  positions while the stream calms; the dialog then fades to the real page, which is never scaled or moved.
 - **How it is bounded:** one loop per mounted scene, paused when the tab is hidden or the motion policy asks for reduced
   motion (it then shows one static frame), destroyed when the gateway closes. A governor coarsens the character grid on
   devices that cannot keep up.

@@ -26,7 +26,7 @@ for (const [tag, viewport] of [['desktop', { width: 1440, height: 810 }], ['mobi
   await page.screenshot({ path: out + `${tag}-1-idle.png` });
   await page.click('[data-gateway-enter]');
   let t = 0;
-  for (const [i, at] of [[2, 500], [3, 1100], [4, 1700], [5, 2200], [6, 2600]]) { await page.waitForTimeout(at - t); t = at; await page.screenshot({ path: out + `${tag}-${i}-journey-${at}ms.png` }); }
+  for (const [i, at] of [[2, 1000], [3, 2000], [4, 2800], [5, 3400], [6, 3900]]) { await page.waitForTimeout(at - t); t = at; await page.screenshot({ path: out + `${tag}-${i}-journey-${at}ms.png` }); }
   await page.waitForFunction(() => !document.querySelector('#gateway-dialog').open, null, { timeout: 5000 });
   await page.waitForTimeout(500);
   await page.screenshot({ path: out + `${tag}-7-resolved-portfolio.png` });

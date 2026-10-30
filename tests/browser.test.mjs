@@ -129,14 +129,11 @@ for (const { name, browser } of engines) {
       await page.evaluate(() => document.querySelector('[data-gateway-enter]').click()); // repeated input must not stack journeys
       for (const wait of [350, 900, 900]) { await page.waitForTimeout(wait); hashes.push(await canvasHash(page)); }
       assert.equal(new Set(hashes).size, hashes.length, 'initial, early, middle and late frames all differ');
-      // Late in the journey a ring opens in the hole onto the portfolio, which rushes toward the visitor and settles.
-      await page.waitForFunction(sel => parseFloat(document.querySelector(sel).style.getPropertyValue('--iris')) > 8, GW, { timeout: 3000 });
-      const arriving = await page.evaluate(() => ({ arrive: document.documentElement.dataset.arrive, transform: getComputedStyle(document.querySelector('.site')).transform, iris: parseFloat(document.querySelector('#gateway-dialog').style.getPropertyValue('--iris')) }));
-      assert.equal(arriving.arrive, 'on');
-      assert.notEqual(arriving.transform, 'none', 'the portfolio is scaled while arriving');
-      assert.ok(arriving.iris > 0, 'the ring has opened');
+      // Late in the journey the dialog hands over to the real page, which is never scaled or moved beneath it.
+      await page.waitForFunction(sel => parseFloat(document.querySelector(sel).style.opacity) < 0.98, GW, { timeout: 5500 });
+      assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.site')).transform), 'none');
       await waitClosed(page);
-      assert.deepEqual(await page.evaluate(() => ({ arrive: document.documentElement.dataset.arrive, style: document.documentElement.getAttribute('style') || '', transform: getComputedStyle(document.querySelector('.site')).transform })), { arrive: undefined, style: '', transform: 'none' }, 'arrival effects are fully cleaned up');
+      assert.deepEqual(await page.evaluate(() => ({ style: document.documentElement.getAttribute('style') || '', dialogOpacity: document.querySelector('#gateway-dialog').style.opacity })), { style: '', dialogOpacity: '' }, 'hand-over effects are fully cleaned up');
       assert.equal(await page.evaluate(() => document.documentElement.dataset.gateway), undefined);
       assert.match(await page.evaluate(() => document.cookie), /portfolio_entered=1/);
       assert.equal(await page.evaluate(() => document.activeElement?.id), 'main');
@@ -145,6 +142,23 @@ for (const { name, browser } of engines) {
       assert.equal(done.rafOutstanding, 0, 'no render loop remains after the gateway closes');
       assert.ok(done.observers <= idleProbe.observers - 1, 'the scene released its observers');
       assert.deepEqual(errors, []);
+      await context.close();
+    });
+
+    test('entrance reads the real page text (positions, fonts, colors) and skips hidden text', async () => {
+      const { page, context } = await openPage(browser);
+      await page.goto(server.origin + '/?project=none');
+      await page.waitForSelector('.projects-grid');
+      const glyphs = await page.evaluate(async () => (await import('/gateway.js')).collectPortfolioGlyphs(document, window));
+      assert.ok(glyphs.length > 200 && glyphs.length <= 1100, `glyph count ${glyphs.length}`);
+      const text = glyphs.map(g => g.ch).join('');
+      assert.ok(text.includes('OmarAguilar'), 'the page heading is read in order');
+      assert.ok(!text.includes('opensinanewtab') && !text.includes('Skiptocontent'), 'visually hidden text is excluded');
+      for (const g of glyphs) {
+        assert.ok(Number.isFinite(g.x) && Number.isFinite(g.y) && g.x >= -2 && g.x <= 1282 && g.y >= -2 && g.y <= 802, 'inside the viewport');
+        assert.match(g.font, /\d+(\.\d+)?px/);
+        assert.ok(g.color);
+      }
       await context.close();
     });
 
