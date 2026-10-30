@@ -27,7 +27,7 @@ motion.subscribe(updateMotion);
 // before a user gesture, and every call site below is a direct user action, never a load, route restore, or history sync.
 let soundEngine = null;
 const sound = { play: name => soundEngine?.play(name) ?? false, stop: name => soundEngine?.stop(name) };
-import('./audio.js?v=1').then(({ createSoundEffects, bindSoundToggles }) => {
+import('./audio.js?v=2').then(({ createSoundEffects, bindSoundToggles }) => {
   const engine = createSoundEffects();
   bindSoundToggles(engine, document.querySelectorAll('[data-sound-toggle]')); // header and gateway share one muted state
   soundEngine = engine;

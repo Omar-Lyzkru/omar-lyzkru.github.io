@@ -34,17 +34,47 @@ export function createSoundEffects({ win = window, AudioContextCtor = win.AudioC
   const mark = event => { if (event.isTrusted) activated = true; };
   for (const type of GESTURES) win.addEventListener(type, mark, { capture: true, passive: true });
 
+  let reverb = null;
+
+  // Master chain: voices -> master -> (compressor, when available) -> speakers, plus a short synthesized room reverb
+  // that every voice is also sent into. The compressor lets the cues be full without clipping.
   function ensure() {
     if (broken) return null;
     if (!context) {
       context = new AudioContextCtor();
       master = context.createGain();
-      master.gain.value = 0.7;
-      master.connect(context.destination);
+      master.gain.value = 1;
+      let out = context.destination;
+      if (typeof context.createDynamicsCompressor === 'function') {
+        const compressor = context.createDynamicsCompressor();
+        compressor.threshold.value = -16;
+        compressor.ratio.value = 5;
+        compressor.attack.value = 0.004;
+        compressor.release.value = 0.22;
+        compressor.connect(context.destination);
+        out = compressor;
+      }
+      master.connect(out);
+      if (typeof context.createConvolver === 'function') {
+        try {
+          const length = Math.ceil(context.sampleRate * 1.9);
+          const impulse = context.createBuffer(1, length, context.sampleRate);
+          const data = impulse.getChannelData(0);
+          for (let i = 0; i < length; i += 1) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.6);
+          reverb = context.createConvolver();
+          reverb.buffer = impulse;
+          const wet = context.createGain();
+          wet.gain.value = 0.32;
+          reverb.connect(wet).connect(master);
+        } catch { reverb = null; }
+      }
     }
     if (context.state === 'suspended') context.resume?.().catch?.(() => {});
     return context;
   }
+
+  // Every voice goes to the dry bus and, when present, the reverb send.
+  const route = node => { node.connect(master); if (reverb) node.connect(reverb); };
 
   function noiseBuffer(ctx, seconds) {
     if (noise && noise.length >= ctx.sampleRate * seconds) return noise;
@@ -55,8 +85,9 @@ export function createSoundEffects({ win = window, AudioContextCtor = win.AudioC
     return noise;
   }
 
-  // One envelope-shaped oscillator. Frequencies sweep from `from` to `to`; peak is deliberately small.
-  function tone(ctx, { type = 'triangle', from, to, at = 0, length, peak = 0.05 }) {
+  // One envelope-shaped oscillator. Frequencies sweep from `from` to `to` over `length`; `attack` is the rise time.
+  // `lowpass` (optional, [from, to]) sweeps a low-pass filter for warmth.
+  function tone(ctx, { type = 'triangle', from, to, at = 0, length, peak = 0.1, attack = Math.min(0.012, length / 3), lowpass = null }) {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     const start = ctx.currentTime + at;
@@ -64,44 +95,84 @@ export function createSoundEffects({ win = window, AudioContextCtor = win.AudioC
     osc.frequency.setValueAtTime(from, start);
     osc.frequency.exponentialRampToValueAtTime(to, start + length);
     gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(peak, start + Math.min(0.012, length / 3));
+    gain.gain.exponentialRampToValueAtTime(peak, start + attack);
     gain.gain.exponentialRampToValueAtTime(0.0001, start + length);
-    osc.connect(gain).connect(master);
+    let head = osc;
+    if (lowpass) {
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(lowpass[0], start);
+      filter.frequency.exponentialRampToValueAtTime(lowpass[1], start + length);
+      osc.connect(filter);
+      head = filter;
+    }
+    head.connect(gain);
+    route(gain);
     osc.start(start);
-    osc.stop(start + length + 0.03);
+    osc.stop(start + length + 0.05);
     return { osc, gain };
   }
 
+  // Filtered noise: a band-pass that sweeps, shaped by its own envelope.
+  function rush(ctx, { from, to, at = 0, length, peak, attack, type = 'bandpass', q = 0.9 }) {
+    const source = ctx.createBufferSource();
+    source.buffer = noiseBuffer(ctx, length);
+    const filter = ctx.createBiquadFilter();
+    filter.type = type;
+    filter.Q.value = q;
+    const start = ctx.currentTime + at;
+    filter.frequency.setValueAtTime(from, start);
+    filter.frequency.exponentialRampToValueAtTime(to, start + length);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(peak, start + attack);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + length);
+    source.connect(filter).connect(gain);
+    route(gain);
+    source.start(start);
+    source.stop(start + length + 0.05);
+    return { osc: source, gain };
+  }
+
   const cues = {
-    click: ctx => [tone(ctx, { type: 'square', from: 1500, to: 820, length: 0.05, peak: 0.028 })],
+    // A crisp tick over a soft low thump.
+    click: ctx => [
+      tone(ctx, { type: 'square', from: 2000, to: 900, length: 0.05, peak: 0.16 }),
+      tone(ctx, { type: 'sine', from: 190, to: 80, length: 0.13, peak: 0.5 }),
+    ],
+    // A two-note chime with a shimmer, soaked in the room reverb.
     select: ctx => [
-      tone(ctx, { type: 'triangle', from: 640, to: 700, length: 0.05, peak: 0.045 }),
-      tone(ctx, { type: 'triangle', from: 960, to: 1020, length: 0.07, at: 0.045, peak: 0.04 }),
+      tone(ctx, { type: 'sine', from: 880, to: 880, length: 0.32, peak: 0.3 }),
+      tone(ctx, { type: 'sine', from: 1320, to: 1320, length: 0.42, at: 0.06, peak: 0.22 }),
+      tone(ctx, { type: 'triangle', from: 440, to: 440, length: 0.26, peak: 0.16 }),
     ],
+    // Opening: a rising sweep, a sub swell, and a bright chime on top.
     open: ctx => [
-      tone(ctx, { type: 'triangle', from: 220, to: 700, length: 0.17, peak: 0.05 }),
-      tone(ctx, { type: 'sine', from: 1400, to: 1400, length: 0.05, at: 0.15, peak: 0.02 }),
+      tone(ctx, { type: 'sawtooth', from: 160, to: 900, length: 0.28, peak: 0.14, attack: 0.08, lowpass: [400, 3200] }),
+      tone(ctx, { type: 'sine', from: 70, to: 150, length: 0.34, peak: 0.55, attack: 0.05 }),
+      tone(ctx, { type: 'sine', from: 1320, to: 1760, length: 0.45, at: 0.2, peak: 0.2 }),
     ],
-    close: ctx => [tone(ctx, { type: 'triangle', from: 560, to: 210, length: 0.13, peak: 0.045 })],
-    // The entrance journey: a filtered noise rush that rises and brightens as the scene accelerates, over a rising hum.
+    // Closing: a falling sweep that settles into a low thud.
+    close: ctx => [
+      tone(ctx, { type: 'sawtooth', from: 800, to: 150, length: 0.26, peak: 0.12, lowpass: [3000, 300] }),
+      tone(ctx, { type: 'sine', from: 130, to: 48, length: 0.34, peak: 0.55 }),
+    ],
+    // The entrance journey, matched to its 2.8 s: a sub rumble and a growl that climb with the acceleration, a rushing
+    // noise sweep, a rising shimmer of fifths, and a deep boom just before the portfolio appears. The boom's tail rings
+    // on over the portfolio; leaving the journey early (Skip, Escape, Pause, mute) stops everything at once.
     journey: ctx => {
-      const length = 2.6;
-      const source = ctx.createBufferSource();
-      source.buffer = noiseBuffer(ctx, length);
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.Q.value = 0.9;
-      const start = ctx.currentTime;
-      filter.frequency.setValueAtTime(180, start);
-      filter.frequency.exponentialRampToValueAtTime(2600, start + length);
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(0.075, start + length * 0.85);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + length);
-      source.connect(filter).connect(gain).connect(master);
-      source.start(start);
-      source.stop(start + length + 0.05);
-      return [{ osc: source, gain }, tone(ctx, { type: 'sine', from: 55, to: 190, length, peak: 0.05 })];
+      const length = 2.8;
+      const nodes = [
+        tone(ctx, { type: 'sine', from: 36, to: 120, length, peak: 0.32, attack: 1.4 }),
+        tone(ctx, { type: 'sawtooth', from: 52, to: 230, length, peak: 0.075, attack: 1.6, lowpass: [140, 2400] }),
+        rush(ctx, { from: 140, to: 4400, length, peak: 0.26, attack: 2.2 }),
+        tone(ctx, { type: 'sine', from: 90, to: 28, at: length * 0.86, length: 1.5, peak: 0.5, attack: 0.03 }),
+        rush(ctx, { from: 900, to: 90, at: length * 0.86, length: 1.1, peak: 0.2, attack: 0.03, type: 'lowpass', q: 0.7 }),
+      ];
+      [523, 784, 1047, 1568, 2093].forEach((hz, i) => {
+        nodes.push(tone(ctx, { type: 'triangle', from: hz, to: hz, at: length * [0.12, 0.3, 0.46, 0.6, 0.72][i], length: 0.7, peak: 0.07 + i * 0.01 }));
+      });
+      return nodes;
     },
   };
 

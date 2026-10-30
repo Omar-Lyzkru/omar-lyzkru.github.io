@@ -91,7 +91,7 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     run = null;
     clearTimeout(current.timer);
     try { scene?.cancelTravel(); } catch { /* ignore */ }
-    sound.stop('journey');
+    if (!current.finished) sound.stop('journey'); // a journey that ran to its end lets its closing boom ring on
   }
 
   // Brings the section named by the current fragment into view and focuses it. The URL is never changed.
@@ -169,6 +169,7 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     const current = { timer: 0 };
     run = current;
     const done = () => { if (run === current) conclude(); };
+    const complete = () => { current.finished = true; done(); }; // the scene reached its end
     current.timer = setTimeout(done, JOURNEY_MS + SAFETY_MS); // the renderer can stall or fail; entry never depends on it
     let started = false;
     try {
@@ -176,7 +177,7 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
         duration: JOURNEY_MS,
         // The scene itself falls toward the hole; over the last stretch the dialog dissolves into the portfolio beneath it.
         onProgress: progress => { if (run === current) dialog.style.opacity = String(1 - smoothstep(0.86, 1, progress)); },
-        onComplete: done,
+        onComplete: complete,
       }));
     } catch { started = false; }
     if (started) { sound.play('journey'); return; }
