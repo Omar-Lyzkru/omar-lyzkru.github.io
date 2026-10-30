@@ -3,19 +3,79 @@
 // Motion comes from the shared policy (motion.js), session state from session.js; nothing here stores preferences.
 //
 // Lifecycle: closed -> idle -> entering -> closed. 'idle' is the resting presentation (initial or voluntary replay);
-// 'entering' lasts while the cinematic journey plays. Every way out (journey end, Skip, Return, Escape, a preference
-// change, a failed animation, a showcase taking over) goes through conclude(), so there is one finalization path and
-// stale animation callbacks (which compare against the current run) cannot touch a newer state.
+// 'entering' lasts while the inward journey plays. Every way out (journey end, Skip, Return, Escape, a preference
+// change, a failed journey, a showcase taking over) goes through conclude(), so there is one finalization path and
+// stale callbacks (which compare against the current run) cannot touch a newer state.
 //
-// const gateway = createGateway({ dialog, motion, session, canReplay });
+// The animated ASCII scene is an enhancement. It is loaded lazily through loadScene(), mounted when the gateway is
+// presented and destroyed when it concludes. The gateway never depends on it: if the module fails to load, a canvas
+// context is missing, or the journey cannot start, the controls still work and the visitor still reaches the portfolio.
+// dialog.dataset.scene reports 'loading' | 'ready' | 'fallback' so CSS can show a static character fallback.
+//
+// const gateway = createGateway({ dialog, motion, session, sound, loadScene, canReplay });
 // gateway.show()          // initial presentation; only call it for an eligible route and session
 // gateway.replay(invoker) // voluntary replay from the normal portfolio; focus returns to invoker. False if it cannot open
 // gateway.yieldToShowcase() // a project showcase is about to open: leave without restoring focus or scroll
 // gateway.active          // true from show()/replay() until the gateway has fully concluded
-const JOURNEY_MS = 1500;
+export const JOURNEY_MS = 4600;
+const SAFETY_MS = 700;    // the journey is force-finished this long after its nominal end, whatever the renderer does
+const FALLBACK_MS = 380;  // the short dissolve used when there is no scene to travel through
 const SECTION_IDS = new Set(['main', 'work', 'toolkit', 'about', 'contact']);
+const silent = { play() { return false; }, stop() {} };
 
-export function createGateway({ dialog, motion, session, canReplay = () => true, doc = document, win = window }) {
+// Where the hole sits on screen: right of the copy on wide screens, above it on tall ones (matches the CSS scrim).
+export function gatewayLayout(width, height) {
+  return width / height <= 0.8
+    ? { cx: 0.5, cy: 0.3, radius: Math.min(width * 0.36, height * 0.21) }
+    : { cx: 0.66, cy: 0.5, radius: Math.min(width * 0.22, height * 0.33) };
+}
+
+// The page's own text, as characters with their on-screen positions, fonts and colors. The entrance flies these in out of the
+// digital stream, so the visitor arrives in a page whose words are already where they will be. Read-only; capped.
+export function collectPortfolioGlyphs(doc, win, limit = 1100) {
+  const site = doc.querySelector('.site');
+  if (!site) return [];
+  const out = [];
+  const vw = win.innerWidth;
+  const vh = win.innerHeight;
+  const REJECT = 2;
+  const ACCEPT = 1;
+  const walker = doc.createTreeWalker(site, 4 /* NodeFilter.SHOW_TEXT */, {
+    acceptNode(node) {
+      const el = node.parentElement;
+      if (!el || !node.nodeValue.trim()) return REJECT;
+      return el.closest('.visually-hidden, [aria-hidden="true"], [hidden], script, style, noscript') ? REJECT : ACCEPT;
+    }
+  });
+  const range = doc.createRange();
+  while (out.length < limit && walker.nextNode()) {
+    const node = walker.currentNode;
+    const el = node.parentElement;
+    const box = el.getBoundingClientRect();
+    if (box.width === 0 || box.bottom < 0 || box.top > vh) continue;
+    const style = win.getComputedStyle(el);
+    if (style.visibility === 'hidden' || style.display === 'none' || Number(style.opacity) === 0) continue;
+    const font = `${style.fontStyle === 'italic' ? 'italic ' : ''}${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const upper = style.textTransform === 'uppercase';
+    const text = node.nodeValue;
+    for (let i = 0; i < text.length && out.length < limit; i += 1) {
+      if (/\s/.test(text[i])) continue;
+      range.setStart(node, i);
+      range.setEnd(node, i + 1);
+      const r = range.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw) continue;
+      out.push({ ch: upper ? text[i].toUpperCase() : text[i], x: r.left + r.width / 2, y: r.top + r.height / 2, font, color: style.color });
+    }
+  }
+  return out;
+}
+
+const smoothstep = (a, b, value) => {
+  const t = Math.max(0, Math.min(1, (value - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+
+export function createGateway({ dialog, motion, session, sound = silent, loadScene = null, canReplay = () => true, doc = document, win = window }) {
   const root = doc.documentElement;
   const part = name => dialog.querySelector(`[data-gateway-${name}]`);
   const enterButton = part('enter');
@@ -24,15 +84,17 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
   const pauseButton = part('motion');
   const pauseLabel = part('motion-label');
   const status = part('status');
-  const stage = part('stage');
-  const copy = part('copy');
+  const canvas = part('canvas');
 
   let state = 'closed'; // 'closed' | 'idle' | 'entering'
   let mode = 'initial'; // 'initial' | 'replay'
-  let run = null;       // the single in-flight journey: { animations, timer }
+  let run = null;       // the single in-flight journey: { timer }
   let context = null;   // replay only: the portfolio scroll position and focus to restore
+  let scene = null;     // the mounted ASCII scene, if any
+  let sceneToken = 0;   // invalidates a scene load that finishes after the gateway has moved on
 
   const setState = value => { state = value; dialog.dataset.state = value; };
+  const setScene = value => { dialog.dataset.scene = value; };
 
   function syncMotionControl() {
     const system = motion.systemReduced;
@@ -42,12 +104,34 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
     pauseLabel.textContent = system ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion';
   }
 
+  function unmountScene() {
+    sceneToken += 1; // a load still in flight must not mount into a gateway that is gone
+    const current = scene;
+    scene = null;
+    try { current?.destroy(); } catch { /* the loop is already unreferenced */ }
+  }
+
+  function mountScene() {
+    unmountScene();
+    const token = sceneToken;
+    if (!loadScene || !canvas) { setScene('fallback'); return; }
+    setScene('loading');
+    Promise.resolve().then(loadScene).then(module => {
+      if (token !== sceneToken || state === 'closed') return;
+      const next = module.mountBlackHole(canvas, { fps: 20, layout: gatewayLayout, paused: motion.reduced });
+      if (!next?.ready) { try { next?.destroy(); } catch { /* inert */ } setScene('fallback'); return; }
+      scene = next;
+      setScene('ready');
+    }).catch(() => { if (token === sceneToken) setScene('fallback'); });
+  }
+
   function endRun() {
     const current = run;
     if (!current) return;
     run = null;
     clearTimeout(current.timer);
-    current.animations.forEach(animation => { try { animation.cancel(); } catch { /* already gone */ } });
+    try { scene?.cancelTravel(); } catch { /* ignore */ }
+    if (!current.finished) sound.stop('journey'); // a journey that ran to its end lets its closing boom ring on
   }
 
   // Brings the section named by the current fragment into view and focuses it. The URL is never changed.
@@ -68,10 +152,13 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
   function conclude(restore = true) {
     if (state === 'closed') return;
     endRun();
+    unmountScene();
     const wasMode = mode;
     const saved = context;
     context = null;
     setState('closed');
+    dialog.style.opacity = '';
+    dialog.style.transition = '';
     try { if (dialog.open) dialog.close(); } catch { /* the modal is gone either way */ }
     delete root.dataset.gateway;
     status.textContent = '';
@@ -95,6 +182,8 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
     returnButton.hidden = nextMode !== 'replay';
     enterButton.hidden = false;
     status.textContent = '';
+    dialog.style.opacity = '';
+    dialog.style.transition = '';
     syncMotionControl();
     setState('idle');
     root.dataset.gateway = 'active';
@@ -105,7 +194,9 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
     } catch {
       // The gateway cannot be presented: never leave the visitor behind a blocked screen.
       conclude(false);
+      return;
     }
+    mountScene(); // after the dialog is laid out, so the canvas has its real size
   }
 
   function startJourney() {
@@ -115,36 +206,43 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
     const keep = mode === 'replay' ? returnButton : skipButton;
     keep.focus({ preventScroll: true });
     enterButton.hidden = true;
+    const current = { timer: 0 };
+    run = current;
+    const done = () => { if (run === current) conclude(); };
+    const complete = () => { current.finished = true; done(); }; // the scene reached its end
+    current.timer = setTimeout(done, JOURNEY_MS + SAFETY_MS); // the renderer can stall or fail; entry never depends on it
+    let started = false;
+    let targets = [];
+    try { targets = collectPortfolioGlyphs(doc, win); } catch { targets = []; } // the page's words; the journey works without them
     try {
-      if (typeof stage.animate !== 'function') throw new Error('no Web Animations');
-      const animations = [];
-      // The scene rushes toward the hole while the copy fades; the dialog dissolves over the portfolio at the end.
-      const lead = stage.animate(
-        [{ transform: 'scale(1)', filter: 'brightness(1)' }, { transform: 'scale(2.8)', filter: 'brightness(1.6)' }],
-        { duration: JOURNEY_MS, easing: 'cubic-bezier(.55,0,.85,.35)', fill: 'both' });
-      animations.push(lead,
-        copy.animate({ opacity: [1, 0], transform: ['scale(1)', 'scale(.96)'] }, { duration: 380, easing: 'ease-out', fill: 'both' }),
-        dialog.animate([{ opacity: 1, offset: 0 }, { opacity: 1, offset: 0.68 }, { opacity: 0, offset: 1 }], { duration: JOURNEY_MS, easing: 'linear', fill: 'both' }));
-      const current = { animations, timer: 0 };
-      run = current;
-      const done = () => { if (run === current) conclude(); };
-      lead.onfinish = done;
-      current.timer = setTimeout(done, JOURNEY_MS + 400); // optional motion can fail; entry never depends on it
-    } catch {
-      conclude();
-    }
+      started = Boolean(scene?.travel({
+        duration: JOURNEY_MS,
+        targets,
+        // The scene falls in, stretches into digital noodles, and the page's own characters arrive out of the stream. Over
+        // the last stretch the dialog fades, handing over to the real page whose words are already in place beneath it.
+        onProgress: progress => { if (run === current) dialog.style.opacity = String(1 - smoothstep(0.9, 1, progress)); },
+        onComplete: complete,
+      }));
+    } catch { started = false; }
+    if (started) { sound.play('journey'); return; }
+    // No scene to travel through (not loaded, no canvas, or it failed): a short plain dissolve, still bounded.
+    clearTimeout(current.timer);
+    dialog.style.transition = `opacity ${FALLBACK_MS}ms ease-out`;
+    dialog.style.opacity = '0';
+    current.timer = setTimeout(done, FALLBACK_MS + 60);
   }
 
   function enter() {
     if (state !== 'idle') return; // repeated activation never stacks journeys
     if (mode === 'initial') session.markEntered();
-    if (motion.reduced) { conclude(); return; } // no spatial travel when motion is suppressed
+    if (motion.reduced) { sound.play('click'); conclude(); return; } // no spatial travel when motion is suppressed
     startJourney();
   }
 
   function skip() {
     if (state === 'closed') return;
     if (mode === 'initial') session.markEntered();
+    sound.play('click');
     conclude();
   }
 
@@ -156,8 +254,8 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
 
   enterButton.addEventListener('click', enter);
   skipButton.addEventListener('click', skip);
-  returnButton.addEventListener('click', () => conclude());
-  pauseButton.addEventListener('click', () => motion.toggleManualPaused());
+  returnButton.addEventListener('click', () => { sound.play('click'); conclude(); });
+  pauseButton.addEventListener('click', () => { sound.play('click'); motion.toggleManualPaused(); });
   dialog.addEventListener('keydown', event => {
     if (event.key !== 'Escape' || event.isComposing) return;
     event.preventDefault(); // also stops the browser's own dismissal, so only escape() decides
@@ -173,6 +271,7 @@ export function createGateway({ dialog, motion, session, canReplay = () => true,
   // A preference change settles the journey into the usable destination; re-enabling motion never replays it.
   motion.subscribe(reduced => {
     syncMotionControl();
+    try { scene?.setPaused(reduced); } catch { /* the scene is decorative */ }
     if (reduced && state === 'entering') conclude();
   });
   syncMotionControl();

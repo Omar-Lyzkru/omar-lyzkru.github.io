@@ -5,8 +5,9 @@
 // The Toolkit owns its selection and evidence panel. Selecting a technology never touches history or the URL; opening a
 // case study is delegated to the showcase coordinator in app.js, which owns the dialog, URL, scroll and focus.
 //
-// const toolkit = createToolkit({ root, projects, motion, onView });
+// const toolkit = createToolkit({ root, projects, motion, onView, sound });
 // onView(projectId, button)     // a View case study control was activated
+// sound.play('select')          // optional; played only for a direct technology selection, never on the initial render
 // toolkit.fallbackFocus(id)     // where focus should return when the invoking control is gone
 const gh = 'https://github.com/';
 const pw = `${gh}Abbas9x/permitwatch-houston/`;
@@ -108,7 +109,7 @@ export const toolkitGroups = [
   }
 ];
 
-export function createToolkit({ root, projects, motion, onView, initial = 'javascript' }) {
+export function createToolkit({ root, projects, motion, onView, sound = { play() {} }, initial = 'javascript' }) {
   const picker = root.querySelector('[data-toolkit-picker]');
   const panel = root.querySelector('[data-toolkit-panel]');
   const status = root.querySelector('[data-toolkit-status]');
@@ -147,6 +148,8 @@ export function createToolkit({ root, projects, motion, onView, initial = 'javas
 
   function renderPanel(tech) {
     const count = tech.uses.length;
+    const lead = tech.uses.filter(use => projects[use.project].tier === 'lead').length;
+    const supporting = count - lead;
     const title = el('h3', 'toolkit-panel-title', tech.name);
     title.id = 'toolkit-panel-title';
     const list = el('ul', 'toolkit-uses');
@@ -154,7 +157,11 @@ export function createToolkit({ root, projects, motion, onView, initial = 'javas
       const project = projects[use.project];
       const item = el('li', 'toolkit-use');
       const head = el('div', 'toolkit-use-head');
-      head.append(el('h4', '', project.title), el('span', 'toolkit-context mono', projectContext[use.project]));
+      const tier = project.tier === 'lead' ? 'lead' : 'supporting';
+      const context = el('span', 'toolkit-context mono');
+      context.append(el('span', 'toolkit-tier', tier === 'lead' ? 'Lead' : 'Supporting'), projectContext[use.project]);
+      context.firstChild.dataset.tier = tier;
+      head.append(el('h4', '', project.title), context);
       const evidence = el('p', 'toolkit-evidence mono');
       evidence.append(el('span', 'quiet', 'EVIDENCE'));
       for (const [label, href] of use.evidence) {
@@ -176,7 +183,7 @@ export function createToolkit({ root, projects, motion, onView, initial = 'javas
       }
       list.append(item);
     }
-    panel.replaceChildren(el('p', 'toolkit-kicker mono', tech.group), title, el('p', 'toolkit-count mono', `Used in ${count} of ${Object.keys(projects).length} projects`), list);
+    panel.replaceChildren(el('p', 'toolkit-kicker mono', tech.group), title, el('p', 'toolkit-count mono', `Used in ${count} of ${Object.keys(projects).length} projects (${lead} lead, ${supporting} supporting)`), list);
   }
 
   // announce=false for the initial render, so the page does not speak on load.
@@ -189,6 +196,7 @@ export function createToolkit({ root, projects, motion, onView, initial = 'javas
     reveal = null;
     renderPanel(tech);
     if (announce) {
+      sound.play('select');
       const names = tech.uses.map(use => projects[use.project].title).join(' and ');
       status.textContent = `${tech.name}: used in ${names}.`;
     }

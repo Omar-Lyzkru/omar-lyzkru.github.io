@@ -1,10 +1,14 @@
-import { drawProjectArt } from './blackhole.js';
 import { createMotionPolicy } from './motion.js';
 import { classifyProjectRoute } from './route.js';
 import { createEntrySession } from './session.js';
 
+// Everything decorative is loaded as an isolated enhancement (dynamic import, errors swallowed), so a missing or broken
+// module can never take project navigation, the Toolkit, or the portfolio itself down with it.
+const BLACKHOLE_URL = './blackhole.js?v=7';
 const kinds = { job: 'server', calendar: 'constellation' }; // the other cards show genuine captures; the Job and Calendar cards keep illustrative covers
-document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
+import(BLACKHOLE_URL).then(({ drawProjectArt }) => {
+  document.querySelectorAll('[data-art]').forEach(canvas => drawProjectArt(canvas, kinds[canvas.dataset.art]));
+}).catch(() => { /* the illustrative covers keep their captions; nothing depends on the canvases */ });
 // One effective motion policy (manual Pause OR system reduced motion) lives in motion.js. The header Pause control and the
 // data-motion attribute (which scopes decorative CSS motion) only consume it; nothing in the homepage owns preference state.
 const motion = createMotionPolicy();
@@ -19,12 +23,24 @@ function updateMotion(effectivePaused = motion.reduced) {
   document.querySelector('#motion-icon').textContent = effectivePaused ? '▷' : 'Ⅱ';
 }
 motion.subscribe(updateMotion);
-document.querySelector('#motion-toggle').addEventListener('click', () => motion.toggleManualPaused());
+// Sound effects: audio.js is optional. Until it loads (or if it fails) this facade is silent. audio.js itself never sounds
+// before a user gesture, and every call site below is a direct user action, never a load, route restore, or history sync.
+let soundEngine = null;
+const sound = { play: name => soundEngine?.play(name) ?? false, stop: name => soundEngine?.stop(name) };
+import('./audio.js?v=4').then(({ createSoundEffects, bindSoundToggles }) => {
+  const engine = createSoundEffects();
+  bindSoundToggles(engine, document.querySelectorAll('[data-sound-toggle]')); // header and gateway share one muted state
+  soundEngine = engine;
+}).catch(() => { /* the mute buttons stay hidden: they are revealed only once audio is available */ });
+import('./fx.js?v=1').then(({ installClickFeedback }) => installClickFeedback({ motion })).catch(() => { /* decorative */ });
+
+document.querySelector('#motion-toggle').addEventListener('click', () => { sound.play('click'); motion.toggleManualPaused(); });
 updateMotion();
 
 const projects = {
   "permit": {
     "number": "01",
+    "tier": "lead",
     "category": "ENVIRONMENTAL DATA / FOUR-PERSON TEAM PROJECT",
     "title": "PermitWatch",
     "summary": "A bilingual English/Spanish web app for exploring TCEQ and EPA environmental permits near a Houston address or ZIP code, built by a four-person team for CodeRED Orion at the University of Houston.",
@@ -142,6 +158,7 @@ const projects = {
   },
   "durablekv": {
     "number": "02",
+    "tier": "lead",
     "category": "SYSTEMS ENGINEERING / AI-ASSISTED PROJECT",
     "title": "DurableKV",
     "summary": "A C++20 persistent key-value storage engine built on an append-only, CRC32C-checked binary log. It rebuilds its index when a database is opened, recovers from an incomplete final write, and compacts the log on request.",
@@ -307,6 +324,7 @@ const projects = {
   },
   "calendar": {
     "number": "03",
+    "tier": "lead",
     "category": "FULL-STACK TYPESCRIPT / AI-ASSISTED PROJECT",
     "title": "Calendar Intelligence Hub",
     "summary": "A local full-stack TypeScript application that turns selected Gmail, Outlook, and Discord messages into reviewed Google Calendar events. Extraction is deterministic (no LLM), uncertain facts stay unresolved, and Calendar writes are built to avoid duplicates.",
@@ -608,8 +626,9 @@ const projects = {
   },
   "job": {
     "number": "04",
+    "tier": "lead",
     "category": "AUTOMATION & TOOLING / AI-ASSISTED PROJECT",
-    "title": "Job Application Automation Platform",
+    "title": "Job Applier",
     "summary": "A local application for job filtering, supported application-form automation, saved answers, and application history.",
     "tags": [
       "JavaScript",
@@ -718,6 +737,7 @@ const projects = {
   },
   "raycaster": {
     "number": "05",
+    "tier": "supporting",
     "category": "CONSOLE RENDERING / TUTORIAL-GUIDED PROJECT",
     "title": "C++ Console Raycaster",
     "summary": "A first-person C++ raycaster that renders a character-based scene using the Windows Console API.",
@@ -744,11 +764,11 @@ const projects = {
     "showcase": {
       "recognition": ["How it was built", "Tutorial-guided · followed a YouTube programming tutorial"],
       "hero": {
-        "src": "assets/raycaster/raycaster-frame.webp",
+        "src": "assets/raycaster/raycaster-frame-mono.webp",
         "width": 1200,
         "height": 860,
         "alt": "One frame of the C++ Console Raycaster drawn in characters: a status line reading X=14.70 Y=5.09 A=0.00 FPS=62.4, the 16 by 16 map overlay with the player marked P, solid block-character walls whose height depends on distance, blank gaps at detected tile edges, and rows of x and # characters shading the floor.",
-        "caption": "Real output: one frame read from the running Windows renderer’s console screen buffer at its starting position, October 19, 2026. The characters are unchanged; the font and violet color are presentation."
+        "caption": "Real output: one frame read from the running Windows renderer’s console screen buffer at its starting position, October 19, 2026. The characters are unchanged; the font and white-on-black color are presentation."
       },
       "sections": [
         {
@@ -811,6 +831,7 @@ const projects = {
   },
   "tracker": {
     "number": "06",
+    "tier": "supporting",
     "category": "FRONTEND DEVELOPMENT / SUPPORTING PROJECT",
     "title": "Persistent Task Tracker",
     "summary": "A small browser task manager with filtering, inline editing, keyboard interactions, and saved state.",
@@ -1045,11 +1066,17 @@ function jumpToSection(id) {
   const bar = dialog.querySelector('.dialog-top');
   const top = dialog.scrollTop + target.getBoundingClientRect().top - dialog.getBoundingClientRect().top - bar.offsetHeight;
   dialog.scrollTo({ top, behavior: 'auto' });
-  target.querySelector('h3').focus({ preventScroll: true });
+  const heading = target.querySelector('h3');
+  heading.focus({ preventScroll: true });
+  // A brief highlight confirms where the jump landed (CSS applies it only while motion is allowed).
+  heading.classList.remove('is-jumped');
+  void heading.offsetWidth;
+  heading.classList.add('is-jumped');
+  setTimeout(() => heading.classList.remove('is-jumped'), 800);
 }
 function renderProject(id) {
   const project = projects[id];
-  document.querySelector('#dialog-number').textContent = `${project.number} / SELECTED WORK`;
+  document.querySelector('#dialog-number').textContent = `${project.number} / ${project.tier === 'lead' ? 'LEAD PROJECT' : 'SUPPORTING PROJECT'}`;
   renderShowcase(project);
 }
 
@@ -1181,6 +1208,7 @@ const coordinator = (() => {
     requestAnimationFrame(assertFocus);
     if (document.readyState !== 'complete') window.addEventListener('load', () => setTimeout(assertFocus, 0), { once: true });
     openedAt = performance.now();
+    if (from !== 'history') sound.play('open'); // only a card or Toolkit click; a restored route or Back/Forward is silent
     setPhase(play('open', origin, () => { if (phase === 'opening') setPhase('open'); }) ? 'opening' : 'open');
     return true;
   }
@@ -1230,6 +1258,7 @@ const coordinator = (() => {
 
   function close() {
     if (!live()) return;
+    sound.play('close'); // close() is only reached from a direct action: Close, Escape, or the backdrop
     // Closing an unfinished opening skips the reverse motion: it would start from a state the visitor never saw complete.
     if (phase === 'opening') { endMotion(false); setPhase('open'); commitClose(); return; }
     const origin = source === 'card' ? measureOrigin(trigger) : null;
@@ -1285,8 +1314,8 @@ const coordinator = (() => {
 // toolkit.js is imported dynamically and started outside the coordinator, so a missing or broken module, or a failed
 // start, can never take project navigation down with it. Starting it touches no history, focus or scroll.
 const toolkitRoot = document.querySelector('[data-toolkit]');
-import('./toolkit.js?v=4').then(({ createToolkit }) => {
-  const instance = createToolkit({ root: toolkitRoot, projects, motion, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
+import('./toolkit.js?v=5').then(({ createToolkit }) => {
+  const instance = createToolkit({ root: toolkitRoot, projects, motion, sound, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
   if (typeof instance?.fallbackFocus !== 'function') throw new TypeError('toolkit: unexpected interface');
   toolkit = instance;
 }).catch(() => {
@@ -1311,11 +1340,17 @@ coordinator.sync();
 // Entrance gateway. The early bootstrap in index.html only prevents a flash; the real route and session modules decide here.
 // Route precedence: any project route bypasses it, otherwise the entered-session cookie does. gateway.js is imported
 // dynamically so the portfolio never depends on it: if it fails to load or start, the portfolio is simply revealed.
-import('./gateway.js?v=4').then(({ createGateway }) => {
-  gateway = createGateway({ dialog: document.querySelector('#gateway-dialog'), motion, session: entrySession, canReplay: () => coordinator.phase === 'portfolio' });
-  const replayButton = document.querySelector('#replay-intro');
-  replayButton.addEventListener('click', event => gateway.replay(event.currentTarget));
-  replayButton.hidden = false; // Replay is only offered once it can work
+import('./gateway.js?v=7').then(({ createGateway }) => {
+  gateway = createGateway({
+    dialog: document.querySelector('#gateway-dialog'), motion, session: entrySession, sound,
+    loadScene: () => import(BLACKHOLE_URL), // the animated ASCII scene is an enhancement the gateway never depends on
+    canReplay: () => coordinator.phase === 'portfolio'
+  });
+  // Replay is offered from the header and the footer, and only once it can work.
+  document.querySelectorAll('[data-replay-intro]').forEach(replayButton => {
+    replayButton.addEventListener('click', event => gateway.replay(event.currentTarget));
+    replayButton.hidden = false;
+  });
   // Automatic presentation needs the startup to still be pending: the failsafe (or a showcase) clearing it means the visitor
   // is already in the portfolio, so a late module may initialize for Replay but never opens by itself.
   const pending = document.documentElement.dataset.gateway === 'pending';
@@ -1330,6 +1365,7 @@ document.querySelector('#copy-email').addEventListener('click', async () => {
   const status = document.querySelector('#copy-status');
   try {
     await navigator.clipboard.writeText('o9086498@gmail.com');
+    sound.play('select');
     status.textContent = 'Email copied. Say hello when you’re ready.';
   } catch {
     status.textContent = 'You can select the email above to copy it.';
