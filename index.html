@@ -27,8 +27,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=35">
-  <script type="module" src="app.js?v=36"></script>
+  <link rel="stylesheet" href="styles.css?v=36">
+  <script type="module" src="app.js?v=37"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -38,6 +38,7 @@
       <a href="#" class="brand" aria-label="Omar Aguilar, home">omar<span class="brand-dot" aria-hidden="true">_</span></a>
       <nav aria-label="Main navigation"><a href="#work">Projects</a><a href="#toolkit">Toolkit</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
       <div class="header-tools">
+        <button class="motion-toggle replay-tool" type="button" data-replay-intro aria-label="Replay intro animation" title="Replay intro animation" hidden><span aria-hidden="true">↻</span><span class="replay-text">Replay intro</span></button>
         <button id="motion-toggle" class="motion-toggle" type="button" aria-label="Pause motion" aria-pressed="false"><span id="motion-icon" aria-hidden="true">Ⅱ</span><span id="motion-label">Pause motion</span></button>
         <a class="resume-link" href="Omar-Aguilar-Resume.pdf?v=16.3" title="Resume 16.3" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↗</span><span class="visually-hidden"> 16.3 (PDF, opens in a new tab)</span></a>
         <button id="sound-toggle" class="sound-toggle" type="button" data-sound-toggle aria-label="Mute sound effects" aria-pressed="false" hidden><span class="sound-glyph" data-sound-glyph aria-hidden="true">♪</span><span class="sound-text">Sound</span></button>
@@ -188,7 +189,7 @@
       </div>
     </section>
   </main>
-  <footer class="site-footer wrap"><a class="brand" href="#"><span>omar<span class="brand-dot" aria-hidden="true">_</span></span><span class="visually-hidden"> Back to top</span></a><span class="footer-note">Built with HTML, CSS, and JavaScript.</span><div><a href="https://github.com/Omar-Lyzkru" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/omar-aguilar-b590b4277" target="_blank" rel="noopener noreferrer">LinkedIn</a><button id="replay-intro" class="replay-intro" type="button" hidden>↻ Replay intro</button><span>© <span id="year">2026</span> Omar Aguilar</span></div></footer>
+  <footer class="site-footer wrap"><a class="brand" href="#"><span>omar<span class="brand-dot" aria-hidden="true">_</span></span><span class="visually-hidden"> Back to top</span></a><span class="footer-note">Built with HTML, CSS, and JavaScript.</span><div><a href="https://github.com/Omar-Lyzkru" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/omar-aguilar-b590b4277" target="_blank" rel="noopener noreferrer">LinkedIn</a><button id="replay-intro" class="replay-intro" type="button" data-replay-intro hidden>↻ Replay intro</button><span>© <span id="year">2026</span> Omar Aguilar</span></div></footer>
   </div>
   <dialog id="gateway-dialog" class="gateway" aria-labelledby="gateway-title" aria-describedby="gateway-desc" data-state="closed" inert>
     <div class="gw-scene" aria-hidden="true">

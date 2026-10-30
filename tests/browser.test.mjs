@@ -176,6 +176,26 @@ for (const { name, browser } of engines) {
       await context.close();
     });
 
+    test('header Replay button reopens the entrance anytime and returns focus to itself', async () => {
+      const { page, context } = await freshGateway(browser);
+      await page.click('[data-gateway-skip]');
+      await waitClosed(page, 1500);
+      const button = page.locator('.site-header [data-replay-intro]');
+      assert.equal(await button.isVisible(), true);
+      assert.equal(await button.getAttribute('aria-label'), 'Replay intro animation');
+      const box = await button.boundingBox();
+      assert.ok(box.width >= 44 && box.height >= 44);
+      for (let i = 0; i < 2; i += 1) {
+        await button.click();
+        await page.waitForSelector(`${GW}[open]`);
+        await page.waitForFunction(sel => document.querySelector(sel).dataset.scene === 'ready', GW);
+        await page.click('[data-gateway-return]');
+        await waitClosed(page, 1000);
+        assert.equal(await page.evaluate(() => document.activeElement?.hasAttribute('data-replay-intro') && !!document.activeElement.closest('.site-header')), true);
+      }
+      await context.close();
+    });
+
     test('Escape during a journey cancels it into the portfolio at once', async () => {
       const { page, context } = await freshGateway(browser);
       await page.click('[data-gateway-enter]');

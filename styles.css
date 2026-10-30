@@ -49,7 +49,7 @@ a[hidden]{display:none}
 .motion-toggle:disabled{cursor:default;color:var(--faint);border-color:var(--line-soft)}
 .motion-toggle:disabled:hover{color:var(--faint);border-color:var(--line-soft)}
 #motion-icon,.sound-glyph{color:#fff;font-size:14px;line-height:1}
-.sound-toggle[hidden]{display:none}
+.sound-toggle[hidden],.replay-tool[hidden]{display:none}
 .sound-toggle[data-muted="true"] .sound-text{text-decoration:line-through;color:var(--faint)}
 .sound-toggle[data-muted="true"] .sound-glyph{color:var(--faint)}
 .resume-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--line);font:600 13px var(--mono);transition:border-color .2s,background .2s,color .2s}
@@ -375,7 +375,7 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
 #main:focus-visible,section[tabindex="-1"]:focus-visible{outline:none}
 
 /* Responsive */
-@media(max-width:1100px){.wrap{width:calc(100% - 48px)}.about-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px}}
+@media(max-width:1100px){.wrap{width:calc(100% - 48px)}.header-tools .replay-text,.header-tools #motion-label,.header-tools .sound-text{display:none}.header-tools .motion-toggle,.header-tools .sound-toggle{padding:0}.about-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px}}
 @media(max-width:960px){
   .hero{grid-template-columns:minmax(0,1fr);gap:48px;padding-bottom:84px}
   .hero:before{inset:34% -30% -4% -20%}
@@ -393,7 +393,7 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
   .header-inner{gap:16px}
   .site-header nav{gap:18px;margin-left:4px}
   .resume-link{display:none}
-  .motion-toggle,.sound-toggle{padding:0}.motion-toggle #motion-label,.sound-toggle .sound-text{display:none}
+  .motion-toggle,.sound-toggle{padding:0}.motion-toggle #motion-label,.sound-toggle .sound-text,.replay-tool .replay-text{display:none}
   .hero-actions{gap:6px 22px}
   .projects-grid{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto;gap:44px}
   .support-list{grid-template-columns:minmax(0,1fr)}

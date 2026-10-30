@@ -1346,9 +1346,11 @@ import('./gateway.js?v=5').then(({ createGateway }) => {
     loadScene: () => import(BLACKHOLE_URL), // the animated ASCII scene is an enhancement the gateway never depends on
     canReplay: () => coordinator.phase === 'portfolio'
   });
-  const replayButton = document.querySelector('#replay-intro');
-  replayButton.addEventListener('click', event => gateway.replay(event.currentTarget));
-  replayButton.hidden = false; // Replay is only offered once it can work
+  // Replay is offered from the header and the footer, and only once it can work.
+  document.querySelectorAll('[data-replay-intro]').forEach(replayButton => {
+    replayButton.addEventListener('click', event => gateway.replay(event.currentTarget));
+    replayButton.hidden = false;
+  });
   // Automatic presentation needs the startup to still be pending: the failsafe (or a showcase) clearing it means the visitor
   // is already in the portfolio, so a late module may initialize for Replay but never opens by itself.
   const pending = document.documentElement.dataset.gateway === 'pending';
