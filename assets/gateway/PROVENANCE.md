@@ -10,10 +10,10 @@ animation loop, `journeyState()` for the inward journey). There are no image, vi
   front of the horizon, the far side is hidden behind it), thin lensing arcs and a photon ring, a Doppler-style brighter
   approaching side, and sparse stars. Shades are neutral grays from `#1a1a1a` to `#ffffff`.
 - **What moves:** the disk's arms rotate with a Keplerian-style shear (inner material faster), fine rings drift inward, the
-  lensing streams shimmer, and stars drift and twinkle. On **Enter Portfolio** a 2.8 s journey recomputes the field every
+  lensing streams shimmer, and stars drift and twinkle. On **Enter Portfolio** a 3.4 s journey recomputes the field every
   frame: magnification toward the hole accelerates, the field is twisted, glyphs stretch into radial strokes (`/ \ | -`),
   the hole drifts to the center of the screen, speed lines and stars pour outward from the middle, the animation clock speeds
-  up, and the dialog finally dissolves into the portfolio.
+  up, and finally a ring opens at the center with the portfolio visible inside it (a CSS radial mask on the gateway dialog) while the page behind scales down from close-up and de-blurs, so the visitor arrives through the hole.
 - **How it is bounded:** one loop per mounted scene, paused when the tab is hidden or the motion policy asks for reduced
   motion (it then shows one static frame), destroyed when the gateway closes. A governor coarsens the character grid on
   devices that cannot keep up.

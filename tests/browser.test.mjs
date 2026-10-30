@@ -129,7 +129,14 @@ for (const { name, browser } of engines) {
       await page.evaluate(() => document.querySelector('[data-gateway-enter]').click()); // repeated input must not stack journeys
       for (const wait of [350, 900, 900]) { await page.waitForTimeout(wait); hashes.push(await canvasHash(page)); }
       assert.equal(new Set(hashes).size, hashes.length, 'initial, early, middle and late frames all differ');
+      // Late in the journey a ring opens in the hole onto the portfolio, which rushes toward the visitor and settles.
+      await page.waitForFunction(sel => parseFloat(document.querySelector(sel).style.getPropertyValue('--iris')) > 8, GW, { timeout: 3000 });
+      const arriving = await page.evaluate(() => ({ arrive: document.documentElement.dataset.arrive, transform: getComputedStyle(document.querySelector('.site')).transform, iris: parseFloat(document.querySelector('#gateway-dialog').style.getPropertyValue('--iris')) }));
+      assert.equal(arriving.arrive, 'on');
+      assert.notEqual(arriving.transform, 'none', 'the portfolio is scaled while arriving');
+      assert.ok(arriving.iris > 0, 'the ring has opened');
       await waitClosed(page);
+      assert.deepEqual(await page.evaluate(() => ({ arrive: document.documentElement.dataset.arrive, style: document.documentElement.getAttribute('style') || '', transform: getComputedStyle(document.querySelector('.site')).transform })), { arrive: undefined, style: '', transform: 'none' }, 'arrival effects are fully cleaned up');
       assert.equal(await page.evaluate(() => document.documentElement.dataset.gateway), undefined);
       assert.match(await page.evaluate(() => document.cookie), /portfolio_entered=1/);
       assert.equal(await page.evaluate(() => document.activeElement?.id), 'main');

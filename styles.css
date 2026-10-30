@@ -331,7 +331,7 @@ html[data-gateway]{overflow:hidden;background:#000} /* the stable scrollbar gutt
 html[data-gateway="pending"] .gateway:not([open]){display:block;overflow:hidden}
 /* While pending the cover is not modal yet: keep the covered portfolio and the not-yet-working gateway controls out of the tab order. */
 html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .gw-actions,html[data-gateway="pending"] .gw-sound{visibility:hidden}
-.gateway::backdrop{background:transparent}
+.gateway::backdrop{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none} /* the case-study blur must not apply here: it cannot animate, and the arrival below needs a clear view through the ring */
 .gateway[hidden]{display:none}
 .gw-scene{position:fixed;inset:0;overflow:hidden;pointer-events:none}
 .gw-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;visibility:hidden}
@@ -359,6 +359,13 @@ html[data-gateway="pending"] body>:not(.gateway),html[data-gateway="pending"] .g
 .gw-sound{position:fixed;top:14px;right:14px;z-index:3;background:rgba(0,0,0,.7);color:var(--gw-muted)}
 .gateway :focus-visible{outline:2px solid #fff;outline-offset:4px}
 .gw-status{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* The arrival: late in the journey a ring opens at the center of the hole and the dialog is cut away inside it, so the
+   portfolio is seen through the hole (--iris is the ring radius, set per frame by gateway.js). The page behind scales
+   down from close-up as the ring grows (--arrive, 0 to 1), as if it were rushing toward the visitor. */
+.gateway[data-iris]{-webkit-mask-image:radial-gradient(circle at 50% 50%,transparent var(--iris,0px),#000 calc(var(--iris,0px) + 2px));mask-image:radial-gradient(circle at 50% 50%,transparent var(--iris,0px),#000 calc(var(--iris,0px) + 2px))}
+.gw-ring{display:none;position:fixed;left:50%;top:50%;z-index:2;width:calc(var(--iris,0px)*2);height:calc(var(--iris,0px)*2);transform:translate(-50%,-50%);border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.95),0 0 34px 8px rgba(255,255,255,.5);pointer-events:none}
+.gateway[data-iris] .gw-ring{display:block}
+html[data-arrive] .site{transform-origin:50% var(--arrive-y,50%);transform:scale(calc(1.45 - .45*var(--arrive,1)));filter:brightness(calc(.3 + .7*var(--arrive,1))) blur(calc(7px*(1 - var(--arrive,1))))}
 /* The journey: the scene itself falls inward (blackhole.js); the copy steps aside with a plain CSS transition. */
 .gateway[data-state="entering"] .gw-copy{opacity:0;transform:scale(.96);transition:opacity .38s ease-out,transform .38s ease-out}
 @media(max-aspect-ratio:4/5){

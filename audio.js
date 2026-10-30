@@ -157,17 +157,17 @@ export function createSoundEffects({ win = window, AudioContextCtor = win.AudioC
       tone(ctx, { type: 'sawtooth', from: 800, to: 150, length: 0.26, peak: 0.12, lowpass: [3000, 300] }),
       tone(ctx, { type: 'sine', from: 130, to: 48, length: 0.34, peak: 0.55 }),
     ],
-    // The entrance journey, matched to its 2.8 s: a sub rumble and a growl that climb with the acceleration, a rushing
-    // noise sweep, a rising shimmer of fifths, and a deep boom just before the portfolio appears. The boom's tail rings
+    // The entrance journey, matched to its 3.4 s: a sub rumble and a growl that climb with the acceleration, a rushing
+    // noise sweep, a rising shimmer of fifths, and a deep boom as the ring opens onto the portfolio. The boom's tail rings
     // on over the portfolio; leaving the journey early (Skip, Escape, Pause, mute) stops everything at once.
     journey: ctx => {
-      const length = 2.8;
+      const length = 3.4;
       const nodes = [
-        tone(ctx, { type: 'sine', from: 36, to: 120, length, peak: 0.32, attack: 1.4 }),
-        tone(ctx, { type: 'sawtooth', from: 52, to: 230, length, peak: 0.075, attack: 1.6, lowpass: [140, 2400] }),
-        rush(ctx, { from: 140, to: 4400, length, peak: 0.26, attack: 2.2 }),
-        tone(ctx, { type: 'sine', from: 90, to: 28, at: length * 0.86, length: 1.5, peak: 0.5, attack: 0.03 }),
-        rush(ctx, { from: 900, to: 90, at: length * 0.86, length: 1.1, peak: 0.2, attack: 0.03, type: 'lowpass', q: 0.7 }),
+        tone(ctx, { type: 'sine', from: 36, to: 120, length, peak: 0.32, attack: 1.7 }),
+        tone(ctx, { type: 'sawtooth', from: 52, to: 230, length, peak: 0.075, attack: 1.9, lowpass: [140, 2400] }),
+        rush(ctx, { from: 140, to: 4400, length, peak: 0.26, attack: 2.4 }),
+        tone(ctx, { type: 'sine', from: 90, to: 28, at: length * 0.66, length: 1.8, peak: 0.5, attack: 0.03 }),
+        rush(ctx, { from: 900, to: 90, at: length * 0.66, length: 1.3, peak: 0.2, attack: 0.03, type: 'lowpass', q: 0.7 }),
       ];
       [523, 784, 1047, 1568, 2093].forEach((hz, i) => {
         nodes.push(tone(ctx, { type: 'triangle', from: hz, to: hz, at: length * [0.12, 0.3, 0.46, 0.6, 0.72][i], length: 0.7, peak: 0.07 + i * 0.01 }));

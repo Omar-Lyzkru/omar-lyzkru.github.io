@@ -17,7 +17,8 @@
 // gateway.replay(invoker) // voluntary replay from the normal portfolio; focus returns to invoker. False if it cannot open
 // gateway.yieldToShowcase() // a project showcase is about to open: leave without restoring focus or scroll
 // gateway.active          // true from show()/replay() until the gateway has fully concluded
-export const JOURNEY_MS = 2800;
+export const JOURNEY_MS = 3400;
+const IRIS_START = 0.64; // journey progress at which the far end of the tunnel opens onto the portfolio
 const SAFETY_MS = 700;    // the journey is force-finished this long after its nominal end, whatever the renderer does
 const FALLBACK_MS = 380;  // the short dissolve used when there is no scene to travel through
 const SECTION_IDS = new Set(['main', 'work', 'toolkit', 'about', 'contact']);
@@ -29,6 +30,9 @@ export function gatewayLayout(width, height) {
     ? { cx: 0.5, cy: 0.3, radius: Math.min(width * 0.36, height * 0.21) }
     : { cx: 0.66, cy: 0.5, radius: Math.min(width * 0.22, height * 0.33) };
 }
+
+// An expanding circular opening needs CSS masks; without them the journey ends in a plain dissolve instead.
+const supportsIris = win => Boolean(win.CSS?.supports?.('(mask-image: radial-gradient(#000, #000)) or (-webkit-mask-image: radial-gradient(#000, #000))'));
 
 const smoothstep = (a, b, value) => {
   const t = Math.max(0, Math.min(1, (value - a) / (b - a)));
@@ -62,6 +66,15 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     pauseButton.setAttribute('aria-pressed', String(motion.reduced));
     pauseButton.setAttribute('aria-label', system ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion');
     pauseLabel.textContent = system ? 'Reduced motion' : motion.manualPaused ? 'Resume motion' : 'Pause motion';
+  }
+
+  // The arrival effects live on the document and dialog while a journey plays; this puts everything back.
+  function resetArrival() {
+    delete root.dataset.arrive;
+    root.style.removeProperty('--arrive');
+    root.style.removeProperty('--arrive-y');
+    delete dialog.dataset.iris;
+    dialog.style.removeProperty('--iris');
   }
 
   function unmountScene() {
@@ -119,6 +132,7 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     setState('closed');
     dialog.style.opacity = '';
     dialog.style.transition = '';
+    resetArrival();
     try { if (dialog.open) dialog.close(); } catch { /* the modal is gone either way */ }
     delete root.dataset.gateway;
     status.textContent = '';
@@ -144,6 +158,7 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     status.textContent = '';
     dialog.style.opacity = '';
     dialog.style.transition = '';
+    resetArrival();
     syncMotionControl();
     setState('idle');
     root.dataset.gateway = 'active';
@@ -172,11 +187,24 @@ export function createGateway({ dialog, motion, session, sound = silent, loadSce
     const complete = () => { current.finished = true; done(); }; // the scene reached its end
     current.timer = setTimeout(done, JOURNEY_MS + SAFETY_MS); // the renderer can stall or fail; entry never depends on it
     let started = false;
+    const iris = supportsIris(win);
+    // The far end of the tunnel opens onto the portfolio: a bright ring grows from the center of the hole with the page
+    // visible inside it, while the page itself rushes toward the visitor and settles. The ring ends larger than the screen.
+    const maxRadius = Math.hypot(dialog.clientWidth || win.innerWidth, dialog.clientHeight || win.innerHeight) / 2 + 40;
+    root.style.setProperty('--arrive-y', `${win.scrollY + win.innerHeight / 2}px`);
     try {
       started = Boolean(scene?.travel({
         duration: JOURNEY_MS,
-        // The scene itself falls toward the hole; over the last stretch the dialog dissolves into the portfolio beneath it.
-        onProgress: progress => { if (run === current) dialog.style.opacity = String(1 - smoothstep(0.86, 1, progress)); },
+        onProgress: progress => {
+          if (run !== current) return;
+          const open = smoothstep(IRIS_START, 1, progress);
+          if (!iris) { dialog.style.opacity = String(1 - smoothstep(0.86, 1, progress)); return; } // no masks: dissolve instead
+          if (open <= 0) return;
+          dialog.dataset.iris = 'on';
+          root.dataset.arrive = 'on';
+          dialog.style.setProperty('--iris', `${(maxRadius * Math.pow(open, 1.7)).toFixed(1)}px`);
+          root.style.setProperty('--arrive', open.toFixed(3));
+        },
         onComplete: complete,
       }));
     } catch { started = false; }

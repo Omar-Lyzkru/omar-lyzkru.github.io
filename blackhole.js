@@ -291,7 +291,7 @@ export function journeyState(p) {
     stream: 7 * Math.pow(q, 2.4),
     streak: Math.pow(clamp((q - 0.1) / 0.5, 0, 1), 1.4),
     tunnel: smoothstep(0.45, 0.72, q),
-    glow: (IDLE_GLOW + 0.4 * smoothstep(0.05, 0.55, q)) * (1 - 0.85 * smoothstep(0.85, 1, q)),
+    glow: IDLE_GLOW + 0.4 * smoothstep(0.05, 0.55, q),
     pan: smoothstep(0.05, 0.8, q),
     lines: smoothstep(0.3, 0.75, q),
     rate: 1 + 9 * q * q,
@@ -451,7 +451,7 @@ export function mountBlackHole(canvas, options = {}) {
       synchronize();
     },
     /** Starts the inward journey. Returns false if it cannot run (paused or destroyed). Only one runs at a time. */
-    travel({ duration = 2800, onProgress, onComplete } = {}) {
+    travel({ duration = 3400, onProgress, onComplete } = {}) {
       if (destroyed || paused) return false;
       run = { duration: Math.max(200, duration), start: null, onProgress, onComplete };
       synchronize();
