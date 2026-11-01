@@ -735,8 +735,144 @@ const projects = {
     "repoLabel": "View source on GitHub",
     "source": "AI-ASSISTED · PRODUCT DIRECTION & REVIEW"
   },
-  "raycaster": {
+  "notes": {
     "number": "05",
+    "tier": "supporting",
+    "category": "WEB APPLICATION / PERSONAL PROJECT",
+    "title": "Online Notes App",
+    "summary": "A private rich-text notes app with Google sign-in, autosave, search, appearance settings, and synchronization between browser sessions.",
+    "tags": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Tiptap",
+      "Firebase Authentication",
+      "Cloud Firestore"
+    ],
+    "metrics": [
+      [
+        "Owner only",
+        "allowlisted UID, not a public demo"
+      ],
+      [
+        "Confirmed",
+        "“Saved” only after the server acknowledges"
+      ],
+      [
+        "195 + 74",
+        "recorded unit/UI and emulator tests"
+      ]
+    ],
+    "showcase": {
+      "recognition": ["How it was built", "Personal project · AI-assisted workflow documented in the repository"],
+      "hero": {
+        "flow": [
+          ["Sign in with Google", "Any Google account can authenticate; only an allowlisted owner UID is served data"],
+          ["Open the notebook", "A live listener on the signed-in user’s notes; a refused account sees Access denied"],
+          ["Edit in the Tiptap editor", "Title and rich text, stored as Tiptap JSON"],
+          ["Autosave after a pause", "One transaction per save; offline, it fails visibly instead of queueing"],
+          ["Check the revision", "Unchanged: write the next revision. Changed elsewhere: keep mine, use the other, or save mine as a new note"],
+          ["Report “Saved”", "Only after the server acknowledges the write"]
+        ],
+        "label": "How a note is saved",
+        "caption": "Workflow diagram based on the repository’s architecture notes (docs/ARCHITECTURE.md). It is an illustration, not a screenshot of the app: the hosted app is owner-only, so this site shows no screenshot of it."
+      },
+      "sections": [
+        {
+          "id": "goal",
+          "title": "The Goal",
+          "paragraphs": [
+            "A browser-based personal notes application for creating, editing, and organizing private notes: sign in with Google, write rich-text notes that autosave, find them again with search, and choose how the notebook looks. Changes reach your other browser sessions through Cloud Firestore.",
+            "It is built for one owner, not as a public service. The hosted deployment accepts only an allowlisted owner account, as the Access & Evidence section explains."
+          ]
+        },
+        {
+          "id": "features",
+          "title": "What It Does",
+          "steps": [
+            ["Write", "A Tiptap editor with bold, italic, two heading levels, bullet lists, and checklists, plus keyboard shortcuts (a third heading level is shortcut-only). Notes are stored as Tiptap JSON, never HTML."],
+            ["Autosave", "Edits are saved after a short pause. The status reads Saving, Saved, or Save failed, and “Saved” appears only after the server acknowledges the write."],
+            ["Search", "A search box narrows the list to notes whose title or text contains every word typed. It runs in the browser over the notes already loaded and never changes a note."],
+            ["Appearance", "A light or dark theme, five backgrounds, and four note text sizes, saved to the account so they follow it to other sessions."],
+            ["Synchronize", "A live Firestore listener updates the list across sessions of the same account. If a note changed elsewhere, you choose between keeping yours, using the other version, or saving yours as a new note."]
+          ]
+        },
+        {
+          "id": "engineering",
+          "title": "Engineering",
+          "paragraphs": [
+            "The frontend is a React and TypeScript app built with Vite. Tiptap provides the editor, Firebase Authentication provides Google sign-in, Cloud Firestore stores notes and preferences, and Firebase Hosting serves the build. There is no custom backend.",
+            "The items below describe what the repository implements."
+          ],
+          "items": [
+            {
+              "title": "Revision-aware writes",
+              "challenge": "Two sessions can edit the same note.",
+              "body": "Every note carries a revision number. A save is a Firestore transaction that requires the revision the editor started from and writes the next one, and the security rules reject any other update. A mismatch becomes a conflict with explicit choices; edits are never merged or overwritten silently. Deleting uses the same check, and a stale delete deletes nothing.",
+              "evidence": [["notesApi.ts", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/src/notesApi.ts"], ["firestore.rules", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/firestore.rules"], ["ARCHITECTURE.md", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/docs/ARCHITECTURE.md"]]
+            },
+            {
+              "title": "Personal-only access",
+              "challenge": "Google sign-in lets any Google account authenticate.",
+              "body": "Authorization is separate from authentication. The Firestore rules serve data only when the caller’s UID has an active entry in a closed allowlist collection and the path is under that UID; no client can read or write the allowlist. The Access denied screen only explains a refusal. The rules enforce it.",
+              "evidence": [["firestore.rules", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/firestore.rules"], ["AccessDenied.tsx", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/src/AccessDenied.tsx"], ["ARCHITECTURE.md", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/docs/ARCHITECTURE.md"]]
+            },
+            {
+              "title": "Search over editor content",
+              "challenge": "Notes are stored as JSON, so a naive search would match the format instead of the words.",
+              "body": "Search reads only the text nodes of each stored Tiptap document, so node names, attributes, and JSON keys never match. An entry is rebuilt only when that note’s title or content changes, and unsaved edits are not searched.",
+              "evidence": [["search.ts", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/src/search.ts"], ["Editor.tsx", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/src/Editor.tsx"], ["search.test.ts", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/tests/search.test.ts"]]
+            },
+            {
+              "title": "Safe build environments",
+              "challenge": "A production bundle must never talk to the development emulators.",
+              "body": "The dev server uses Firebase emulators by default. A production build targets a live project only and fails on a missing or inconsistent configuration, and the emulator code is removed from production bundles.",
+              "evidence": [["firebaseConfig.ts", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/src/firebaseConfig.ts"], ["vite.config.ts", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/vite.config.ts"], ["firebase.ts", "blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/src/firebase.ts"]]
+            }
+          ],
+          "note": ["HOW IT WAS BUILT", "The repository’s AGENTS.md and project-state record describe an agent-assisted workflow with independent reviews, and they record owner-approved decisions such as the stack, the personal-only access model, and the accepted limitations. They do not show which files I wrote myself, so this page does not claim that I wrote every one."]
+        },
+        {
+          "id": "evidence",
+          "title": "Access & Evidence",
+          "paragraphs": [
+            "The hosted app is for one owner. Anyone can authenticate with Google, but without an allowlisted owner UID the rules deny every read and write, so a browser without owner authorization cannot use the notebook. There is no public demo and no sample notebook, and this site never signed in to the app or touched its data.",
+            "The repository separates three kinds of evidence, and so does this page:"
+          ],
+          "steps": [
+            ["Implemented", "The behavior described above, as documented in the repository’s architecture notes and visible in its source."],
+            ["Recorded test results", "The project-state document records 195 unit and UI tests (jsdom, with Firebase and Tiptap doubles) and 74 Firestore-emulator tests passing for the release commit. This site did not rerun them, and emulator results are not live evidence."],
+            ["Hosted acceptance", "After the first Firebase Hosting release, the repository records served files matching the build manifest and an automated run on synthetic notes in the signed-in hosted app. Owner-reported checks cover Google sign-in, saving, search, and appearance persistence, and those were not independently rerun. An earlier owner report that bold and italic failed was not reproduced and has no recorded cause."]
+          ]
+        },
+        {
+          "id": "outcome",
+          "title": "Outcome & Limits",
+          "outcomes": [
+            "Notes can be created, edited, searched, and deleted, and autosave reports “Saved” only after the server acknowledges a write.",
+            "Conflicting edits and stale deletes are refused and handed back to the user instead of being merged or overwritten.",
+            "The deployed app refuses every account except an allowlisted owner."
+          ],
+          "limits": [
+            "Owner access only. The hosted app is not a public demo and cannot be tried without the owner’s authorization.",
+            "Synchronization between two browser sessions of one account worked. Synchronization between two separate physical computers was not verified.",
+            "Hosted checks used Chrome. Other browsers, real touch devices, and screen readers were not tested on the hosted origin.",
+            "Online-first: there is no offline editing or persistent cache. A failed save keeps the draft in the open editor only, so closing the tab loses unsaved edits.",
+            "Conflicts are resolved by explicit choice, never merged. A modified Firestore client signed in as the owner can bypass the app’s delete-revision check, a limitation the repository documents as accepted.",
+            "No backup or export is configured, so no recovery point for notes exists."
+          ],
+          "lessonsTitle": "What this project shows",
+          "lessons": "It keeps authentication and authorization separate, makes every write revision-aware, and keeps implemented behavior, recorded test results, and hosted checks distinct instead of blurring them into one claim."
+        }
+      ]
+    },
+    "repo": "https://github.com/Omar-Lyzkru/Online-Notes-App",
+    "repoLabel": "View source on GitHub",
+    "hosted": "https://omar-online-notes-prod.web.app",
+    "source": "PERSONAL PROJECT · AI-ASSISTED WORKFLOW"
+  },
+  "raycaster": {
+    "number": "06",
     "tier": "supporting",
     "category": "CONSOLE RENDERING / TUTORIAL-GUIDED PROJECT",
     "title": "C++ Console Raycaster",
@@ -830,7 +966,7 @@ const projects = {
     "source": "TUTORIAL-GUIDED · C++ PRACTICE"
   },
   "tracker": {
-    "number": "06",
+    "number": "07",
     "tier": "supporting",
     "category": "FRONTEND DEVELOPMENT / SUPPORTING PROJECT",
     "title": "Persistent Task Tracker",
@@ -975,6 +1111,8 @@ function projectLinks(project) {
   repo.append(plus);
   links.append(repo);
   if (project.demo) links.append(externalLink(project.demo, 'text-link', 'Live demo ↗'));
+  // A deployment that only its owner can use is never labeled a demo.
+  if (project.hosted) links.append(externalLink(project.hosted, 'text-link', 'Hosted app — owner access only ↗'));
   links.append(el('span', 'mono quiet', project.source));
   return links;
 }
@@ -1087,7 +1225,7 @@ function renderProject(id) {
 const entrySession = createEntrySession();
 let gateway = null; // the entrance gateway (gateway.js); it and the showcase never hold a modal at the same time
 let toolkit = null; // the Technical Toolkit (toolkit.js); it owns its selection, the coordinator owns navigation
-const routes = { permitwatch: 'permit', durablekv: 'durablekv', 'calendar-intelligence-hub': 'calendar', 'job-automation': 'job', raycaster: 'raycaster', 'task-tracker': 'tracker' };
+const routes = { permitwatch: 'permit', durablekv: 'durablekv', 'calendar-intelligence-hub': 'calendar', 'job-automation': 'job', 'online-notes-app': 'notes', raycaster: 'raycaster', 'task-tracker': 'tracker' };
 const slugFor = id => Object.keys(routes).find(slug => routes[slug] === id) ?? null;
 const routeFromLocation = () => classifyProjectRoute(location.href, routes).id;
 const urlFor = slug => {
@@ -1314,7 +1452,7 @@ const coordinator = (() => {
 // toolkit.js is imported dynamically and started outside the coordinator, so a missing or broken module, or a failed
 // start, can never take project navigation down with it. Starting it touches no history, focus or scroll.
 const toolkitRoot = document.querySelector('[data-toolkit]');
-import('./toolkit.js?v=5').then(({ createToolkit }) => {
+import('./toolkit.js?v=6').then(({ createToolkit }) => {
   const instance = createToolkit({ root: toolkitRoot, projects, motion, sound, onView: (id, button) => { if (coordinator.open(id, 'toolkit', button)) entrySession.markEntered(); } });
   if (typeof instance?.fallbackFocus !== 'function') throw new TypeError('toolkit: unexpected interface');
   toolkit = instance;

@@ -16,9 +16,11 @@ const cih = `${gh}Omar-Lyzkru/calendar-intelligence-hub/blob/main/`;
 const job = `${gh}Omar-Lyzkru/job-applier/blob/main/`;
 const ray = `${gh}Omar-Lyzkru/raycaster/blob/main/`;
 const tracker = `${gh}Omar-Lyzkru/tiny-task-tracker/blob/main/`;
+// Online Notes App evidence is pinned to the commit that was inspected, so a link keeps showing what the claim describes.
+const notes = `${gh}Omar-Lyzkru/Online-Notes-App/blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/`;
 
 // How each project was built, repeated beside every association so no claim reads as solo work by accident.
-const projectContext = { permit: 'Team project', durablekv: 'AI-assisted', calendar: 'AI-assisted', job: 'AI-assisted', raycaster: 'Tutorial-guided', tracker: 'Personal project' };
+const projectContext = { permit: 'Team project', durablekv: 'AI-assisted', calendar: 'AI-assisted', job: 'AI-assisted', notes: 'AI-assisted workflow', raycaster: 'Tutorial-guided', tracker: 'Personal project' };
 
 export const toolkitGroups = [
   {
@@ -30,7 +32,8 @@ export const toolkitGroups = [
       ] },
       { id: 'typescript', name: 'TypeScript', uses: [
         { project: 'permit', text: 'The team app is TypeScript throughout. My changes include the radius-slider React component and the TypeScript collectors and normalizers that expanded the dataset.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`], ['c27bc23', `${pw}commit/c27bc23`]] },
-        { project: 'calendar', text: 'The API, the React frontend, and a shared contracts package of typed schemas for messages, events, reviews, and automation policy are all TypeScript, written by AI coding agents under my requirements and design approval.', evidence: [['messages.ts', `${cih}packages/contracts/src/messages.ts`], ['app.ts', `${cih}apps/api/src/app.ts`], ['App.tsx', `${cih}apps/web/src/App.tsx`]] }
+        { project: 'calendar', text: 'The API, the React frontend, and a shared contracts package of typed schemas for messages, events, reviews, and automation policy are all TypeScript, written by AI coding agents under my requirements and design approval.', evidence: [['messages.ts', `${cih}packages/contracts/src/messages.ts`], ['app.ts', `${cih}apps/api/src/app.ts`], ['App.tsx', `${cih}apps/web/src/App.tsx`]] },
+        { project: 'notes', text: 'The app, its Firestore access layer, the autosave state machine, and its tests are TypeScript, and the build runs a type check before bundling.', evidence: [['notesApi.ts', `${notes}src/notesApi.ts`], ['saveController.ts', `${notes}src/saveController.ts`], ['package.json', `${notes}package.json`]] }
       ] },
       { id: 'cpp', name: 'C++', uses: [
         { project: 'durablekv', text: 'The storage engine is C++20: a binary record codec with CRC32C, an append-only log writer, a scanner, index reconstruction, and the public Storage API. AI coding agents wrote it under my requirements and design approval.', evidence: [['storage.h', `${dkv}include/durablekv/storage.h`], ['record_codec.cpp', `${dkv}src/record_codec.cpp`], ['storage.cpp', `${dkv}src/storage.cpp`]] },
@@ -47,7 +50,14 @@ export const toolkitGroups = [
     technologies: [
       { id: 'react', name: 'React', uses: [
         { project: 'permit', text: 'The frontend is a React app. I implemented the 1–10 mile radius slider, persistent dark and light appearances, and the restored concerns drafting in its components.', evidence: [['0c5cd72', `${pw}commit/0c5cd72`], ['1ac7082', `${pw}commit/1ac7082`], ['c734368', `${pw}commit/c734368`]] },
-        { project: 'calendar', text: 'A React and Vite frontend provides the review screen for editing, approving, or ignoring each candidate, with duplicate and conflict panels, plus automation settings and an activity feed. AI-assisted code.', evidence: [['ReviewDetail.tsx', `${cih}apps/web/src/features/reviews/ReviewDetail.tsx`], ['AutomationSettings.tsx', `${cih}apps/web/src/features/automation/AutomationSettings.tsx`], ['vite.config.ts', `${cih}apps/web/vite.config.ts`]] }
+        { project: 'calendar', text: 'A React and Vite frontend provides the review screen for editing, approving, or ignoring each candidate, with duplicate and conflict panels, plus automation settings and an activity feed. AI-assisted code.', evidence: [['ReviewDetail.tsx', `${cih}apps/web/src/features/reviews/ReviewDetail.tsx`], ['AutomationSettings.tsx', `${cih}apps/web/src/features/automation/AutomationSettings.tsx`], ['vite.config.ts', `${cih}apps/web/vite.config.ts`]] },
+        { project: 'notes', text: 'A React single-page app: one component handles sign-in state and the note list, another hosts the editor with its save-status and conflict choices, and a third is the appearance panel. The interface is tested in jsdom.', evidence: [['App.tsx', `${notes}src/App.tsx`], ['Editor.tsx', `${notes}src/Editor.tsx`], ['Settings.tsx', `${notes}src/Settings.tsx`]] }
+      ] },
+      { id: 'tiptap', name: 'Tiptap', uses: [
+        { project: 'notes', text: 'Tiptap is the rich-text editor: bold, italic, headings, and bullet lists from its starter kit, plus checklists from the task-list extensions. Notes are stored as Tiptap JSON, and search reads only the text nodes of that document.', evidence: [['editorExtensions.ts', `${notes}src/editorExtensions.ts`], ['Editor.tsx', `${notes}src/Editor.tsx`], ['search.ts', `${notes}src/search.ts`]] }
+      ] },
+      { id: 'firebase-auth', name: 'Firebase Authentication', uses: [
+        { project: 'notes', text: 'Google sign-in uses a popup with the account chooser, and the auth state decides which screen shows. Signing in is not access: only an allowlisted owner UID is served data, and an account the server refuses sees an Access denied screen.', evidence: [['App.tsx', `${notes}src/App.tsx`], ['AccessDenied.tsx', `${notes}src/AccessDenied.tsx`], ['firebase.ts', `${notes}src/firebase.ts`]] }
       ] },
       { id: 'nodejs', name: 'Node.js', uses: [
         { project: 'job', text: 'A local Node.js HTTP server serves the dashboard and its API, schedules application runs, and stores data as JSON files.', evidence: [['server.mjs', `${job}src/server.mjs`], ['runner.mjs', `${job}src/runner.mjs`]] },
@@ -69,6 +79,12 @@ export const toolkitGroups = [
   {
     name: 'Data, testing & tools',
     technologies: [
+      { id: 'vite', name: 'Vite', uses: [
+        { project: 'notes', text: 'Vite serves and bundles the app. Its config also refuses a production build with a missing or inconsistent Firebase configuration, or one that would keep the emulator code, so a bundle cannot ship pointing at the development emulators.', evidence: [['vite.config.ts', `${notes}vite.config.ts`], ['package.json', `${notes}package.json`]] }
+      ] },
+      { id: 'firestore', name: 'Cloud Firestore', uses: [
+        { project: 'notes', text: 'Notes and appearance settings live under each user’s own path, with a live listener for synchronization. Saves and deletes are revision-checked transactions, and the security rules require both an allowlisted UID and path ownership. The rules are covered by 74 Firestore-emulator tests recorded as passing, not rerun here.', evidence: [['notesApi.ts', `${notes}src/notesApi.ts`], ['firestore.rules', `${notes}firestore.rules`], ['PROJECT_STATE.md', `${notes}docs/PROJECT_STATE.md`]] }
+      ] },
       { id: 'sqlite', name: 'SQLite', uses: [
         { project: 'permit', text: 'The team’s API reads permits from SQLite. Expanding the published dataset from 213 to 807 records included my migration and repository changes for the new permit categories.', evidence: [['c27bc23', `${pw}commit/c27bc23`], ['Verification report', `${pw}blob/main/docs/multi-permit-verification.md`]] }
       ] },
@@ -88,7 +104,8 @@ export const toolkitGroups = [
         { project: 'calendar', text: 'A Playwright suite drives the real browser against a local server with synthetic providers and a disposable database; 29 tests are recorded as passing in the repository’s project-state document.', evidence: [['playwright.config.ts', `${cih}playwright.config.ts`], ['review.spec.ts', `${cih}tests/e2e/review.spec.ts`], ['PROJECT_STATE.md', `${cih}docs/PROJECT_STATE.md`]] }
       ] },
       { id: 'vitest', name: 'Vitest', uses: [
-        { project: 'calendar', text: 'Vitest runs the unit, API, and UI tests (443 recorded as passing) and, with a separate config, the PostgreSQL integration suite (227 recorded). The counts come from the repository’s project-state document.', evidence: [['vitest.config.ts', `${cih}vitest.config.ts`], ['vitest.integration.config.ts', `${cih}vitest.integration.config.ts`], ['PROJECT_STATE.md', `${cih}docs/PROJECT_STATE.md`]] }
+        { project: 'calendar', text: 'Vitest runs the unit, API, and UI tests (443 recorded as passing) and, with a separate config, the PostgreSQL integration suite (227 recorded). The counts come from the repository’s project-state document.', evidence: [['vitest.config.ts', `${cih}vitest.config.ts`], ['vitest.integration.config.ts', `${cih}vitest.integration.config.ts`], ['PROJECT_STATE.md', `${cih}docs/PROJECT_STATE.md`]] },
+        { project: 'notes', text: 'Vitest runs the unit and UI tests and, under the Firebase emulators, the security-rules and Firestore API tests (195 and 74 recorded as passing). The counts come from the repository’s project-state document and were not rerun here.', evidence: [['package.json', `${notes}package.json`], ['saveController.test.ts', `${notes}tests/saveController.test.ts`], ['PROJECT_STATE.md', `${notes}docs/PROJECT_STATE.md`]] }
       ] },
       { id: 'make', name: 'GNU Make', uses: [
         { project: 'durablekv', text: 'One Makefile is the single build entry point: C++20 builds with -Werror, 13 test executables, a strict verify target, and a static-library target with an independent consumer. It picks Windows or POSIX settings automatically.', evidence: [['Makefile', `${dkv}Makefile`], ['README.md', `${dkv}README.md`]] }

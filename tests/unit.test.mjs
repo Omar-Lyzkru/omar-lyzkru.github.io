@@ -212,5 +212,84 @@ test('index.html: exactly four lead cards in the approved order; supporting proj
   const repos = [...grid.matchAll(/class="text-link" href="(https:\/\/github\.com\/[^"]+)"/g)].map(m => m[1]);
   for (const repo of ['https://github.com/Abbas9x/permitwatch-houston', 'https://github.com/Omar-Lyzkru/DurableKV',
     'https://github.com/Omar-Lyzkru/calendar-intelligence-hub', 'https://github.com/Omar-Lyzkru/job-applier']) assert.ok(repos.includes(repo), repo);
-  assert.ok(!grid.includes('raycaster') && !grid.includes('tracker'));
+  assert.ok(!grid.includes('raycaster') && !grid.includes('tracker') && !grid.includes('notes'));
+});
+
+test('index.html: Online Notes App is first in a three-project supporting list, below the grid', () => {
+  const html = read('index.html');
+  const support = html.slice(html.indexOf('class="support reveal"'), html.indexOf('class="work-footer'));
+  const ids = [...support.matchAll(/<button class="support-open"[^>]*data-project="([^"]+)"/g)].map(m => m[1]);
+  assert.deepEqual(ids, ['notes', 'raycaster', 'tracker']);
+  const names = [...support.matchAll(/<span class="support-name">([^<]+)<\/span>/g)].map(m => m[1]);
+  assert.deepEqual(names, ['Online Notes App', 'C++ Console Raycaster', 'Persistent Task Tracker']);
+  assert.ok(!/smaller practice work/.test(support), 'the old "practice work" subtitle is gone');
+  assert.match(support, /Personal-only deployment/, 'the listing says the deployment is not public');
+  assert.ok(!/demo/i.test(support.slice(0, support.indexOf('data-project="raycaster"'))), 'the Notes listing does not offer a demo');
+});
+
+// app.js drives the DOM at import time, so its data is checked from source: the routes map and the project records.
+function appSource() {
+  const source = read('app.js');
+  const routes = Function(`return (${source.match(/const routes = (\{[^;]*\});/)[1]})`)();
+  const start = source.indexOf('const projects = {');
+  const literal = source.slice(start + 'const projects = '.length, source.indexOf('\nconst dialog')).trim().replace(/;$/, '');
+  const projects = Function(`return (${literal})`)();
+  return { source, routes, projects };
+}
+
+test('app.js: seven registered routes, each to a distinct project; the four leads keep their order', () => {
+  const { routes, projects } = appSource();
+  assert.deepEqual(routes, { permitwatch: 'permit', durablekv: 'durablekv', 'calendar-intelligence-hub': 'calendar', 'job-automation': 'job',
+    'online-notes-app': 'notes', raycaster: 'raycaster', 'task-tracker': 'tracker' });
+  assert.equal(new Set(Object.values(routes)).size, 7);
+  assert.deepEqual(Object.keys(projects).sort(), Object.values(routes).sort(), 'every route has a project record and vice versa');
+  assert.deepEqual(Object.keys(projects).filter(id => projects[id].tier === 'lead'), ['permit', 'durablekv', 'calendar', 'job']);
+  assert.deepEqual(Object.keys(projects).filter(id => projects[id].tier === 'supporting').sort(), ['notes', 'raycaster', 'tracker']);
+  const numbers = Object.values(projects).map(project => project.number);
+  assert.equal(new Set(numbers).size, 7, 'case-study numbers are unique');
+});
+
+test('Online Notes App case study: personal-only wording, pinned evidence, no demo field, illustration labeled', () => {
+  const { source, projects } = appSource();
+  const notes = projects.notes;
+  assert.equal(notes.title, 'Online Notes App');
+  assert.equal(notes.tier, 'supporting');
+  assert.equal(notes.repo, 'https://github.com/Omar-Lyzkru/Online-Notes-App');
+  assert.ok(!('demo' in notes), 'the owner-only URL must not be rendered as a "Live demo"');
+  assert.equal(notes.hosted, 'https://omar-online-notes-prod.web.app');
+  assert.match(source, /'Hosted app — owner access only ↗'/);
+  assert.match(source, /if \(project\.hosted\)/);
+  const text = JSON.stringify(notes.showcase);
+  for (const phrase of [/allowlisted owner UID/, /cannot use the notebook/, /not a public demo/, /physical computers was not verified/, /did not rerun them/, /no offline editing/]) {
+    assert.match(text, phrase);
+  }
+  assert.ok(!/try (it|the demo)|live demo|works offline|works on every|all browsers|flawless/i.test(text), 'no public-availability, offline, or compatibility overclaims');
+  assert.match(notes.showcase.hero.caption, /illustration, not a screenshot/);
+  assert.ok(!('src' in notes.showcase.hero), 'no screenshot is claimed');
+  const evidence = notes.showcase.sections.flatMap(section => (section.items || []).flatMap(item => item.evidence));
+  assert.ok(evidence.length >= 10);
+  for (const [, link] of evidence) assert.match(link, /^blob\/33d1390c4e88bb2fdb5a147e5d59b7c311676096\//, link);
+});
+
+test('Toolkit: every association names a real project, https evidence, and the Notes App links are pinned', async () => {
+  const { projects } = appSource();
+  const { toolkitGroups } = await load('toolkit.js');
+  const technologies = toolkitGroups.flatMap(group => group.technologies);
+  assert.equal(new Set(technologies.map(tech => tech.id)).size, technologies.length, 'technology ids are unique');
+  const used = new Set();
+  for (const tech of technologies) {
+    assert.ok(tech.uses.length > 0, tech.name);
+    for (const use of tech.uses) {
+      used.add(use.project);
+      assert.ok(projects[use.project], `${tech.name}: unknown project ${use.project}`);
+      assert.ok(use.evidence.length > 0, `${tech.name} / ${use.project}: evidence`);
+      for (const [label, href] of use.evidence) assert.match(href, /^https:\/\/github\.com\//, `${tech.name}: ${label}`);
+    }
+  }
+  assert.deepEqual([...used].sort(), Object.keys(projects).sort(), 'all seven projects appear in the Toolkit');
+  const notesTechs = technologies.filter(tech => tech.uses.some(use => use.project === 'notes')).map(tech => tech.name);
+  assert.deepEqual(notesTechs.sort(), ['Cloud Firestore', 'Firebase Authentication', 'React', 'Tiptap', 'TypeScript', 'Vite', 'Vitest']);
+  for (const tech of technologies) for (const use of tech.uses.filter(use => use.project === 'notes')) {
+    for (const [label, href] of use.evidence) assert.match(href, /^https:\/\/github\.com\/Omar-Lyzkru\/Online-Notes-App\/blob\/33d1390c4e88bb2fdb5a147e5d59b7c311676096\//, `${tech.name}: ${label}`);
+  }
 });

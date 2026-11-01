@@ -9,7 +9,7 @@ const engines = await launchBrowsers(); // top-level: the per-engine tests below
 after(async () => { for (const { browser } of engines) await browser.close(); await server.close(); });
 
 const SLUGS = { permitwatch: 'PermitWatch', durablekv: 'DurableKV', 'calendar-intelligence-hub': 'Calendar Intelligence Hub',
-  'job-automation': 'Job Applier', raycaster: 'C++ Console Raycaster', 'task-tracker': 'Persistent Task Tracker' };
+  'job-automation': 'Job Applier', 'online-notes-app': 'Online Notes App', raycaster: 'C++ Console Raycaster', 'task-tracker': 'Persistent Task Tracker' };
 const GW = '#gateway-dialog';
 const gatewayState = page => page.getAttribute(GW, 'data-state');
 const probe = page => page.evaluate(() => ({ ...window.__probe }));
@@ -38,13 +38,15 @@ for (const { name, browser } of engines) {
       const titles = await page.$$eval('.projects-grid .project-card h3', nodes => nodes.map(n => n.textContent));
       assert.deepEqual(titles, ['PermitWatch', 'DurableKV', 'Calendar Intelligence Hub', 'Job Applier']);
       assert.equal(await page.locator('.projects-grid .project-card').count(), 4);
-      assert.equal(await page.locator('.support-open').count(), 2, 'supporting projects are a separate compact list');
+      assert.equal(await page.locator('.support-open').count(), 3, 'supporting projects are a separate compact list');
+      assert.deepEqual(await page.$$eval('.support-open .support-name', nodes => nodes.map(n => n.textContent)),
+        ['Online Notes App', 'C++ Console Raycaster', 'Persistent Task Tracker'], 'Online Notes App leads the supporting list');
       await page.waitForTimeout(400);
       assert.deepEqual(errors, []);
       await context.close();
     });
 
-    test('deep links: all six slugs open their case study without the gateway; invalid values change nothing', async () => {
+    test('deep links: all seven slugs open their case study without the gateway; invalid values change nothing', async () => {
       for (const [slug, title] of Object.entries(SLUGS)) {
         const { page, errors, context } = await openPage(browser);
         await page.goto(`${server.origin}/?project=${slug}`);
@@ -112,6 +114,127 @@ for (const { name, browser } of engines) {
       assert.match(await page.textContent('.toolkit-use .toolkit-tier'), /Supporting/);
       await page.click('.toolkit-view');
       await page.waitForSelector('#project-dialog[open]');
+      await context.close();
+    });
+
+    test('Online Notes App: opens from the supporting list, says it is owner-only, and Escape restores URL, focus and scroll', async () => {
+      const { page, errors, context } = await openPage(browser);
+      await page.goto(server.origin + '/?project=zz');
+      await page.waitForSelector('.projects-grid');
+      const row = page.locator('.support-open[data-project="notes"]');
+      await row.scrollIntoViewIfNeeded();
+      const scrollBefore = await page.evaluate(() => window.scrollY);
+      await row.click();
+      await page.waitForSelector('#project-dialog[open]');
+      assert.equal(await page.textContent('#showcase-title'), 'Online Notes App');
+      assert.match(await page.textContent('#dialog-number'), /SUPPORTING PROJECT/);
+      assert.equal(new URL(page.url()).searchParams.get('project'), 'online-notes-app');
+      assert.equal(await page.evaluate(() => document.activeElement?.id), 'dialog-close', 'focus starts on Close');
+      const text = await page.textContent('#dialog-showcase');
+      assert.match(text, /allowlisted owner UID/);
+      assert.match(text, /cannot use the notebook/);
+      assert.match(text, /was not verified/, 'the cross-device gap is stated');
+      assert.doesNotMatch(text, /Live demo|Try demo/, 'no demo wording anywhere in the case study');
+      const links = await page.$$eval('#dialog-showcase a', nodes => nodes.map(n => [n.textContent.trim(), n.href]));
+      assert.ok(links.some(([label, href]) => /^View source on GitHub/.test(label) && href === 'https://github.com/Omar-Lyzkru/Online-Notes-App'), 'source link');
+      const hosted = links.filter(([, href]) => href.startsWith('https://omar-online-notes-prod.web.app'));
+      assert.ok(hosted.length >= 1 && hosted.every(([label]) => label === 'Hosted app — owner access only ↗'), 'the hosting URL is labeled owner-only');
+      assert.ok(links.filter(([, href]) => href.includes('/blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/')).length >= 10, 'evidence is pinned to the inspected commit');
+      assert.equal(await page.locator('#dialog-showcase a[target="_blank"]:not([rel~="noopener"])').count(), 0);
+      await page.waitForTimeout(700);
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
+      await page.waitForTimeout(800);
+      assert.equal(new URL(page.url()).searchParams.get('project'), 'zz', 'URL restored');
+      assert.equal(await page.evaluate(() => document.activeElement?.dataset?.project), 'notes', 'focus returns to the list control');
+      assert.ok(Math.abs((await page.evaluate(() => window.scrollY)) - scrollBefore) <= 2, 'scroll restored');
+      assert.deepEqual(errors, []);
+      await context.close();
+    });
+
+    test('Online Notes App: the keyboard opens it, Tab stays in the dialog, and Close/Back/Forward reconcile without new entries', async () => {
+      const { page, errors, context } = await openPage(browser);
+      await page.goto(server.origin + '/?project=zz');
+      await page.waitForSelector('.projects-grid');
+      const row = page.locator('.support-open[data-project="notes"]');
+      await row.scrollIntoViewIfNeeded();
+      await row.focus();
+      await page.keyboard.press('Enter');
+      await page.waitForSelector('#project-dialog[open]');
+      assert.equal(await page.textContent('#showcase-title'), 'Online Notes App');
+      await page.waitForTimeout(700);
+      // One Tab from Close lands on a control inside the modal (Playwright's WebKit lets focus visit the browser chrome after
+      // the dialog's last stop, on every case study, so only the first steps are asserted).
+      await page.keyboard.press('Tab');
+      assert.equal(await page.evaluate(() => document.querySelector('#project-dialog').contains(document.activeElement) && document.activeElement.id !== 'dialog-close'), true, 'Tab moves to a control inside the dialog');
+      await page.goBack();
+      await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
+      assert.equal(new URL(page.url()).searchParams.get('project'), 'zz');
+      await page.waitForTimeout(300);
+      await page.goForward();
+      await page.waitForSelector('#project-dialog[open]');
+      assert.equal(await page.textContent('#showcase-title'), 'Online Notes App');
+      assert.equal(new URL(page.url()).searchParams.get('project'), 'online-notes-app');
+      await page.click('#dialog-close');
+      await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
+      await page.waitForTimeout(800);
+      assert.equal(await page.evaluate(() => document.activeElement?.dataset?.project), 'notes', 'focus returns to the list control');
+      assert.equal(new URL(page.url()).searchParams.get('project'), 'zz', 'Close returns to the previous URL');
+      assert.deepEqual(errors, []);
+      await context.close();
+    });
+
+    test('Online Notes App: a refreshed direct link reopens it, and closing it leaves the plain portfolio URL', async () => {
+      const { page, errors, context } = await openPage(browser);
+      await page.goto(`${server.origin}/?project=online-notes-app`);
+      await page.waitForSelector('#project-dialog[open]');
+      await page.reload();
+      await page.waitForSelector('#project-dialog[open]');
+      assert.equal(await page.textContent('#showcase-title'), 'Online Notes App');
+      assert.equal(await page.evaluate(() => document.querySelector('#gateway-dialog').open), false, 'gateway bypassed after refresh');
+      await page.waitForTimeout(700);
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
+      await page.waitForTimeout(800);
+      assert.equal(new URL(page.url()).searchParams.has('project'), false, 'a direct entry closes to the plain portfolio URL');
+      assert.deepEqual(errors, []);
+      await context.close();
+    });
+
+    test('Toolkit: Online Notes App associations are pinned and open its case study, returning focus to the Toolkit', async () => {
+      const { page, errors, context } = await openPage(browser);
+      await page.goto(server.origin + '/?project=zz');
+      await page.waitForSelector('[data-toolkit-picker] [data-tech]');
+      assert.ok(await page.locator('[data-tech]').count() >= 20, 'the picker lists the technologies');
+      for (const [tech, name] of [['react', 'React'], ['typescript', 'TypeScript'], ['vite', 'Vite'], ['tiptap', 'Tiptap'], ['firebase-auth', 'Firebase Authentication'], ['firestore', 'Cloud Firestore']]) {
+        await page.locator(`[data-tech="${tech}"]`).scrollIntoViewIfNeeded();
+        await page.click(`[data-tech="${tech}"]`);
+        assert.equal(await page.textContent('.toolkit-panel-title'), name);
+        const use = page.locator('.toolkit-use', { has: page.locator('h4', { hasText: /^Online Notes App$/ }) });
+        assert.equal(await use.count(), 1, `${name}: has an Online Notes App association`);
+        const context_ = await use.locator('.toolkit-context').textContent();
+        assert.match(context_, /Supporting/);
+        assert.match(context_, /AI-assisted workflow/);
+        const links = await use.locator('.toolkit-evidence a').evaluateAll(nodes => nodes.map(n => n.href));
+        assert.ok(links.length >= 2 && links.every(href => href.startsWith('https://github.com/Omar-Lyzkru/Online-Notes-App/blob/33d1390c4e88bb2fdb5a147e5d59b7c311676096/')), `${name}: pinned evidence`);
+      }
+      assert.match(await page.textContent('.toolkit-count'), /Used in 1 of 7 projects \(0 lead, 1 supporting\)/, 'Cloud Firestore: counts reflect seven projects');
+      await page.click('[data-tech="react"]');
+      assert.match(await page.textContent('.toolkit-count'), /Used in 3 of 7 projects \(2 lead, 1 supporting\)/);
+      const view = page.locator('.toolkit-view[data-view="notes"]');
+      await view.scrollIntoViewIfNeeded();
+      await view.click();
+      await page.waitForSelector('#project-dialog[open]');
+      assert.equal(await page.textContent('#showcase-title'), 'Online Notes App');
+      assert.equal(new URL(page.url()).searchParams.get('project'), 'online-notes-app');
+      await page.waitForTimeout(700);
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
+      await page.waitForTimeout(800);
+      assert.equal(new URL(page.url()).searchParams.get('project'), 'zz');
+      assert.equal(await page.evaluate(() => document.activeElement?.dataset?.view), 'notes', 'focus returns to the Toolkit control');
+      assert.equal(await page.textContent('.toolkit-panel-title'), 'React', 'opening a case study leaves the selection alone');
+      assert.deepEqual(errors, []);
       await context.close();
     });
 
@@ -426,7 +549,7 @@ for (const { name, browser } of engines) {
     }
 
     test('authentic media: case-study images load with their provenance captions', async () => {
-      for (const [slug, expect] of [['permitwatch', /Screenshot of the public demo/], ['durablekv', /Real terminal recording/], ['raycaster', /Real output/], ['task-tracker', /live GitHub Pages app/], ['calendar-intelligence-hub', /not a screenshot/], ['job-automation', /not a screenshot/]]) {
+      for (const [slug, expect] of [['permitwatch', /Screenshot of the public demo/], ['durablekv', /Real terminal recording/], ['raycaster', /Real output/], ['task-tracker', /live GitHub Pages app/], ['online-notes-app', /illustration, not a screenshot/], ['calendar-intelligence-hub', /not a screenshot/], ['job-automation', /not a screenshot/]]) {
         const { page, context } = await openPage(browser);
         await page.goto(`${server.origin}/?project=${slug}`);
         await page.waitForSelector('#project-dialog[open]');
